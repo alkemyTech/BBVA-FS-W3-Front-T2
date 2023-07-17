@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <div className="footer">
       <Grid container justifyContent="space-around" spacing={4}>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} sm={5}>
           <Box display="flex" alignItems="center">
             <ComputerIcon style={{ marginRight: "8px" }} fontSize="small" />
             <Typography variant="overline" fontWeight="bold">
@@ -16,10 +16,12 @@ const Footer = () => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={12} md={4}>
-          <Typography variant="overline" fontStyle="italic">
-            Creada por <strong>los interestelares</strong>
-          </Typography>
+        <Grid item xs={12} sm={7}>
+          <div id={"alineacion-derecha-footer"}>
+            <Typography variant="overline" fontStyle="italic">
+              Creada por <strong>los interestelares</strong>
+            </Typography>
+          </div>
         </Grid>
       </Grid>
     </div>
