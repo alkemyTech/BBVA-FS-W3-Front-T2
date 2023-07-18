@@ -1,0 +1,6 @@
+.dialog-title {
+    display: flex;
+    flex-tirection: column;
+    align-items: center;
+    justify-content: center;
+}
