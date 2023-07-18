@@ -7,10 +7,14 @@ import { WidthFull } from "@mui/icons-material";
 const Footer = () => {
   return (
     <div className="footer">
-      <Grid container justifyContent="space-around" spacing={4}>
+      <Grid container justifyContent="space-around" spacing={2}>
         <Grid item xs={12} sm={5}>
-          <Box display="flex" alignItems="center">
-            <ComputerIcon style={{ marginRight: "8px" }} fontSize="small" />
+          <Box>
+            <img
+              src="../../../public/assets/iAzul.png"
+              alt="Logo alkywall."
+              style={{ height: "1em", display: "block" }}
+            />
             <Typography variant="overline" fontWeight="bold">
               © 2023 AlkyWall
             </Typography>
