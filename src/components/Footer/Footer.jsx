@@ -1,12 +1,15 @@
-import React from "react";
 import "./Footer.css";
-import { Grid, List, ListItem, Typography, Box } from "@mui/material";
-import ComputerIcon from "@mui/icons-material/Computer";
-import { WidthFull } from "@mui/icons-material";
+import { Grid, Typography, Box } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 const Footer = () => {
+  const theme = useTheme();
+
   return (
-    <div className="footer">
+    <footer
+      className="footer"
+      style={{ backgroundColor: theme.palette.secondary.main }}
+    >
       <Grid container justifyContent="space-around" spacing={2}>
         <Grid item xs={12} sm={5}>
           <Box>
@@ -28,7 +31,7 @@ const Footer = () => {
           </div>
         </Grid>
       </Grid>
-    </div>
+    </footer>
   );
 };
 
