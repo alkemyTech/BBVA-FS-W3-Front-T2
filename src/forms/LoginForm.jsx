@@ -1,6 +1,7 @@
 import { Formik } from 'formik'
-import { TextField, Button, Box, Typography, Paper, Card } from '@mui/material';
+import { TextField, Button, Typography, Card } from '@mui/material';
 import * as Yup from "yup"
+import "./form.css";
 
 
 const LoginForm = () => {
@@ -17,9 +18,6 @@ const LoginForm = () => {
 
   return (
         <Card>
-            <Typography component="h1" variant="h5">
-                Sign in
-            </Typography>
             <Formik
                 initialValues={{ email: "", password: "" }}
                 onSubmit={onSubmit}
@@ -27,11 +25,13 @@ const LoginForm = () => {
             >
                 {
                     ({values, handleSubmit, handleChange, errors, touched, handleBlur }) => (
-                        <Box
+                        <form
                             onSubmit={handleSubmit}
-                            sx={{ display: "flex", flexDirection: "column",alignItems: "center", mt:3, p:4 }}
-                            component="form"
-                            >
+                            className="form-container"
+                        >
+                            <Typography sx={{ mb:4}} component="h1" variant="h5">
+                                Iniciar Sesión
+                            </Typography>
                             <TextField
                             sx={{ mb:3 }}
                                 required
@@ -60,13 +60,10 @@ const LoginForm = () => {
                                 error={errors.password && touched.password}
                                 helperText={errors.password && touched.password && errors.password}
                             />
-                            {
-
-                            }
                             <Button type='submit' variant="contained">
                                 Iniciar Sesión
                             </Button>
-                        </Box>
+                        </form>
                     )
                 }
             </Formik>

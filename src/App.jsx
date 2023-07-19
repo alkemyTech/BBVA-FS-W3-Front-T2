@@ -2,12 +2,10 @@ import { Routes, Route } from "react-router-dom";
 import navLinks from "./constants/navLinks";
 import NavBar from "./components/Header/NavBar";
 import Footer from "./components/Footer/Footer";
-
+import LoginForm from "./forms/LoginForm.jsx";
 import "./App.css";
-import NavBar from "./components/Header/NavBar";
-import navLinks from "./constants/navLinks";
-import Footer from "./components/Footer/Footer";
-import Login from "./forms/LoginForm";
+import RegisterForm from "./forms/RegisterForm.jsx";
+
 
 
 
@@ -19,12 +17,16 @@ function App() {
       <Routes>
         {/* Posteriormente, al atributo element se le pasará la page que corresponda */}
         <Route path="/" />
-        <Route path="/login" />
+        <Route path="/Login" />
         <Route path="/register" />
         <Route path="/depositar" />
         <Route path="/transferir" />
         <Route path="/plazo-fijo" />
       </Routes>
+        <div className="body-conatiner">
+            <LoginForm/>
+            {/*  <RegisterForm /> */}
+        </div>
       <Footer className="footer"/>
     </div>
   );
