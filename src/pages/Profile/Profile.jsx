@@ -1,13 +1,14 @@
 import { useState } from "react";
 import {
   Box,
+  Grid,
   IconButton,
   ListItem,
   ListItemText,
   Typography,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import CancelIcon from '@mui/icons-material/Cancel';
+import CancelIcon from "@mui/icons-material/Cancel";
 import UserData from "../../components/UserData/UserData";
 
 import "./styles.css";
@@ -17,12 +18,10 @@ export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
 
   const handleEdit = () => {
-    // Cambia el estado para mostrar el formulario de edición
     setIsEditing(true);
   };
 
   const handleCancel = () => {
-    // Cambia el estado para ocultar el formulario de edición
     setIsEditing(false);
   };
 
@@ -32,43 +31,68 @@ export default function Profile() {
     email: "juanperez@gmail.com",
     edad: 25,
   };
+
   return (
     <div className="page-container">
-    <Box width="900px" display="flex" flexDirection="column" alignItems="center">
-      <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
-        <Typography variant="h6">Mis datos personales</Typography>
-        {isEditing ? (
-          <IconButton color="primary" onClick={handleCancel}>
-            <CancelIcon />
-          </IconButton>
+      <Box
+        maxWidth="900px"
+        width="100%" 
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        mx="auto" 
+        p={2} 
+      >
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          width="100%"
+          
+        >
+          <Typography variant="h6">
+            {isEditing ? "Editar datos" : "Mis datos personales"}
+          </Typography>
+          {isEditing ? (
+            <IconButton color="primary" onClick={handleCancel}>
+              <CancelIcon />
+            </IconButton>
+          ) : (
+            <IconButton color="primary" onClick={handleEdit}>
+              <EditIcon />
+            </IconButton>
+          )}
+        </Box>
+
+        {!isEditing ? (
+          <Box width="100%">
+            <UserData>
+              <ListItem>
+                <ListItemText primary="Nombre" secondary={user.nombre} />
+              </ListItem>
+              <ListItem>
+                <ListItemText primary="Apellido" secondary={user.apellido} />
+              </ListItem>
+              <ListItem>
+                <ListItemText primary="Email" secondary={user.email} />
+              </ListItem>
+              <ListItem>
+                <ListItemText primary="Edad" secondary={user.edad} />
+              </ListItem>
+            </UserData>
+          </Box>
         ) : (
-          <IconButton color="primary" onClick={handleEdit}>
-            <EditIcon />
-          </IconButton>
+          <Grid
+            container
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Grid item xs={12} sm={8} md={6} lg={4}>
+              <UserDataForm />
+            </Grid>
+          </Grid>
         )}
       </Box>
-
-      {!isEditing ? (
-        <div style={{ width: "100%", height: "100%" }}>
-          <UserData>
-            <ListItem>
-              <ListItemText primary="Nombre" secondary={user.nombre} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Apellido" secondary={user.apellido} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Email" secondary={user.email} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Edad" secondary={user.edad} />
-            </ListItem>
-          </UserData>
-        </div>
-      ) : (
-        <UserDataForm />
-      )}
-    </Box>
-  </div>
+    </div>
   );
 }

@@ -9,30 +9,20 @@ const UserDataForm = () => {
   const [isAnyFieldCompleted, setAnyFieldCompleted] = useState(false);
   const [hasError, setHasError] = useState(false);
 
-  const handleSubmit = (values) => {
-    // Acá se va a implementar la lógica para enviar los datos al back.
-    // values va a contener los campos nombre, apellido y contraseña ingresados por el usuario.
-    console.log(values);
-
-    // Verificamos si hay algún campo completado o si hay errores
+  const handleSubmit = () => {
     if (isAnyFieldCompleted) {
-      // Abre el diálogo después de enviar los datos al backend, solo si hay al menos un campo completado.
       setDialogOpen(true);
-      // Reseteamos el estado de hasError
       setHasError(false);
     } else {
-      // Mostrar el mensaje de error si no hay campos completados
       setHasError(true);
     }
   };
 
   const handleConfirm = (values) => {
-    handleSubmit(values);
-    setDialogOpen(false);
-  };
-
-  const handleCloseDialog = () => {
-    // Cierra el diálogo sin realizar ninguna acción adicional.
+    // Acá se va a implementar la lógica para enviar los datos al back.
+    // values va a contener los campos nombre, apellido y contraseña ingresados por el usuario.
+    // La idea también es incluir un alert para el usuario.
+    console.log(values);
     setDialogOpen(false);
   };
 
@@ -87,16 +77,14 @@ const UserDataForm = () => {
       onSubmit={handleSubmit}
       validate={validate}
     >
-      {({ values, errors, handleChange, handleBlur }) => (
+      {({ values, errors }) => (
         <Form>
-          <Box display="flex" flexDirection="column" maxWidth="300px">
+          <Box display="flex" flexDirection="column">
             <Field
               name="nombre"
               as={TextField}
               label="Nombre"
               value={values.nombre}
-              onChange={handleChange}
-              onBlur={handleBlur}
               margin="normal"
               variant="outlined"
               error={!!errors.nombre}
@@ -108,8 +96,6 @@ const UserDataForm = () => {
               as={TextField}
               label="Apellido"
               value={values.apellido}
-              onChange={handleChange}
-              onBlur={handleBlur}
               margin="normal"
               variant="outlined"
               error={!!errors.apellido}
@@ -122,8 +108,6 @@ const UserDataForm = () => {
               label="Contraseña"
               type="password"
               value={values.contraseña}
-              onChange={handleChange}
-              onBlur={handleBlur}
               margin="normal"
               variant="outlined"
               error={!!errors.contraseña}
@@ -135,22 +119,21 @@ const UserDataForm = () => {
               variant="contained"
               color="primary"
               size="large"
+              sx={{ mt: 2 }}
             >
               Enviar
             </Button>
-            {/* Mostramos el mensaje de error si no hay campos completados */}
             {hasError && (
               <Typography variant="body2" color="error">
                 Debés completar al menos un campo.
               </Typography>
             )}
-            {/* Abre el diálogo después de enviar los datos */}
             {isDialogOpen && (
               <CustomDialog
                 open={isDialogOpen}
-                onClose={handleCloseDialog}
-                icon={<InfoIcon color="success" fontSize="large" />}
-                onConfirm={handleConfirm}
+                onClose={() => setDialogOpen(false)} 
+                icon={<InfoIcon color="primary" fontSize="large" />}
+                onConfirm={() => handleConfirm(values)} 
                 title="Actualizar datos"
                 message={getMessage(values)}
               />

@@ -1,6 +1,4 @@
-import { Paper, List, ListItem, ListItemText } from "@mui/material";
-
-import "./styles.css";
+import { Paper, List } from "@mui/material";
 
 export default function UserData({ children }) {
   return (
