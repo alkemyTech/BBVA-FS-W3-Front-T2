@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import navLinks from "./constants/navLinks";
 import NavBar from "./components/Header/NavBar";
 import Footer from "./components/Footer/Footer";
-
 import "./App.css";
+import Deposit from "./pages/Deposit/Deposit";
 
 function App() {
   return (
@@ -14,11 +14,11 @@ function App() {
         <Route path="/" />
         <Route path="/login" />
         <Route path="/register" />
-        <Route path="/depositar" />
+        <Route path="/depositar" element={<Deposit />} />
         <Route path="/transferir" />
         <Route path="/plazo-fijo" />
       </Routes>
-      <Footer className="footer"/>
+      <Footer className="footer" />
     </div>
   );
 }
