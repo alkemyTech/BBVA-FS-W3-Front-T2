@@ -51,24 +51,17 @@ const Deposit = () => {
     validationSchema: inputValidation,
     onSubmit: (values) => {
       console.log(values);
+      //aca puede ir la lógica de conexión con el back
     },
   });
 
   return (
-    <main
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        width: "100%",
-        height: "447px",
-        padding: "3em 0",
-      }}
-    >
+    <main>
       <Grid container justifyContent="center">
         <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
           <Typography variant="h4">Depositar dinero</Typography>
         </Grid>
-        <Grid item xs={12} sm={5} lg={4}>
+        <Grid item xs={12} sm={5} md={4}>
           <form onSubmit={handleSubmit}>
             <Paper
               id="deposit-paper"
