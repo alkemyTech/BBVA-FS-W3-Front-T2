@@ -1,4 +1,4 @@
-// import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   Box,
   Divider,
@@ -19,7 +19,6 @@ export default function NavListDrawer({ navLinks, setOpen }) {
         <List>
           <ListItem>
             <Box sx={{ flexGrow: 1 }}>
-              {/* Imagen del logo */}
               <img
                 src="/assets/iAzul.png"
                 alt="ALKYWALL Logo"
@@ -37,7 +36,11 @@ export default function NavListDrawer({ navLinks, setOpen }) {
           <Divider />
           {navLinks.map((navlink) => (
             <ListItem disablePadding key={navlink.title}>
-              <ListItemButton to={navlink.path} onClick={() => setOpen(false)}>
+              <ListItemButton
+                component={NavLink}
+                to={navlink.path}
+                onClick={() => setOpen(false)}
+              >
                 <ListItemIcon>{navlink.icon}</ListItemIcon>
                 <ListItemText primary={navlink.title} />
               </ListItemButton>

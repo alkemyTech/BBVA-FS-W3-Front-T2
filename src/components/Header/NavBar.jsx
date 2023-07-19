@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import {
   AppBar,
   Box,
@@ -45,7 +46,6 @@ export default function NavBar({ navLinks }) {
             </Box>
           )}
           <Box sx={{ flexGrow: 1 }}>
-            {/* Imagen del logo */}
             <img
               src="/assets/iBlanco.png"
               alt="ALKYWALL Logo"
@@ -58,8 +58,7 @@ export default function NavBar({ navLinks }) {
                 <Button
                   key={navlink.title}
                   color="inherit"
-                  //   La navegación quedará habilitada cuando se importa el NavLink de react-router-dom
-                  //   component={NavLink}
+                  component={NavLink}
                   to={navlink.path}
                 >
                   {navlink.title}
@@ -95,8 +94,7 @@ export default function NavBar({ navLinks }) {
               >
                 <MenuItem
                   to="/mi-perfil"
-                  //   La navegación quedará habilitada cuando se importa el NavLink de react-router-dom
-                  //   component={NavLink}
+                  component={NavLink}
                   onClick={handleClose}
                 >
                   Perfil
