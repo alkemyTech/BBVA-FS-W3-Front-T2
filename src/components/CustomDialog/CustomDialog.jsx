@@ -9,7 +9,7 @@ import {
 
 import './styles.css'
 
-export default function ActionDialog(props) {
+export default function CustomDialog(props) {
   return (
     <Dialog open={props.open} onClose={props.onClose}>
       <DialogTitle className="dialog-title"

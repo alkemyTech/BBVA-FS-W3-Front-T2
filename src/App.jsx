@@ -4,6 +4,7 @@ import NavBar from "./components/Header/NavBar";
 import Footer from "./components/Footer/Footer";
 
 import "./App.css";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         {/* Posteriormente, al atributo element se le pasará la page que corresponda */}
         <Route path="/" />
         <Route path="/login" />
+        <Route path="/mi-perfil" element={<Profile />}/>
         <Route path="/register" />
         <Route path="/depositar" />
         <Route path="/transferir" />
