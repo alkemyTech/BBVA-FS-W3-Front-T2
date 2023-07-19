@@ -40,3 +40,17 @@
 .read-the-docs {
   color: #888;
 } */
+
+#root {
+  min-height: 100vh;
+}
+
+.app-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.footer {
+}
