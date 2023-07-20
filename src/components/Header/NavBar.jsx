@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   AppBar,
   Box,
@@ -15,6 +16,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 import { useState } from "react";
 import { AccountCircle } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../store/reducers/userSlice";
 
 export default function NavBar({ navLinks }) {
   const [open, setOpen] = useState(false);
@@ -22,6 +25,8 @@ export default function NavBar({ navLinks }) {
   // Los links de navegación se mostrarán solamente si el usuario está autenticado
   const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -29,6 +34,12 @@ export default function NavBar({ navLinks }) {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    handleClose();
+    navigate("/");
   };
 
   // El nombre del usuario está hardcoeado, se debe obtener del backend
@@ -99,14 +110,14 @@ export default function NavBar({ navLinks }) {
                 >
                   Perfil
                 </MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </Box>
           )}
         </Toolbar>
       </AppBar>
       <Drawer open={open} anchor="left" onClose={() => setOpen(false)}>
-        <NavListDrawer navLinks={navLinks} setOpen={setOpen} />
+        <NavListDrawer navLinks={navLinks} setOpen={setOpen}/>
       </Drawer>
     </>
   );

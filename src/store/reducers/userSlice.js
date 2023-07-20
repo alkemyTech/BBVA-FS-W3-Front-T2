@@ -24,6 +24,13 @@ const initialState = {
 export const userSlice = createSlice({
   name: "user",
   initialState,
+  reducers: {
+    logoutUser: (state) => {
+      localStorage.removeItem("user");
+      localStorage.removeItem("jwt");
+      state.user = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
@@ -44,4 +51,5 @@ export const userSlice = createSlice({
   },
 });
 
+export const { logoutUser } = userSlice.actions;
 export default userSlice.reducer;
