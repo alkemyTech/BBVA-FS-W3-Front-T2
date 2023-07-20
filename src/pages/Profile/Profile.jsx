@@ -1,4 +1,6 @@
 import { useState } from "react";
+// import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux"
 import {
   Box,
   Grid,
@@ -16,20 +18,15 @@ import UserDataForm from "../../forms/UserDataForm/UserDataForm";
 
 export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
-
+  // const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  
   const handleEdit = () => {
     setIsEditing(true);
   };
 
   const handleCancel = () => {
     setIsEditing(false);
-  };
-
-  const user = {
-    nombre: "Juan",
-    apellido: "Perez",
-    email: "juanperez@gmail.com",
-    edad: 25,
   };
 
   return (
@@ -68,16 +65,16 @@ export default function Profile() {
           <Box width="100%">
             <UserData>
               <ListItem>
-                <ListItemText primary="Nombre" secondary={user.nombre} />
+                <ListItemText primary="Nombre" secondary={user.user.firstName} />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Apellido" secondary={user.apellido} />
+                <ListItemText primary="Apellido" secondary={user.user.lastName} />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Email" secondary={user.email} />
+                <ListItemText primary="Email" secondary={user.user.email} />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Edad" secondary={user.edad} />
+                <ListItemText primary="Edad" secondary="25" />
               </ListItem>
             </UserData>
           </Box>
