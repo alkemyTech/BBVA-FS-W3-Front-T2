@@ -1,4 +1,7 @@
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../store/reducers/userSlice";
 import {
   Box,
   Divider,
@@ -13,6 +16,14 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { AccountCircle } from "@mui/icons-material";
 
 export default function NavListDrawer({ navLinks, setOpen }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    setOpen(false);
+    navigate("/");
+  };
+
   return (
     <Box sx={{ width: 250 }}>
       <nav>
@@ -47,7 +58,11 @@ export default function NavListDrawer({ navLinks, setOpen }) {
             </ListItem>
           ))}
           <Divider />
-          <ListItemButton onClick={() => setOpen(false)}>
+          <ListItemButton
+            onClick={() => {
+              handleLogout();
+            }}
+          >
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
