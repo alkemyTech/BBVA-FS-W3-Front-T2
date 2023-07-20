@@ -6,6 +6,7 @@ import LoginForm from "./forms/LoginForm.jsx";
 import "./App.css";
 import RegisterForm from "./forms/RegisterForm.jsx";
 import Deposit from "./pages/Deposit/Deposit";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   return (
@@ -14,11 +15,12 @@ function App() {
       <Routes>
         {/* Posteriormente, al atributo element se le pasará la page que corresponda */}
         <Route path="/" />
-          <Route path="/Login" element={<LoginForm/>}/>
+          <Route path="/login" element={<LoginForm/>}/>
+          <Route path="/mi-perfil" element={<Profile />}/>
           <Route path="/register" element={<RegisterForm/>} />
           <Route path="/depositar" element={<Deposit />} />
-         <Route path="/transferir" />
-        <Route path="/plazo-fijo" />
+          <Route path="/transferir" />
+          <Route path="/plazo-fijo" />
       </Routes>
       <Footer className="footer"/>
     </div>
