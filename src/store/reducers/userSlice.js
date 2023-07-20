@@ -9,6 +9,8 @@ export const loginUser = createAsyncThunk(
       userCredentials
     );
     const response = await request.data;
+    localStorage.setItem("user", JSON.stringify(response.user));
+    localStorage.setItem("jwt", response.jwt);
     return response;
   }
 );
