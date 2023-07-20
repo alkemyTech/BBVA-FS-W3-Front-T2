@@ -4,6 +4,15 @@
   box-sizing: border-box;
 }
 
+.icono-redes {
+  color: black;
+  transition: color 300ms;
+  margin-right: 0.2em;
+}
+.icono-redes:hover {
+  color: #007bff;
+}
+
 @media screen and (min-width: 600px) {
   #alineacion-derecha-footer {
     text-align: right;

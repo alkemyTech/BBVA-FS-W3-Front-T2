@@ -9,13 +9,13 @@ import {
 
 import './styles.css'
 
-export default function ActionDialog(props) {
+export default function CustomDialog(props) {
   return (
     <Dialog open={props.open} onClose={props.onClose}>
       <DialogTitle className="dialog-title"
       >
         {props.icon}
-        <Typography variant="h6">{props.title}</Typography>
+        <Typography variant="h6" component="div">{props.title}</Typography>
       </DialogTitle>
       <DialogContent>
         <Typography variant="body1">{props.message}</Typography>
