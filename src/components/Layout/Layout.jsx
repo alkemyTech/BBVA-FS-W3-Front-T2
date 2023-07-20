@@ -18,7 +18,7 @@ const Layout = ({ children }) => {
       <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '93.2vh' }}>
         <Box component="main" sx={{ flex: '1 0 auto', py: 3, px: 2 }}>
           <Container maxWidth="md">
-            <Toolbar />
+
             {children}
           </Container>
         </Box>

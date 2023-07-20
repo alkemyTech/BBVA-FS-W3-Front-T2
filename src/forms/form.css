@@ -9,9 +9,20 @@
 }
 
 .inputs-container {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     padding: 6px;
 }
+
+.link-to {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    margin-top: 16px;
+}
+
