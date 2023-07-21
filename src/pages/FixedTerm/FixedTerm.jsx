@@ -142,7 +142,7 @@ const FixedTerm = () => {
                     onChange={handleDateChange}
                     disablePast
                     format="DD/MM/YYYY"
-                    sx={
+                    sx={() =>
                       errors.totalDays &&
                       values.totalDays !== null && {
                         border: "1px solid red",
@@ -183,7 +183,7 @@ const FixedTerm = () => {
             setOpenDialog(false);
             navigate("/")
           }}
-          icon={<TrendingUp fontSize="large"/>}
+          icon={<TrendingUp fontSize="large"  sx={{ marginRight: "8px" }} />}
         ></ActionDialog>
       </Grid>
     </main>
