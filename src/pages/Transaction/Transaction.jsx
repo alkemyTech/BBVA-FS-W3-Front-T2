@@ -16,7 +16,7 @@ import { useTheme } from "@emotion/react";
 import "./Transaction.css";
 import * as yup from "yup";
 
-const Deposit = () => {
+const Transaction = () => {
   const theme = useTheme();
 
   const inputValidation = yup.object().shape({
@@ -166,4 +166,4 @@ const Deposit = () => {
   );
 };
 
-export default Deposit;
+export default Transaction;
