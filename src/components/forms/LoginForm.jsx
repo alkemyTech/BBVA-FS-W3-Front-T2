@@ -48,7 +48,7 @@ const LoginForm = () => {
         }) => (
           <form onSubmit={handleSubmit} className="form-container">
             <Typography sx={{ mb: 4 }} component="h1" variant="h5">
-              Iniciar sesión
+              <b>Iniciar sesión</b>
             </Typography>
             <TextField
               sx={{ mb: 3 }}
