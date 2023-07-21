@@ -13,18 +13,16 @@ import {
 } from "@mui/material";
 import NavListDrawer from "./NavListDrawer";
 import MenuIcon from "@mui/icons-material/Menu";
-
 import { useState } from "react";
 import { AccountCircle } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import { logoutUser } from "../../store/reducers/userSlice";
+import { logoutUser } from "../../redux/reducers/userSlice";
+import { useSelector } from "react-redux";
 
 export default function NavBar({ navLinks }) {
   const [open, setOpen] = useState(false);
-  // El valor de auth está hardcodeado, se debe obtener del backend
-  // Los links de navegación se mostrarán solamente si el usuario está autenticado
-  const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -39,17 +37,14 @@ export default function NavBar({ navLinks }) {
   const handleLogout = () => {
     dispatch(logoutUser());
     handleClose();
-    navigate("/");
+    navigate("/login");
   };
-
-  // El nombre del usuario está hardcoeado, se debe obtener del backend
-  const userName = "Rodrigo Juarez";
 
   return (
     <>
       <AppBar position="sticky" color="primary">
         <Toolbar>
-          {auth && (
+          {user && (
             <Box sx={{ display: { xs: "block", md: "none" } }}>
               <IconButton onClick={() => setOpen(true)} color="inherit">
                 <MenuIcon />
@@ -63,7 +58,7 @@ export default function NavBar({ navLinks }) {
               style={{ width: "150px", display: "block" }}
             />
           </Box>
-          {auth && (
+          {user && (
             <Box sx={{ display: { xs: "none", md: "block" } }}>
               {navLinks.map((navlink) => (
                 <Button
@@ -84,7 +79,7 @@ export default function NavBar({ navLinks }) {
                 color="inherit"
               >
                 <Typography variant="body1" sx={{ mr: 1 }}>
-                  {userName}
+                  {user.firstName + " " + user.lastName}
                 </Typography>
                 <AccountCircle />
               </IconButton>
@@ -117,7 +112,7 @@ export default function NavBar({ navLinks }) {
         </Toolbar>
       </AppBar>
       <Drawer open={open} anchor="left" onClose={() => setOpen(false)}>
-        <NavListDrawer navLinks={navLinks} setOpen={setOpen}/>
+        <NavListDrawer navLinks={navLinks} setOpen={setOpen} />
       </Drawer>
     </>
   );

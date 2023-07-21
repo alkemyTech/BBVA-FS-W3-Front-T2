@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logoutUser } from "../../store/reducers/userSlice";
+import { logoutUser } from "../../redux/reducers/userSlice";
 import {
   Box,
   Divider,
@@ -21,7 +21,7 @@ export default function NavListDrawer({ navLinks, setOpen }) {
   const handleLogout = () => {
     dispatch(logoutUser());
     setOpen(false);
-    navigate("/");
+    navigate("/login");
   };
 
   return (
@@ -38,7 +38,11 @@ export default function NavListDrawer({ navLinks, setOpen }) {
             </Box>
           </ListItem>
           <Divider />
-          <ListItemButton to="/mi-perfil" onClick={() => setOpen(false)}>
+          <ListItemButton
+            component={NavLink}
+            to="/mi-perfil"
+            onClick={() => setOpen(false)}
+          >
             <ListItemIcon>
               <AccountCircle />
             </ListItemIcon>

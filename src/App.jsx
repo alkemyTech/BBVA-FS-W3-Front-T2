@@ -1,27 +1,26 @@
 import { Routes, Route } from "react-router-dom";
-import navLinks from "./constants/navLinks";
-import NavBar from "./components/Header/NavBar";
-import Footer from "./components/Footer/Footer";
-import LoginForm from "./forms/LoginForm.jsx";
+import LoginForm from "./components/forms/LoginForm.jsx";
 import "./App.css";
-import RegisterForm from "./forms/RegisterForm.jsx";
+import RegisterForm from "./components/forms/RegisterForm.jsx";
 import Deposit from "./pages/Deposit/Deposit";
 import Profile from "./pages/Profile/Profile";
 import Layout from "./components/Layout/Layout";
+import PrivateRoutes from "./routes/PrivateRoutes.jsx";
 
 function App() {
   return (
     <div className="app-container">
       <Layout>
         <Routes>
-          {/* Posteriormente, al atributo element se le pasará la page que corresponda */}
-          <Route path="/" />
+          <Route element={<PrivateRoutes />}>
+            <Route path="/" exact />
+            <Route path="/mi-perfil" element={<Profile />} exact />
+            <Route path="/depositar" element={<Deposit />} exact />
+            <Route path="/transferir" />
+            <Route path="/plazo-fijo" />
+          </Route>
           <Route path="/login" element={<LoginForm />} />
-          <Route path="/mi-perfil" element={<Profile />} />
           <Route path="/register" element={<RegisterForm />} />
-          <Route path="/depositar" element={<Deposit />} />
-          <Route path="/transferir" />
-          <Route path="/plazo-fijo" />
         </Routes>
       </Layout>
     </div>

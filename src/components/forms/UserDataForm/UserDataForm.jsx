@@ -1,15 +1,17 @@
 import { useState } from "react";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Button, Paper, TextField, Typography } from "@mui/material";
 import { Formik, Form, Field } from "formik";
 import { useDispatch } from "react-redux";
-import CustomDialog from "../../components/CustomDialog/CustomDialog";
+import CustomDialog from "../../CustomDialog/CustomDialog";
 import InfoIcon from "@mui/icons-material/Info";
-import { updateUser } from "../../store/reducers/userSlice";
+import { updateUser } from "../../../redux/reducers/userSlice";
+import { useSnackbar } from "notistack";
 
 const UserDataForm = () => {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [isAnyFieldCompleted, setAnyFieldCompleted] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
@@ -21,6 +23,12 @@ const UserDataForm = () => {
     }
   };
 
+  const resetFormValues = (values) => {
+    values.firstName = "";
+    values.lastName = "";
+    values.password = "";
+  };
+
   const handleConfirm = (values) => {
     const updatedValues = {
       firstName: values.firstName,
@@ -29,6 +37,8 @@ const UserDataForm = () => {
     };
     dispatch(updateUser(updatedValues));
     setDialogOpen(false);
+    resetFormValues(values);
+    enqueueSnackbar("Usuario actualizado", { variant: "success" });
   };
 
   const validate = (values) => {
@@ -84,7 +94,14 @@ const UserDataForm = () => {
     >
       {({ values, errors }) => (
         <Form>
-          <Box display="flex" flexDirection="column">
+          <Paper
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+              padding: "1rem",
+            }}
+          >
             <Field
               name="firstName"
               as={TextField}
@@ -143,7 +160,7 @@ const UserDataForm = () => {
                 message={getMessage(values)}
               />
             )}
-          </Box>
+          </Paper>
         </Form>
       )}
     </Formik>
