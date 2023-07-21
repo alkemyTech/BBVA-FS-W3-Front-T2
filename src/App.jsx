@@ -7,6 +7,7 @@ import "./App.css";
 import RegisterForm from "./forms/RegisterForm.jsx";
 import Deposit from "./pages/Deposit/Deposit";
 import Profile from "./pages/Profile/Profile";
+import Transaction from "./pages/Transaction/Transaction";
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
           <Route path="/mi-perfil" element={<Profile />}/>
           <Route path="/register" element={<RegisterForm/>} />
           <Route path="/depositar" element={<Deposit />} />
-          <Route path="/transferir" />
+          <Route path="/transferir" element={<Transaction/>}/>
           <Route path="/plazo-fijo" />
       </Routes>
       <Footer className="footer"/>
