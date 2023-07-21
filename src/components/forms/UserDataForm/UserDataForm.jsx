@@ -6,6 +6,7 @@ import CustomDialog from "../../CustomDialog/CustomDialog";
 import InfoIcon from "@mui/icons-material/Info";
 import { updateUser } from "../../../redux/reducers/userSlice";
 import { useSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
 
 const UserDataForm = () => {
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -13,6 +14,7 @@ const UserDataForm = () => {
   const [hasError, setHasError] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = () => {
     if (isAnyFieldCompleted) {
@@ -35,10 +37,15 @@ const UserDataForm = () => {
       lastName: values.lastName,
       password: values.password,
     };
-    dispatch(updateUser(updatedValues));
-    setDialogOpen(false);
-    resetFormValues(values);
-    enqueueSnackbar("Usuario actualizado", { variant: "success" });
+    dispatch(updateUser(updatedValues)).then((result) => {
+      console.log(result.payload)
+      if (result.payload) {
+        setDialogOpen(false);
+        resetFormValues(values);
+        enqueueSnackbar("Usuario actualizado", { variant: "success" });
+        navigate("/");
+      } 
+    });
   };
 
   const validate = (values) => {

@@ -85,7 +85,7 @@ const LoginForm = () => {
             </Button>
             {error && (
               <Typography variant="body2" color="error">
-                Usuario o contraseña incorrectos.
+                {error}
               </Typography>
             )}
           </form>
