@@ -1,29 +1,33 @@
 import { Routes, Route } from "react-router-dom";
-import navLinks from "./constants/navLinks";
-import NavBar from "./components/Header/NavBar";
-import Footer from "./components/Footer/Footer";
-import LoginForm from "./forms/LoginForm.jsx";
+import LoginForm from "./components/forms/LoginForm.jsx";
 import "./App.css";
-import RegisterForm from "./forms/RegisterForm.jsx";
+import RegisterForm from "./components/forms/RegisterForm.jsx";
 import Deposit from "./pages/Deposit/Deposit";
+import FixedTerm from "./pages/FixedTerm/FixedTerm";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Profile from "./pages/Profile/Profile";
-import Transaction from "./pages/Transaction/Transaction";
+import Layout from "./components/Layout/Layout";
+import PrivateRoutes from "./routes/PrivateRoutes.jsx";
 
 function App() {
   return (
     <div className="app-container">
-      <NavBar navLinks={navLinks} />
-      <Routes>
-        {/* Posteriormente, al atributo element se le pasará la page que corresponda */}
-        <Route path="/" />
-          <Route path="/login" element={<LoginForm/>}/>
-          <Route path="/mi-perfil" element={<Profile />}/>
-          <Route path="/register" element={<RegisterForm/>} />
-          <Route path="/depositar" element={<Deposit />} />
-          <Route path="/transferir" element={<Transaction/>}/>
-          <Route path="/plazo-fijo" />
-      </Routes>
-      <Footer className="footer"/>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <Layout>
+          <Routes>
+            <Route element={<PrivateRoutes />}>
+              <Route path="/" exact />
+              <Route path="/mi-perfil" element={<Profile />} exact />
+              <Route path="/depositar" element={<Deposit />} exact />
+              <Route path="/transferir" />
+              <Route path="/plazo-fijo" element={<FixedTerm />} />
+            </Route>
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/register" element={<RegisterForm />} />
+          </Routes>
+        </Layout>
+      </LocalizationProvider>
     </div>
   );
 }
