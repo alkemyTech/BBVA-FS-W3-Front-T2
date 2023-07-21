@@ -1,13 +1,18 @@
 import { useState } from "react";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Button, Paper, TextField, Typography } from "@mui/material";
 import { Formik, Form, Field } from "formik";
-import CustomDialog from "../../components/CustomDialog/CustomDialog";
+import { useDispatch } from "react-redux";
+import CustomDialog from "../../CustomDialog/CustomDialog";
 import InfoIcon from "@mui/icons-material/Info";
+import { updateUser } from "../../../redux/reducers/userSlice";
+import { useSnackbar } from "notistack";
 
 const UserDataForm = () => {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [isAnyFieldCompleted, setAnyFieldCompleted] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
 
   const handleSubmit = () => {
     if (isAnyFieldCompleted) {
@@ -18,32 +23,42 @@ const UserDataForm = () => {
     }
   };
 
+  const resetFormValues = (values) => {
+    values.firstName = "";
+    values.lastName = "";
+    values.password = "";
+  };
+
   const handleConfirm = (values) => {
-    // Acá se va a implementar la lógica para enviar los datos al back.
-    // values va a contener los campos nombre, apellido y contraseña ingresados por el usuario.
-    // La idea también es incluir un alert para el usuario.
-    console.log(values);
+    const updatedValues = {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      password: values.password,
+    };
+    dispatch(updateUser(updatedValues));
     setDialogOpen(false);
+    resetFormValues(values);
+    enqueueSnackbar("Usuario actualizado", { variant: "success" });
   };
 
   const validate = (values) => {
     const regEx = /^[A-Za-zÁÉÍÓÚáéíóúüÜñÑ\s]*$/;
     const errors = {};
 
-    if (values.nombre && !regEx.test(values.nombre)) {
-      errors.nombre = "Solo se permiten letras del alfabeto";
+    if (values.firstName && !regEx.test(values.firstName)) {
+      errors.firstName = "Solo se permiten letras del alfabeto";
     }
 
-    if (values.apellido && !regEx.test(values.apellido)) {
-      errors.apellido = "Solo se permiten letras del alfabeto";
+    if (values.lastName && !regEx.test(values.lastName)) {
+      errors.lastName = "Solo se permiten letras del alfabeto";
     }
 
-    if (values.contraseña && values.contraseña.length < 6) {
-      errors.contraseña = "La contraseña debe tener al menos 6 caracteres";
+    if (values.password && values.password.length < 6) {
+      errors.password = "La contraseña debe tener al menos 6 caracteres";
     }
 
     setAnyFieldCompleted(
-      !!values.nombre || !!values.apellido || !!values.contraseña
+      !!values.firstName || !!values.lastName || !!values.password
     );
 
     return errors;
@@ -52,15 +67,15 @@ const UserDataForm = () => {
   const getMessage = (values) => {
     const completedFields = [];
 
-    if (values.nombre) {
+    if (values.firstName) {
       completedFields.push("nombre");
     }
 
-    if (values.apellido) {
+    if (values.lastName) {
       completedFields.push("apellido");
     }
 
-    if (values.contraseña) {
+    if (values.password) {
       completedFields.push("contraseña");
     }
 
@@ -73,45 +88,52 @@ const UserDataForm = () => {
 
   return (
     <Formik
-      initialValues={{ nombre: "", apellido: "", contraseña: "" }}
+      initialValues={{ firstName: "", lastName: "", password: "" }}
       onSubmit={handleSubmit}
       validate={validate}
     >
       {({ values, errors }) => (
         <Form>
-          <Box display="flex" flexDirection="column">
+          <Paper
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+              padding: "1rem",
+            }}
+          >
             <Field
-              name="nombre"
+              name="firstName"
               as={TextField}
               label="Nombre"
-              value={values.nombre}
+              value={values.firstName}
               margin="normal"
               variant="outlined"
-              error={!!errors.nombre}
-              helperText={errors.nombre}
+              error={!!errors.firstName}
+              helperText={errors.firstName}
             />
 
             <Field
-              name="apellido"
+              name="lastName"
               as={TextField}
               label="Apellido"
-              value={values.apellido}
+              value={values.lastName}
               margin="normal"
               variant="outlined"
-              error={!!errors.apellido}
-              helperText={errors.apellido}
+              error={!!errors.lastName}
+              helperText={errors.lastName}
             />
 
             <Field
-              name="contraseña"
+              name="password"
               as={TextField}
               label="Contraseña"
               type="password"
-              value={values.contraseña}
+              value={values.password}
               margin="normal"
               variant="outlined"
-              error={!!errors.contraseña}
-              helperText={errors.contraseña}
+              error={!!errors.password}
+              helperText={errors.password}
             />
 
             <Button
@@ -131,14 +153,14 @@ const UserDataForm = () => {
             {isDialogOpen && (
               <CustomDialog
                 open={isDialogOpen}
-                onClose={() => setDialogOpen(false)} 
+                onClose={() => setDialogOpen(false)}
                 icon={<InfoIcon color="primary" fontSize="large" />}
-                onConfirm={() => handleConfirm(values)} 
+                onConfirm={() => handleConfirm(values)}
                 title="Actualizar datos"
                 message={getMessage(values)}
               />
             )}
-          </Box>
+          </Paper>
         </Form>
       )}
     </Formik>

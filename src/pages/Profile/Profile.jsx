@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import {
   Box,
+  Divider,
   Grid,
   IconButton,
   ListItem,
@@ -8,14 +10,15 @@ import {
   Typography,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import CancelIcon from "@mui/icons-material/Cancel";
 import UserData from "../../components/UserData/UserData";
 
 import "./styles.css";
-import UserDataForm from "../../forms/UserDataForm/UserDataForm";
+import UserDataForm from "../../components/forms/UserDataForm/UserDataForm";
+import { ArrowBack } from "@mui/icons-material";
 
 export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
+  const user = useSelector((state) => state.user);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -25,37 +28,29 @@ export default function Profile() {
     setIsEditing(false);
   };
 
-  const user = {
-    nombre: "Juan",
-    apellido: "Perez",
-    email: "juanperez@gmail.com",
-    edad: 25,
-  };
-
   return (
     <div className="page-container">
       <Box
         maxWidth="900px"
-        width="100%" 
+        width="100%"
         display="flex"
         flexDirection="column"
         alignItems="center"
-        mx="auto" 
-        p={2} 
+        mx="auto"
+        p={2}
       >
         <Box
           display="flex"
           alignItems="center"
           justifyContent="space-between"
           width="100%"
-          
         >
           <Typography variant="h6">
-            {isEditing ? "Editar datos" : "Mis datos personales"}
+            {isEditing ? <b>Editar datos</b> : <b>Mis datos personales</b>}
           </Typography>
           {isEditing ? (
             <IconButton color="primary" onClick={handleCancel}>
-              <CancelIcon />
+              <ArrowBack />
             </IconButton>
           ) : (
             <IconButton color="primary" onClick={handleEdit}>
@@ -68,25 +63,30 @@ export default function Profile() {
           <Box width="100%">
             <UserData>
               <ListItem>
-                <ListItemText primary="Nombre" secondary={user.nombre} />
+                <ListItemText
+                  primary="Nombre"
+                  secondary={user.user.firstName}
+                />
               </ListItem>
+              <Divider />
               <ListItem>
-                <ListItemText primary="Apellido" secondary={user.apellido} />
+                <ListItemText
+                  primary="Apellido"
+                  secondary={user.user.lastName}
+                />
               </ListItem>
+              <Divider />
               <ListItem>
-                <ListItemText primary="Email" secondary={user.email} />
+                <ListItemText primary="Email" secondary={user.user.email} />
               </ListItem>
+              <Divider />
               <ListItem>
-                <ListItemText primary="Edad" secondary={user.edad} />
+                <ListItemText primary="Edad" secondary="25" />
               </ListItem>
             </UserData>
           </Box>
         ) : (
-          <Grid
-            container
-            justifyContent="center"
-            alignItems="center"
-          >
+          <Grid container justifyContent="center" alignItems="center">
             <Grid item xs={12} sm={8} md={6} lg={4}>
               <UserDataForm />
             </Grid>

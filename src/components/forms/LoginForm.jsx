@@ -5,7 +5,7 @@ import "./form.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../store/reducers/userSlice";
+import { loginUser } from "../../redux/reducers/userSlice";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ const LoginForm = () => {
         }) => (
           <form onSubmit={handleSubmit} className="form-container">
             <Typography sx={{ mb: 4 }} component="h1" variant="h5">
-              Iniciar Sesión
+              Iniciar sesión
             </Typography>
             <TextField
               sx={{ mb: 3 }}
