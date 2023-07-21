@@ -18,8 +18,10 @@ import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import ActionDialog from "../../components/CustomDialog/CustomDialog";
 import { TrendingUp } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const FixedTerm = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const [user, setUser] = useState({
     balanceActual: 20000,
@@ -103,7 +105,6 @@ const FixedTerm = () => {
           <form onSubmit={handleSubmit}>
             <Paper
               id="deposit-paper"
-              sx={{ backgroundColor: theme.palette.secondary.main }}
             >
               <Box>
                 <Typography variant="button" sx={{ fontWeight: "bold" }}>
@@ -180,9 +181,9 @@ const FixedTerm = () => {
           }}
           onConfirm={() => {
             setOpenDialog(false);
-            window.location.href = "/";
+            navigate("/")
           }}
-          icon={<TrendingUp fontSize="large" sx={{ marginRight: "8px" }} />}
+          icon={<TrendingUp fontSize="large"/>}
         ></ActionDialog>
       </Grid>
     </main>
