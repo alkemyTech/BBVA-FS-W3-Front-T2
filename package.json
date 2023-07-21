@@ -18,6 +18,8 @@
     "@reduxjs/toolkit": "^1.9.5",
     "dayjs": "^1.11.9",
     "formik": "^2.4.2",
+    "axios": "^1.4.0",
+    "notistack": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.1",

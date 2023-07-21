@@ -43,11 +43,15 @@
 
 #root {
   min-height: 100vh;
+  background-color: #F8F8F8;
 }
 
 .app-container {
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
   min-height: 100vh;
+}
+
+.footer {
+  margin-top: auto;
 }
