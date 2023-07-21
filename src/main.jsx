@@ -1,33 +1,39 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
 import App from "./App.jsx";
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
-import { Provider } from "react-redux";
+import {CssBaseline, ThemeProvider, createTheme} from "@mui/material";
+import {Provider} from "react-redux";
 import store from "./store/store";
 
 import "./index.css";
+import {DevSupport} from "@react-buddy/ide-toolbox";
+import {ComponentPreviews, useInitial} from "./dev/index.js";
 
 const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#55ACEE",
+    palette: {
+        primary: {
+            main: "#55ACEE",
+        },
+        secondary: {
+            main: "#E8E8E8",
+        },
     },
-    secondary: {
-      main: "#E8E8E8",
-    },
-  },
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <Provider store={store}>
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <CssBaseline />
-        <App />
-        </BrowserRouter>
-      </ThemeProvider>
-      </Provider>
-  </React.StrictMode>
+    <React.StrictMode>
+        <Provider store={store}>
+            <ThemeProvider theme={theme}>
+                <BrowserRouter>
+                    <CssBaseline/>
+                    <DevSupport ComponentPreviews={ComponentPreviews}
+                                useInitialHook={useInitial}
+                    >
+                        <App/>
+                    </DevSupport>
+                </BrowserRouter>
+            </ThemeProvider>
+        </Provider>
+    </React.StrictMode>
 );

@@ -17,6 +17,7 @@ const LoginForm = () => {
       email: values.email,
       password: values.password,
     };
+
     dispatch(loginUser(userCredentials)).then((result) => {
       if (result.payload) {
         navigate("/");
@@ -50,7 +51,7 @@ const LoginForm = () => {
                                     Iniciar Sesión
                                 </Typography>
                                 <TextField
-                                sx={{ mb:3 }}
+                                    sx={{ mb:3 }}
                                     required
                                     id="outlined-required"
                                     label="Email"
@@ -78,8 +79,13 @@ const LoginForm = () => {
                                     helperText={errors.password && touched.password && errors.password}
                                 />
                             </div>
-                            <Button type='submit' variant="contained">
-                                Iniciar Sesión
+                            {error && (
+                                <Typography variant="body2" color="error">
+                                    Usuario o contraseña incorrectos.
+                                </Typography>
+                            )}
+                            <Button type="submit" variant="contained">
+                                {loading ? "Cargando..." : "Iniciar Sesión"}
                             </Button>
                         </form>
                     )

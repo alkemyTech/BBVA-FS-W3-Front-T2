@@ -1,14 +1,22 @@
 import { Formik } from 'formik'
-import { TextField, Button, Box, Typography, Card } from '@mui/material';
+import { TextField, Button, Typography, Card } from '@mui/material';
 import * as Yup from "yup"
 import "./form.css";
+import {registerUser} from "../store/reducers/userSlice.js";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 
 const RegisterForm = () => {
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { loading, error } = useSelector((state) => state.user);
     const onSubmit = async (values) => {
-        console.log(values)
-        //logica de login
+        dispatch(registerUser({...values})).then((result) => {
+            if (result.payload) {
+                navigate("/login");
+            }
+        });
     };
 
     const validationSchema = Yup.object().shape({
@@ -111,9 +119,14 @@ const RegisterForm = () => {
                                            helperText={errors.password && touched.password && errors.password}
                                 />
                             </div>
-                                <Button sx={{ mb:1 }} type='submit' variant="contained">
-                                    Registrar
-                                </Button>
+                            {error && (
+                                <Typography variant="body2" color="error">
+                                    Usuario o contraseña incorrectos.
+                                </Typography>
+                            )}
+                            <Button type="submit" variant="contained">
+                                {loading ? "Cargando..." : "Iniciar Sesión"}
+                            </Button>
                         </form>
                     )
                 }
