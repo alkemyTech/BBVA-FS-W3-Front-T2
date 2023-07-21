@@ -12,7 +12,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import UserData from "../../components/UserData/UserData";
 
 import "./styles.css";
-import UserDataForm from "../../forms/UserDataForm/UserDataForm";
+import UserDataForm from "../../components/forms/UserDataForm/UserDataForm";
 
 export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);

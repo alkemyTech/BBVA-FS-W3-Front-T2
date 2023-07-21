@@ -2,9 +2,9 @@ import { Routes, Route } from "react-router-dom";
 import navLinks from "./constants/navLinks";
 import NavBar from "./components/Header/NavBar";
 import Footer from "./components/Footer/Footer";
-import LoginForm from "./forms/LoginForm.jsx";
+import LoginForm from "./components/forms/LoginForm.jsx";
 import "./App.css";
-import RegisterForm from "./forms/RegisterForm.jsx";
+import RegisterForm from "./components/forms/RegisterForm.jsx";
 import Deposit from "./pages/Deposit/Deposit";
 
 function App() {

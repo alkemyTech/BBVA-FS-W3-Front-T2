@@ -2,7 +2,7 @@ import { Formik } from 'formik'
 import { TextField, Button, Typography, Card } from '@mui/material';
 import * as Yup from "yup"
 import "./form.css";
-import {registerUser} from "../store/reducers/userSlice.js";
+import {registerUser} from "../../store/reducers/userSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 

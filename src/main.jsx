@@ -1,14 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import {BrowserRouter} from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
-import {CssBaseline, ThemeProvider, createTheme} from "@mui/material";
-import {Provider} from "react-redux";
+import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import { Provider } from "react-redux";
 import store from "./store/store";
 
 import "./index.css";
-import {DevSupport} from "@react-buddy/ide-toolbox";
-import {ComponentPreviews, useInitial} from "./dev/index.js";
 
 const theme = createTheme({
     palette: {
@@ -26,14 +24,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Provider store={store}>
             <ThemeProvider theme={theme}>
                 <BrowserRouter>
-                    <CssBaseline/>
-                    <DevSupport ComponentPreviews={ComponentPreviews}
-                                useInitialHook={useInitial}
-                    >
-                        <App/>
-                    </DevSupport>
+                    <CssBaseline />
+                    <App />
                 </BrowserRouter>
             </ThemeProvider>
         </Provider>
     </React.StrictMode>
 );
+

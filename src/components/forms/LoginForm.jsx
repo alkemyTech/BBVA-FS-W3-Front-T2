@@ -6,7 +6,7 @@ import "./form.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../store/reducers/userSlice";
+import { loginUser } from "../../store/reducers/userSlice.js";
 
 const LoginForm = () => {
   const dispatch = useDispatch();

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { Formik, Form, Field } from "formik";
-import CustomDialog from "../../components/CustomDialog/CustomDialog";
+import CustomDialog from "../../CustomDialog/CustomDialog.jsx";
 import InfoIcon from "@mui/icons-material/Info";
 
 const UserDataForm = () => {
