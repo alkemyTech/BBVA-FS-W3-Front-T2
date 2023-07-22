@@ -1,12 +1,13 @@
 import { Formik } from "formik";
-import { TextField, Button, Box, Typography, Card } from "@mui/material";
+import { TextField, Button, Typography, Card } from "@mui/material";
 import * as Yup from "yup";
 import "./form.css";
+import {registerUser} from "../../services/registerService.js";
 
 const RegisterForm = () => {
   const onSubmit = async (values) => {
     console.log(values);
-    //logica de login
+    await registerUser(values)
   };
 
   const validationSchema = Yup.object().shape({
