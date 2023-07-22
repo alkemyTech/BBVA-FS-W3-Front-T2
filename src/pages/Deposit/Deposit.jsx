@@ -59,13 +59,13 @@ const Deposit = () => {
     <main>
       <Grid container justifyContent="center">
         <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
-          <Typography variant="h4">Depositar dinero</Typography>
+          <Typography variant="h5"><b>Depositar dinero</b></Typography>
         </Grid>
         <Grid item xs={12} sm={5} md={4}>
           <form onSubmit={handleSubmit}>
             <Paper
               id="deposit-paper"
-              sx={{ backgroundColor: theme.palette.secondary.main }}
+              sx={{ backgroundColor: "#FFF"}}
             >
               <Box>
                 <Typography variant="caption" display="block">

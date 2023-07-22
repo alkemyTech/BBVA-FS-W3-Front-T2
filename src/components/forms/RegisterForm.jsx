@@ -49,12 +49,12 @@ const RegisterForm = () => {
         }) => (
           <form onSubmit={handleSubmit} className="form-container">
             <Typography sx={{ mb: 4 }} component="h1" variant="h5">
-              Registro
+              <b>Registro</b>
             </Typography>
             <div className="inputs-container">
               <TextField
                 sx={{ mb: 3 }}
-                size="small"
+                size="normal"
                 required
                 id="outlined-required"
                 label="Nombre"
@@ -69,7 +69,7 @@ const RegisterForm = () => {
               />
               <TextField
                 sx={{ mb: 3 }}
-                size="small"
+                size="normal"
                 required
                 id="outlined-required"
                 label="Apellido"
@@ -86,7 +86,7 @@ const RegisterForm = () => {
               />
               <TextField
                 sx={{ mb: 3 }}
-                size="small"
+                size="normal"
                 required
                 id="outlined-required"
                 label="Edad"
@@ -101,7 +101,7 @@ const RegisterForm = () => {
               />
               <TextField
                 sx={{ mb: 3 }}
-                size="small"
+                size="normal"
                 required
                 id="outlined-required"
                 label="Email"
@@ -116,7 +116,7 @@ const RegisterForm = () => {
               />
               <TextField
                 sx={{ mb: 3 }}
-                size="small"
+                size="normal"
                 required
                 id="password"
                 label="Password"
