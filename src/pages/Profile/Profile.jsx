@@ -65,19 +65,19 @@ export default function Profile() {
               <ListItem>
                 <ListItemText
                   primary="Nombre"
-                  secondary={user.user.firstName}
+                  secondary={user.firstName}
                 />
               </ListItem>
               <Divider />
               <ListItem>
                 <ListItemText
                   primary="Apellido"
-                  secondary={user.user.lastName}
+                  secondary={user.lastName}
                 />
               </ListItem>
               <Divider />
               <ListItem>
-                <ListItemText primary="Email" secondary={user.user.email} />
+                <ListItemText primary="Email" secondary={user.email} />
               </ListItem>
               <Divider />
               <ListItem>

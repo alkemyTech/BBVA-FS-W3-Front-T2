@@ -10,7 +10,7 @@ import { loginUser } from "../../redux/reducers/userSlice";
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error } = useSelector((state) => state.user);
+  const { loading, error } = useSelector((state) => state);
   const onSubmit = async (values) => {
     let userCredentials = {
       email: values.email,
