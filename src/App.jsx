@@ -21,7 +21,7 @@ function App() {
               <Route path="/" exact />
               <Route path="/mi-perfil" element={<Profile />} exact />
               <Route path="/depositar" element={<Deposit />} exact />
-              <Route path="/transferir" element={<Transaction />} />
+              <Route path="/transferir" />
               <Route path="/plazo-fijo" element={<FixedTerm />} />
             </Route>
             <Route path="/login" element={<LoginForm />} />
