@@ -1,4 +1,4 @@
-#deposit-paper {
+#transaction-paper {
     padding: 1em;
     margin: 1.5em 0;
     display: flex;
@@ -16,7 +16,7 @@
   }
   
   @media (max-width: 600px) {
-    #deposit-paper {
+    #transaction-paper {
       border-radius: 0;
     }
   }

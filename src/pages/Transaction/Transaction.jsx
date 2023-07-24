@@ -64,7 +64,7 @@ const Transaction = () => {
         <Grid item xs={12} sm={5} md={4}>
           <form onSubmit={handleSubmit}>
             <Paper
-              id="deposit-paper"
+              id="transaction-paper"
               sx={{ backgroundColor: theme.palette.secondary.main }}
             >
               <Box>

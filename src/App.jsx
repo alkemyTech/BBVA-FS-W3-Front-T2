@@ -3,6 +3,7 @@ import LoginForm from "./components/forms/LoginForm.jsx";
 import "./App.css";
 import RegisterForm from "./components/forms/RegisterForm.jsx";
 import Deposit from "./pages/Deposit/Deposit";
+import Transaction from "./pages/Transaction/Transaction.jsx";
 import FixedTerm from "./pages/FixedTerm/FixedTerm";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -20,7 +21,7 @@ function App() {
               <Route path="/" exact />
               <Route path="/mi-perfil" element={<Profile />} exact />
               <Route path="/depositar" element={<Deposit />} exact />
-              <Route path="/transferir" />
+              <Route path="/transferir" element={<Transaction />} />
               <Route path="/plazo-fijo" element={<FixedTerm />} />
             </Route>
             <Route path="/login" element={<LoginForm />} />
