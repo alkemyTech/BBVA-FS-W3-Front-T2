@@ -1,39 +1,24 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import * as loginService from "../../services/loginService";
+import * as userService from "../../services/userService";
 
 export const loginUser = createAsyncThunk(
   "user/loginUser",
   async (userCredentials) => {
-    const request = await axios.post(
-      "http://localhost:8080/auth/login",
-      userCredentials
-    );
-    const response = await request.data;
-    localStorage.setItem("user", JSON.stringify(response.user));
-    localStorage.setItem("jwt", response.jwt);
-    return response;
-  }
+      const response = await loginService.loginUser(userCredentials);
+      localStorage.setItem("user", JSON.stringify(response.user));
+      localStorage.setItem("jwt", response.jwt);
+      return response;
+    } 
 );
 
 export const updateUser = createAsyncThunk(
   "user/updateUser",
   async (updatedValues) => {
-    const jwt = localStorage.getItem("jwt");
     const id = JSON.parse(localStorage.getItem("user")).id;
-    const config = {
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    };
-    const request = await axios.patch(
-      `http://localhost:8080/users/${id}`,
-      updatedValues,
-      config
-    );
-    const response = await request.data;
-    localStorage.setItem("user", JSON.stringify(response));
-    // Actualizar store
-    return response;
+    const response = await userService.updateUser(updatedValues, id);
+    localStorage.setItem("user", JSON.stringify(response.data));
+    return response.data;
   }
 );
 
@@ -68,7 +53,7 @@ export const userSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.user = null;
-        state.error = action.error.message;
+        state.error = action.error.message 
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.user = action.payload;

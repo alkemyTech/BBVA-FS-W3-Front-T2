@@ -6,13 +6,17 @@ import CustomDialog from "../../CustomDialog/CustomDialog";
 import InfoIcon from "@mui/icons-material/Info";
 import { updateUser } from "../../../redux/reducers/userSlice";
 import { useSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const UserDataForm = () => {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [isAnyFieldCompleted, setAnyFieldCompleted] = useState(false);
   const [hasError, setHasError] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = () => {
     if (isAnyFieldCompleted) {
@@ -35,10 +39,15 @@ const UserDataForm = () => {
       lastName: values.lastName,
       password: values.password,
     };
-    dispatch(updateUser(updatedValues));
-    setDialogOpen(false);
-    resetFormValues(values);
-    enqueueSnackbar("Usuario actualizado", { variant: "success" });
+    dispatch(updateUser(updatedValues)).then((result) => {
+      console.log(result.payload);
+      if (result.payload) {
+        setDialogOpen(false);
+        resetFormValues(values);
+        enqueueSnackbar("Usuario actualizado", { variant: "success" });
+        navigate("/");
+      }
+    });
   };
 
   const validate = (values) => {
@@ -88,7 +97,11 @@ const UserDataForm = () => {
 
   return (
     <Formik
-      initialValues={{ firstName: "", lastName: "", password: "" }}
+      initialValues={{
+        firstName: user.firstName,
+        lastName: user.lastName,
+        password: "",
+      }}
       onSubmit={handleSubmit}
       validate={validate}
     >
@@ -106,7 +119,6 @@ const UserDataForm = () => {
               name="firstName"
               as={TextField}
               label="Nombre"
-              value={values.firstName}
               margin="normal"
               variant="outlined"
               error={!!errors.firstName}
@@ -117,7 +129,6 @@ const UserDataForm = () => {
               name="lastName"
               as={TextField}
               label="Apellido"
-              value={values.lastName}
               margin="normal"
               variant="outlined"
               error={!!errors.lastName}
@@ -129,7 +140,6 @@ const UserDataForm = () => {
               as={TextField}
               label="Contraseña"
               type="password"
-              value={values.password}
               margin="normal"
               variant="outlined"
               error={!!errors.password}
@@ -146,7 +156,7 @@ const UserDataForm = () => {
               Enviar
             </Button>
             {hasError && (
-              <Typography variant="body2" color="error">
+              <Typography variant="body2" color="error" sx={{ mt: 1 }}>
                 Debés completar al menos un campo.
               </Typography>
             )}
