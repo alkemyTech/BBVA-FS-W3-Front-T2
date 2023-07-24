@@ -6,11 +6,12 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../redux/reducers/userSlice";
+import { NavLink } from "react-router-dom";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error } = useSelector((state) => state.user);
+  const { loading, error } = useSelector((state) => state);
   const onSubmit = async (values) => {
     let userCredentials = {
       email: values.email,
@@ -80,12 +81,17 @@ const LoginForm = () => {
                 errors.password && touched.password && errors.password
               }
             />
+            <NavLink to="/register">
+              <Typography sx={{ mb: 4 }} variant="body2">
+                Crear una cuenta
+              </Typography>
+            </NavLink>
             <Button type="submit" variant="contained">
               {loading ? "Cargando..." : "Iniciar Sesión"}
             </Button>
             {error && (
-              <Typography variant="body2" color="error">
-                Usuario o contraseña incorrectos.
+              <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+                {error}
               </Typography>
             )}
           </form>
