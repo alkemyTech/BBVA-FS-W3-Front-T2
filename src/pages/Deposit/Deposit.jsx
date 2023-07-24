@@ -76,7 +76,7 @@ const Deposit = () => {
       })
       .then(() => {
         navigate("/");
-        enqueueSnackbar("Usuario actualizado", { variant: "success" });
+        enqueueSnackbar("Depósito realizado", { variant: "success" });
       })
       .catch((err) => {
         setError(String(err));
