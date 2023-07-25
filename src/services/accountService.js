@@ -2,10 +2,10 @@ import axios from "axios";
 import BASE_URL from "../constants/api";
 import { getAuthorizationHeader } from "../constants/headers";
 
-export const updateUser = async (updatedValues, id) => {
+export const getBalance = async () => {
   try {
     const authorizationHeader = getAuthorizationHeader();
-    const response = await axios.patch(`${BASE_URL}/users/${id}`, updatedValues, {
+    const response = await axios(`${BASE_URL}/accounts/balance`, {
       headers: authorizationHeader,
     });
     return response;

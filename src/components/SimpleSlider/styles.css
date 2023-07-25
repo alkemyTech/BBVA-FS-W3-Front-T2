@@ -1,0 +1,12 @@
+/* slider.css */
+
+/* Estilo para el hover de la flecha izquierda */
+.slick-prev:hover {
+    color: #051730 !important; /* Cambia el color al que desees */
+}
+  
+  /* Estilo para el hover de la flecha derecha */
+.slick-next:hover {
+    color: #051730 !important; /* Cambia el color al que desees */
+}
+  
