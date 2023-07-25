@@ -7,24 +7,23 @@ import {
   Typography,
 } from "@mui/material";
 
-import "./styles.css";
+import './styles.css'
 
 export default function CustomDialog(props) {
-  const { children, ...otherProps } = props;
   return (
-    <Dialog open={otherProps.open} onClose={otherProps.onClose}>
-      <DialogTitle className="dialog-title">
-        {otherProps.icon}
-        <Typography variant="h6" component="div">
-          {otherProps.title}
-        </Typography>
+    <Dialog open={props.open} onClose={props.onClose}>
+      <DialogTitle className="dialog-title"
+      >
+        {props.icon}
+        <Typography variant="h6" component="div">{props.title}</Typography>
       </DialogTitle>
+      <DialogContent>{children}</DialogContent>
       <DialogContent>{children}</DialogContent>
       <DialogActions>
         <Button onClick={otherProps.onConfirm} color="primary" variant="contained">
           Confirmar
         </Button>
-        <Button onClick={otherProps.onClose} color="error" variant="outlined">
+        <Button onClick={props.onClose} color="error" variant="outlined">
           Cancelar
         </Button>
       </DialogActions>
