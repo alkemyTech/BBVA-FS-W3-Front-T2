@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 export default function AccountDetail({ account, text }) {
   return (
-    <Paper sx={{ margin: "1rem" }}>
+    <Paper sx={{ marginY: "1rem" }}>
         <Box sx={{ padding: "1rem" }}>
       <Typography variant="body1" component="h2" color="secondary.dark">
         {text}
