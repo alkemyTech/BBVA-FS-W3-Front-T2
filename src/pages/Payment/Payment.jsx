@@ -66,7 +66,6 @@ const Payment = () => {
   });
 
   return (
-    <main>
       <Formik
         initialValues={{
           currency: "",
@@ -245,7 +244,6 @@ const Payment = () => {
           </Grid>
         )}
       </Formik>
-    </main>
   );
 };
 
