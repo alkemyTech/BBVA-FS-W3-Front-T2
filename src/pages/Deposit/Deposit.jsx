@@ -157,6 +157,38 @@ const Deposit = () => {
                   )}
                 </FormControl>
               </div>
+              <div>
+                <FormControl fullWidth>
+                  <Typography variant="caption" display="block">
+                    Ingresá tu descripción (opcional):
+                  </Typography>
+                  <TextField
+                    id="textarea-description"
+                    multiline
+                    rows={4}
+                    variant="outlined"
+                    InputProps={{
+                      inputProps: {
+                        style: { fontSize: "13px" },
+                      },
+                      inputComponent: "textarea",
+                    }}
+                    //lógica form
+                    name="description"
+                    value={values.description}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={!!errors.description && touched.description}
+                  />
+                  {errors.description && touched.description && (
+                    <FormHelperText
+                      sx={{ color: "#f44336", maxWidth: "200px" }}
+                    >
+                      {errors.description}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+              </div>
             </Paper>
             <div style={{ textAlign: "center" }}>
               <Button variant="contained" type="submit">
