@@ -209,7 +209,6 @@ const Deposit = () => {
           <CustomDialog
             open={openDialog}
             title={"¿Confirmar el depósito?"}
-            message={`Pediste realizar un depósito de $${values.amount} a tu cuenta en ${values.currency}.`}
             onClose={() => {
               setOpenDialog(false);
             }}
@@ -218,7 +217,19 @@ const Deposit = () => {
               setOpenDialog(false);
             }}
             icon={<AttachMoneyIcon fontSize="large" />}
-          ></CustomDialog>
+          >
+            <Typography variant="overline">
+              Información de su depósito
+            </Typography>
+            <List>
+              <ListItem>Monto: ${values.amount}</ListItem>
+              <ListItem>Moneda: {values.currency}</ListItem>
+              <ListItem>
+                Descripción: {values.description || "No ingresaste una descripción"}
+              </ListItem>
+              <ListItem>Fecha: {dayjs().format("YYYY-MM-DD")}</ListItem>
+            </List>
+          </CustomDialog>
         </Grid>
       </Grid>
     </main>
