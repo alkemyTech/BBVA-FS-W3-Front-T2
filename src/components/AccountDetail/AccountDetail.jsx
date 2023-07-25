@@ -1,7 +1,10 @@
 import { Box, Button, Divider, Paper, Stack, Typography } from "@mui/material";
 import { NavLink } from "react-router-dom";
+import { useMediaQuery } from "@mui/material";
 
 export default function AccountDetail({ account, text }) {
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
   return (
     <Paper sx={{ margin: "1rem" }}>
         <Box sx={{ padding: "1rem" }}>
@@ -24,9 +27,20 @@ export default function AccountDetail({ account, text }) {
       </Typography>
       </Box>
       <Divider />
-      <Stack spacing={2} direction="row" sx={{ padding: "1rem" }}>
-        <Button variant="outlined" component={NavLink} to="/depositar">Depositar</Button>
-        <Button variant="outlined" component={NavLink} to="/transferir">Transferir</Button>
+      <Stack
+        spacing={2}
+        direction={isSmallScreen ? "column" : "row"}
+        sx={{ padding: "1rem" }}
+      >
+        <Button variant="outlined" component={NavLink} to="/pagar">
+          Pagar
+        </Button>
+        <Button variant="outlined" component={NavLink} to="/depositar">
+          Depositar
+        </Button>
+        <Button variant="outlined" component={NavLink} to="/transferir">
+          Transferir
+        </Button>
       </Stack>
     </Paper>
   );
