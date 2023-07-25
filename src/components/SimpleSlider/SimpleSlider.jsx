@@ -7,8 +7,6 @@ import "slick-carousel/slick/slick-theme.css";
 import "./styles.css";
 
 export default function SimpleSlider({ children }) {
-  const PrevArrow = (props) => <ArrowBackIosIcon {...props} />;
-  const NextArrow = (props) => <ArrowForwardIosIcon {...props} />;
   const settings = {
     infinite: true,
     speed: 500,
