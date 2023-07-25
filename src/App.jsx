@@ -10,6 +10,7 @@ import Profile from "./pages/Profile/Profile";
 import Layout from "./components/Layout/Layout";
 import PrivateRoutes from "./routes/PrivateRoutes.jsx";
 import Home from "./pages/Home/Home.jsx";
+import Payment from "./pages/Payment/Payment.jsx";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route element={<PrivateRoutes />}>
               <Route path="/" element={<Home />} exact />
               <Route path="/mi-perfil" element={<Profile />} exact />
+              <Route path="/pagar" element={<Payment />} exact />
               <Route path="/depositar" element={<Deposit />} exact />
               <Route path="/transferir" />
               <Route path="/plazo-fijo" element={<FixedTerm />} />
