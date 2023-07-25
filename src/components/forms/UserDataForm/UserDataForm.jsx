@@ -73,7 +73,7 @@ const UserDataForm = () => {
     return errors;
   };
 
-  const getMessage = (values) => {
+  const getContent = (values) => {
     const completedFields = [];
 
     if (values.firstName) {
@@ -92,7 +92,8 @@ const UserDataForm = () => {
       completedFields.length === 1
         ? `¿Confirmás el campo ${completedFields.join(", ")}?`
         : `¿Confirmás los campos ${completedFields.join(", ")}?`;
-    return message;
+        const content = <><Typography variant="body1">{message}</Typography></>;
+    return content;
   };
 
   return (
@@ -167,8 +168,9 @@ const UserDataForm = () => {
                 icon={<InfoIcon color="primary" fontSize="large" />}
                 onConfirm={() => handleConfirm(values)}
                 title="Actualizar datos"
-                message={getMessage(values)}
-              />
+              >
+                {getContent(values)}
+              </CustomDialog>
             )}
           </Paper>
         </Form>

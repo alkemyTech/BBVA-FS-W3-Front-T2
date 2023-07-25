@@ -10,6 +10,9 @@ import {
   InputAdornment,
   OutlinedInput,
   Alert,
+  TextField,
+  List,
+  ListItem,
 } from "@mui/material";
 import { useFormik } from "formik";
 import "./Deposit.css";
@@ -20,6 +23,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { deposit } from "../../services/depositService";
 import { useNavigate } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
+import dayjs from "dayjs";
 
 const Deposit = () => {
   const navigate = useNavigate();
@@ -27,13 +31,28 @@ const Deposit = () => {
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
 
+  const parseFloatFromString = (string) => {
+    if (typeof string === "string") {
+      let number = string.replace(/,/, ".");
+      return parseFloat(number);
+    }
+  };
+
   const inputValidation = yup.object().shape({
     currency: yup.string().required("Campo requerido."),
     amount: yup
       .string()
-      .test("number", "Debes ingresar un número positivo.", (value) => {
+      .test("number", "Debes ingresar un número.", (value) => {
         return /^[0-9]+([.,]{1}[0-9]*)?$/.test(value);
       })
+      .test(
+        "positiveNumber",
+        "Debes ingresar un número mayor a 0.",
+        (value) => {
+          const numericValue = parseFloatFromString(value);
+          return numericValue > 0;
+        }
+      )
       .test("maxDecimals", "El número debe tener 2 decimales.", (value) => {
         const decimalRegex = /^[0-9]+([.,][0-9]{2})?$/;
         const invalidDecimalRegex = /^[0-9]+[.,]$/;
@@ -41,6 +60,10 @@ const Deposit = () => {
         return decimalRegex.test(value) && !invalidDecimalRegex.test(value);
       })
       .required("Campo requerido."),
+    description: yup
+      .string()
+      .max(100, "La descripción no debe tener más que 100 carácteres")
+      .nullable(),
   });
 
   const {
@@ -55,14 +78,12 @@ const Deposit = () => {
     initialValues: {
       currency: "",
       amount: "",
+      description: "",
     },
     validationSchema: inputValidation,
     onSubmit: (values) => {
       //amount a formato correcto. Antes era String.
-      if (values.amount && typeof values.amount === "string") {
-        values.amount = values.amount.replace(/,/, ".");
-        values.amount = parseFloat(values.amount);
-      }
+      values.amount = parseFloatFromString(values.amount);
 
       //el diálogo conecta con el back
       setOpenDialog(true);
@@ -91,7 +112,7 @@ const Deposit = () => {
             <b>Depositar dinero</b>
           </Typography>
         </Grid>
-        <Grid item xs={12} sm={5} md={4}>
+        <Grid item>
           <form onSubmit={handleSubmit}>
             <Paper id="deposit-paper">
               <div>
@@ -157,27 +178,57 @@ const Deposit = () => {
                   )}
                 </FormControl>
               </div>
+              <div>
+                <FormControl fullWidth>
+                  <Typography variant="caption" display="block">
+                    Ingresá tu descripción (opcional):
+                  </Typography>
+                  <TextField
+                    id="textarea-description"
+                    multiline
+                    rows={4}
+                    variant="outlined"
+                    InputProps={{
+                      inputProps: {
+                        style: { fontSize: "13px" },
+                      },
+                      inputComponent: "textarea",
+                    }}
+                    //lógica form
+                    name="description"
+                    value={values.description}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={!!errors.description && touched.description}
+                  />
+                  {errors.description && touched.description && (
+                    <FormHelperText
+                      sx={{ color: "#f44336", maxWidth: "200px" }}
+                    >
+                      {errors.description}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+              </div>
             </Paper>
             <div style={{ textAlign: "center" }}>
               <Button variant="contained" type="submit">
                 {loading ? "Cargando ..." : "Aceptar"}
               </Button>
             </div>
-
-            {error && (
-              <Alert severity="error" sx={{ marginTop: "1em" }}>
-                {typeof error === "string"
-                  ? error
-                  : "Hubo un problema con la transacción ¡Intente más tarde!"}
-              </Alert>
-            )}
           </form>
+          {error && (
+            <Alert severity="error" sx={{ marginTop: "1em", width: "300px" }}>
+              {typeof error === "string"
+                ? error
+                : "Hubo un problema con la transacción ¡Intente más tarde!"}
+            </Alert>
+          )}
         </Grid>
         <Grid item>
           <CustomDialog
             open={openDialog}
             title={"¿Confirmar el depósito?"}
-            message={`Pediste realizar un depósito de $${values.amount} a tu cuenta en ${values.currency}.`}
             onClose={() => {
               setOpenDialog(false);
             }}
@@ -186,7 +237,19 @@ const Deposit = () => {
               setOpenDialog(false);
             }}
             icon={<AttachMoneyIcon fontSize="large" />}
-          ></CustomDialog>
+          >
+            <Typography variant="overline">
+              Información de su depósito
+            </Typography>
+            <List>
+              <ListItem>Monto: ${values.amount}</ListItem>
+              <ListItem>Moneda: {values.currency}</ListItem>
+              <ListItem>
+                Descripción: {values.description || "No ingresaste una descripción"}
+              </ListItem>
+              <ListItem>Fecha: {dayjs().format("YYYY-MM-DD")}</ListItem>
+            </List>
+          </CustomDialog>
         </Grid>
       </Grid>
     </main>
