@@ -10,6 +10,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Profile from "./pages/Profile/Profile";
 import Layout from "./components/Layout/Layout";
 import PrivateRoutes from "./routes/PrivateRoutes.jsx";
+import Home from "./pages/Home/Home.jsx";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
         <Layout>
           <Routes>
             <Route element={<PrivateRoutes />}>
-              <Route path="/" exact />
+              <Route path="/" element={<Home />} exact />
               <Route path="/mi-perfil" element={<Profile />} exact />
               <Route path="/depositar" element={<Deposit />} exact />
               <Route path="/transferir" />

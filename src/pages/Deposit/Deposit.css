@@ -5,7 +5,6 @@
   flex-direction: column;
   gap: 0.5em;
   text-align: center;
-  border-radius: 10px;
 }
 
 .error-input {
@@ -13,10 +12,4 @@
   border-width: 1px;
   border-style: solid;
   border-radius: 4px;
-}
-
-@media (max-width: 600px) {
-  #deposit-paper {
-    border-radius: 0;
-  }
 }
