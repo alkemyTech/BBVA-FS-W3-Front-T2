@@ -23,6 +23,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { enqueueSnackbar } from "notistack";
+import { payment } from "../../services/paymentService";
 
 const Payment = () => {
   const navigate = useNavigate();
@@ -66,185 +67,188 @@ const Payment = () => {
       .nullable(),
   });
 
+  const paymentConnection = (values) => {
+    payment(values)
+      .then(() => {
+        setLoading(true);
+      })
+      .then(() => {
+        navigate("/");
+        enqueueSnackbar("Pago realizado", { variant: "success" });
+      })
+      .catch((err) => {
+        setError(String(err));
+      });
+  };
+
   return (
-      <Formik
-        initialValues={{
-          currency: "",
-          amount: "",
-          description: "",
-        }}
-        validationSchema={inputValidation}
-        onSubmit={(values) => {
-          values.amount = parseFloatFromString(values.amount);
-          setOpenDialog(true);
-        }}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          setFieldValue,
-        }) => (
-          <Grid container justifyContent="center">
-            <Grid
-              item
-              xs={12}
-              sx={{ display: "flex", justifyContent: "center" }}
-            >
-              <Typography variant="h5">
-                <b>Realizar pago</b>
-              </Typography>
-            </Grid>
-            <Grid item>
-              <form onSubmit={handleSubmit}>
-                <Paper id="deposit-paper">
-                  <div>
-                    <Typography variant="caption" display="block">
-                      Seleccioná la moneda:
-                    </Typography>
-                    <FormControl>
-                      <ButtonGroup
-                        size="large"
-                        name="currency"
-                        variant="outlined"
-                        className={
-                          errors.currency && touched.currency && "error-input"
+    <Formik
+      initialValues={{
+        currency: "",
+        amount: "",
+        description: "",
+      }}
+      validationSchema={inputValidation}
+      onSubmit={(values) => {
+        values.amount = parseFloatFromString(values.amount);
+        setOpenDialog(true);
+      }}
+    >
+      {({
+        values,
+        errors,
+        touched,
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        setFieldValue,
+      }) => (
+        <Grid container justifyContent="center">
+          <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
+            <Typography variant="h5">
+              <b>Realizar pago</b>
+            </Typography>
+          </Grid>
+          <Grid item>
+            <form onSubmit={handleSubmit}>
+              <Paper id="deposit-paper">
+                <div>
+                  <Typography variant="caption" display="block">
+                    Seleccioná la moneda:
+                  </Typography>
+                  <FormControl>
+                    <ButtonGroup
+                      size="large"
+                      name="currency"
+                      variant="outlined"
+                      className={
+                        errors.currency && touched.currency && "error-input"
+                      }
+                    >
+                      <Button
+                        key="ARS"
+                        value={values.currency}
+                        onClick={() => setFieldValue("currency", "ARS")}
+                        variant={
+                          values.currency === "ARS" ? "contained" : "outlined"
                         }
                       >
-                        <Button
-                          key="ARS"
-                          value={values.currency}
-                          onClick={() => setFieldValue("currency", "ARS")}
-                          variant={
-                            values.currency === "ARS" ? "contained" : "outlined"
-                          }
-                        >
-                          ARS
-                        </Button>
-                        <Button
-                          key="USD"
-                          value={values.currency}
-                          onClick={() => setFieldValue("currency", "USD")}
-                          variant={
-                            values.currency === "USD" ? "contained" : "outlined"
-                          }
-                        >
-                          USD
-                        </Button>
-                      </ButtonGroup>
-                      {errors.currency && touched.currency && (
-                        <FormHelperText sx={{ color: "#f44336" }}>
-                          {errors.currency}
-                        </FormHelperText>
-                      )}
-                    </FormControl>
-                  </div>
-                  <div style={{ display: "flex" }}>
-                    <FormControl fullWidth>
-                      <InputLabel htmlFor="input-amount">Total</InputLabel>
-                      <OutlinedInput
-                        id="input-amount"
-                        error={!!errors.amount && touched.amount}
-                        name="amount"
-                        value={values.amount}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        startAdornment={
-                          <InputAdornment position="start">$</InputAdornment>
+                        ARS
+                      </Button>
+                      <Button
+                        key="USD"
+                        value={values.currency}
+                        onClick={() => setFieldValue("currency", "USD")}
+                        variant={
+                          values.currency === "USD" ? "contained" : "outlined"
                         }
-                        label="Total"
-                      />
-                      {errors.amount && touched.amount && (
-                        <FormHelperText sx={{ color: "#f44336" }}>
-                          {errors.amount}
-                        </FormHelperText>
-                      )}
-                    </FormControl>
-                  </div>
-                  <div>
-                    <FormControl fullWidth>
-                      <Typography variant="caption" display="block">
-                        Ingresá tu descripción (opcional):
-                      </Typography>
-                      <TextField
-                        id="textarea-description"
-                        multiline
-                        rows={4}
-                        variant="outlined"
-                        InputProps={{
-                          inputProps: {
-                            style: { fontSize: "13px" },
-                          },
-                          inputComponent: "textarea",
-                        }}
-                        name="description"
-                        value={values.description}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={!!errors.description && touched.description}
-                      />
-                      {errors.description && touched.description && (
-                        <FormHelperText
-                          sx={{ color: "#f44336", maxWidth: "200px" }}
-                        >
-                          {errors.description}
-                        </FormHelperText>
-                      )}
-                    </FormControl>
-                  </div>
-                </Paper>
-                <div style={{ textAlign: "center" }}>
-                  <Button variant="contained" type="submit">
-                    {loading ? "Cargando ..." : "Aceptar"}
-                  </Button>
+                      >
+                        USD
+                      </Button>
+                    </ButtonGroup>
+                    {errors.currency && touched.currency && (
+                      <FormHelperText sx={{ color: "#f44336" }}>
+                        {errors.currency}
+                      </FormHelperText>
+                    )}
+                  </FormControl>
                 </div>
-              </form>
-              {error && (
-                <Alert
-                  severity="error"
-                  sx={{ marginTop: "1em", width: "300px" }}
-                >
-                  {typeof error === "string"
-                    ? error
-                    : "Hubo un problema con la transacción ¡Intente más tarde!"}
-                </Alert>
-              )}
-            </Grid>
-            <Grid item>
-              <CustomDialog
-                open={openDialog}
-                title={"¿Confirmar el pago?"}
-                onClose={() => {
-                  setOpenDialog(false);
-                }}
-                onConfirm={() => {
-                  console.log(values);
-                  setOpenDialog(false);
-                  navigate("/");
-                  enqueueSnackbar("Pago realizado", { variant: "success" });
-                }}
-                icon={<AttachMoneyIcon fontSize="large" />}
-              >
-                <Typography variant="overline">
-                  Información de su pago
-                </Typography>
-                <List>
-                  <ListItem>Monto: ${values.amount}</ListItem>
-                  <ListItem>Moneda: {values.currency}</ListItem>
-                  <ListItem>
-                    Descripción:{" "}
-                    {values.description || "No ingresaste una descripción"}
-                  </ListItem>
-                  <ListItem>Fecha: {dayjs().format("YYYY-MM-DD")}</ListItem>
-                </List>
-              </CustomDialog>
-            </Grid>
+                <div style={{ display: "flex" }}>
+                  <FormControl fullWidth>
+                    <InputLabel htmlFor="input-amount">Total</InputLabel>
+                    <OutlinedInput
+                      id="input-amount"
+                      error={!!errors.amount && touched.amount}
+                      name="amount"
+                      value={values.amount}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      startAdornment={
+                        <InputAdornment position="start">$</InputAdornment>
+                      }
+                      label="Total"
+                    />
+                    {errors.amount && touched.amount && (
+                      <FormHelperText sx={{ color: "#f44336" }}>
+                        {errors.amount}
+                      </FormHelperText>
+                    )}
+                  </FormControl>
+                </div>
+                <div>
+                  <FormControl fullWidth>
+                    <Typography variant="caption" display="block">
+                      Ingresá tu descripción (opcional):
+                    </Typography>
+                    <TextField
+                      id="textarea-description"
+                      multiline
+                      rows={4}
+                      variant="outlined"
+                      InputProps={{
+                        inputProps: {
+                          style: { fontSize: "13px" },
+                        },
+                        inputComponent: "textarea",
+                      }}
+                      name="description"
+                      value={values.description}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={!!errors.description && touched.description}
+                    />
+                    {errors.description && touched.description && (
+                      <FormHelperText
+                        sx={{ color: "#f44336", maxWidth: "200px" }}
+                      >
+                        {errors.description}
+                      </FormHelperText>
+                    )}
+                  </FormControl>
+                </div>
+              </Paper>
+              <div style={{ textAlign: "center" }}>
+                <Button variant="contained" type="submit">
+                  {loading ? "Cargando ..." : "Aceptar"}
+                </Button>
+              </div>
+            </form>
+            {error && (
+              <Alert severity="error" sx={{ marginTop: "1em", width: "300px" }}>
+                {typeof error === "string"
+                  ? error
+                  : "Hubo un problema con la transacción ¡Intente más tarde!"}
+              </Alert>
+            )}
           </Grid>
-        )}
-      </Formik>
+          <Grid item>
+            <CustomDialog
+              open={openDialog}
+              title={"¿Confirmar el pago?"}
+              onClose={() => {
+                setOpenDialog(false);
+              }}
+              onConfirm={() => {
+                setOpenDialog(false);
+                paymentConnection(values);
+              }}
+              icon={<AttachMoneyIcon fontSize="large" />}
+            >
+              <Typography variant="overline">Información de su pago</Typography>
+              <List>
+                <ListItem>Monto: ${values.amount}</ListItem>
+                <ListItem>Moneda: {values.currency}</ListItem>
+                <ListItem>
+                  Descripción:{" "}
+                  {values.description || "No ingresaste una descripción"}
+                </ListItem>
+                <ListItem>Fecha: {dayjs().format("YYYY-MM-DD")}</ListItem>
+              </List>
+            </CustomDialog>
+          </Grid>
+        </Grid>
+      )}
+    </Formik>
   );
 };
 
