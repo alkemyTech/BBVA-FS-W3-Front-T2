@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const deposit = async (values) => {
+export const payment = async (values) => {
   const jwt = localStorage.getItem("jwt");
   const config = {
     headers: {
@@ -10,7 +10,7 @@ export const deposit = async (values) => {
 
   try {
     const response = await axios.post(
-      "http://localhost:8080/transactions/deposit",
+      "http://localhost:8080/transactions/payment",
       values,
       config
     );
@@ -19,7 +19,7 @@ export const deposit = async (values) => {
     if (error.response.data.message) {
       throw new Error(error.response.data.message);
     } else {
-      throw new Error("Error al procesar la solicitud de depósito.");
+      throw new Error("Error al procesar la solicitud de pago.");
     }
   }
 };
