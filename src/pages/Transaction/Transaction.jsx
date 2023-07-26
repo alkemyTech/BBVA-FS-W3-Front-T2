@@ -10,6 +10,8 @@ import {
   InputAdornment,
   OutlinedInput,
   Alert,
+  List,
+  ListItem,
 } from "@mui/material";
 import { useFormik } from "formik";
 import "./Transaction.css";
@@ -20,6 +22,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { transaction } from "../../services/transactionService";
 import { useNavigate } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
+import dayjs from "dayjs";
 
 const Transaction = () => {
   const navigate = useNavigate();
@@ -214,7 +217,6 @@ const Transaction = () => {
           <CustomDialog
             open={openDialog}
             title={"¿Confirmar la transferencia?"}
-            message={`Pediste realizar una trasnferencia de $${values.amount} a la cuenta ${values.cbu} (${values.currency}).`}
             onClose={() => {
               setOpenDialog(false);
             }}
@@ -223,7 +225,16 @@ const Transaction = () => {
               setOpenDialog(false);
             }}
             icon={<AttachMoneyIcon fontSize="large" />}
-          ></CustomDialog>
+          >
+            <Typography variant="overline">
+              Información de su transferencia
+            </Typography>
+            <List>
+              <ListItem>Monto: ${values.amount}</ListItem>
+              <ListItem>Moneda: {values.currency}</ListItem>
+              <ListItem>Fecha: {dayjs().format("YYYY-MM-DD")}</ListItem>
+            </List>
+          </CustomDialog>
         </Grid>
       </Grid>
     </main>
