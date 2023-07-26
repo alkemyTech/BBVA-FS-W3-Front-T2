@@ -105,7 +105,6 @@ const Deposit = () => {
   };
 
   return (
-    <main>
       <Grid container justifyContent="center">
         <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
           <Typography variant="h5">
@@ -252,7 +251,6 @@ const Deposit = () => {
           </CustomDialog>
         </Grid>
       </Grid>
-    </main>
   );
 };
 
