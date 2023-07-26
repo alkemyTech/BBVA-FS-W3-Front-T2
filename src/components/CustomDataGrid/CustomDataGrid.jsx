@@ -14,6 +14,7 @@ const CustomDataGrid = ({ transactions }) => {
       style: "currency",
       currency: "ARS",
     }),
+    name: transaction.name.charAt(0).toUpperCase() + transaction.name.slice(1).toLowerCase(),
   }));
 
   const columns = [
@@ -21,6 +22,7 @@ const CustomDataGrid = ({ transactions }) => {
     { field: "date", headerName: "Fecha", width: 200 },
     { field: "description", headerName: "Descripción", width: 300 },
     { field: "amount", headerName: "Monto", width: 150 },
+    { field: "name", headerName: "Concepto", width: 100}
   ];
 
   return (
