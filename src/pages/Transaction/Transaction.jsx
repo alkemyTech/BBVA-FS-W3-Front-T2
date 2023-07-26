@@ -19,7 +19,7 @@ import * as yup from "yup";
 import CustomDialog from "../../components/CustomDialog/CustomDialog";
 import { useState } from "react";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import { transaction } from "../../services/transactionService";
+import { sendARS } from "../../services/transactionService";
 import { useNavigate } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import dayjs from "dayjs";
@@ -74,6 +74,7 @@ const Transaction = () => {
     initialValues: {
       currency: "",
       amount: "",
+      cbu: "",
     },
     validationSchema: inputValidation,
     onSubmit: (values) => {
@@ -88,8 +89,19 @@ const Transaction = () => {
     },
   });
 
-  const transactionConnection = () => {
-    transaction(values)
+  const transactionConnection = (values) => {
+    // const { cbu, currency, amount } = values;
+
+    // const valuesToSend = {
+    //   cbu,
+    //   amount,
+    // };
+
+    // console.log(valuesToSend);
+
+    console.log(values);
+
+    sendARS(values)
       .then(() => {
         setLoading(true);
       })

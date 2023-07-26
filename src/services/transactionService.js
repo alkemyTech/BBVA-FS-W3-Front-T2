@@ -28,3 +28,36 @@ export const transaction = async (transactionData) => {
     }
   }
 };
+
+const jwt = localStorage.getItem("jwt");
+const config = {
+  headers: {
+    Authorization: `Bearer ${jwt}`,
+  },
+};
+console.log(config);
+
+const host = "http://localhost:8080/transactions";
+
+export const sendUSD = async (values, config) => {
+  try {
+    delete values.currency;
+    const response = await axios.post(host + "/sendUSD", values, config);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const sendARS = async (values, config) => {
+  try {
+    delete values.currency;
+    console.log(values);
+    const response = await axios.post(host + "/send_ars", values, config);
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
