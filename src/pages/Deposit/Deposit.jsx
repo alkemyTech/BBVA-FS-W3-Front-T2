@@ -36,6 +36,7 @@ const Deposit = () => {
       let number = string.replace(/,/, ".");
       return parseFloat(number);
     }
+    return string;
   };
 
   const inputValidation = yup.object().shape({
