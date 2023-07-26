@@ -4,15 +4,15 @@ const Loader = () => {
   return (
     <div className="loadingContainer">
       <img
-        src="../../../public/iconoAlkywallChico.png"
+        src="../../../public/iconoAlkywallChico.svg"
         alt="icono de la empresa"
         id="loadingIcon"
       />
-      <img
-        src="../../../public/assets/iAzul.png"
+      {/* <img
+        src="../../../public/assets/iAzul.svg"
         alt="titulo de la empresa"
         id="loadingTitle"
-      />
+      /> */}
     </div>
   );
 };
