@@ -5,22 +5,22 @@ import "./form.css";
 import { createUser } from "../../services/registerService.js";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { enqueueSnackbar } from "notistack";
 
 const RegisterForm = () => {
-  const [errorsState, setErrorsState] = useState({});
+  const [errorsState, setErrorsState] = useState("");
   const navigate = useNavigate();
+
   const onSubmit = async (values) => {
-    setErrorsState({});
-    const response = await createUser(values);
-    if (response.errors.length > 0) {
-      if (
-        response.errors.some((error) => error.toLowerCase().includes("email"))
-      ) {
-        setErrorsState({ email: response.message });
-      }
-    } else {
-      navigate("/login");
-    }
+    createUser(values)
+      .then(() => {
+        enqueueSnackbar("Usuario creado", { variant: "success" });
+        navigate("/login");
+      })
+      .catch((err) => {
+        console.log(err)
+        setErrorsState(String(err));
+      });
   };
 
   console.log(errorsState);
@@ -128,10 +128,8 @@ const RegisterForm = () => {
                 onChange={handleChange}
                 name="email"
                 onBlur={handleBlur}
-                error={(touched.email && !!errors.email) || !!errorsState.email}
-                helperText={
-                  (touched.email && errors.email) || errorsState.email
-                }
+                error={(touched.email && !!errors.email) || !!errorsState}
+                helperText={(touched.email && errors.email) || errorsState}
                 InputLabelProps={{
                   shrink: true,
                 }}
