@@ -19,6 +19,7 @@ import dayjs from "dayjs";
 import ActionDialog from "../../components/CustomDialog/CustomDialog";
 import { TrendingUp } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import {fixedterm} from "../../services/fixedtermService.js";
 
 const FixedTerm = () => {
   const navigate = useNavigate();
@@ -92,6 +93,18 @@ const FixedTerm = () => {
       setFieldValue("totalDays", totalDays);
     }
   };
+
+  const onSubmitFixedTerm = async (values) => {
+    const response = await fixedterm(values)
+    navigate("/")
+    console.log(response)
+
+    if(response.errrors && errors.lenght > 0) {
+      response.message
+    }
+
+
+  }
 
   return (
     <main>
@@ -169,22 +182,23 @@ const FixedTerm = () => {
         <ActionDialog
           open={openDialog}
           title={"¿Solicitar el plazo fijo?"}
-          message={`Invertiste $${values.amount} por ${values.totalDays} días.  
-          El monto ganado al finalizar el plazo es de $${Math.floor(
-            values.amount * (1 + 0.02) - values.amount
-          )} 
-          y monto del dinero restante en su cuenta es de $${
-            user.balanceActual - values.amount
-          }`}
           onClose={() => {
             setOpenDialog(false);
           }}
           onConfirm={() => {
+            onSubmitFixedTerm(values)
             setOpenDialog(false);
-            navigate("/")
           }}
           icon={<TrendingUp fontSize="large"  sx={{ marginRight: "8px" }} />}
-        ></ActionDialog>
+        >
+          {`Invertiste $${values.amount} por ${values.totalDays} días.  
+          El monto ganado al finalizar el plazo es de $${Math.floor(
+            values.amount * (1 + 0.02) - values.amount
+        )} 
+          y monto del dinero restante en su cuenta es de $${
+            user.balanceActual - values.amount
+        }`}
+        </ActionDialog>
       </Grid>
     </main>
   );
