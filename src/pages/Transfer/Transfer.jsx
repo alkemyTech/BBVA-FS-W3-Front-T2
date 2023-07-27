@@ -10,21 +10,18 @@ import {
   InputAdornment,
   OutlinedInput,
   Alert,
-  List,
-  ListItem,
 } from "@mui/material";
 import { useFormik } from "formik";
-import "./Transaction.css";
+import "../Deposit/Deposit.css";
 import * as yup from "yup";
 import CustomDialog from "../../components/CustomDialog/CustomDialog";
 import { useState } from "react";
+import { sendARS, sendUSD } from "../../services/transferService";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import { sendARS } from "../../services/transactionService";
 import { useNavigate } from "react-router-dom";
-import { enqueueSnackbar } from "notistack";
-import dayjs from "dayjs";
 
-const Transaction = () => {
+const Transfer = () => {
+  const [errorsState, setErrorsState] = useState({});
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -40,25 +37,9 @@ const Transaction = () => {
       .test("maxDecimals", "El número debe tener 2 decimales.", (value) => {
         const decimalRegex = /^[0-9]+([.,][0-9]{2})?$/;
         const invalidDecimalRegex = /^[0-9]+[.,]$/;
+
         return decimalRegex.test(value) && !invalidDecimalRegex.test(value);
       })
-      .required("Campo requerido."),
-    cbu: yup
-      .string()
-      .test(
-        "isPositiveNumber",
-        "Debes ingresar un número positivo.",
-        (value) => {
-          return /^[0-9]+$/.test(value) && parseInt(value, 10) > 0;
-        }
-      )
-      .test(
-        "isExactly22Characters",
-        "El número debe tener exactamente 22 caracteres.",
-        (value) => {
-          return value.length === 22;
-        }
-      )
       .required("Campo requerido."),
   });
 
@@ -72,46 +53,28 @@ const Transaction = () => {
     touched,
   } = useFormik({
     initialValues: {
-      currency: "",
-      amount: "",
       cbu: "",
+      amount: "",
+      currency: "",
     },
     validationSchema: inputValidation,
     onSubmit: (values) => {
-      //amount a formato correcto. Antes era String.
       if (values.amount && typeof values.amount === "string") {
         values.amount = values.amount.replace(/,/, ".");
         values.amount = parseFloat(values.amount);
       }
-
-      //el diálogo conecta con el back
       setOpenDialog(true);
     },
   });
 
-  const transactionConnection = (values) => {
-    // const { cbu, currency, amount } = values;
+  const transferUSD = async (values) => {
+    setErrorsState({});
+    const response = await sendUSD(values);
+  };
 
-    // const valuesToSend = {
-    //   cbu,
-    //   amount,
-    // };
-
-    // console.log(valuesToSend);
-
-    console.log(values);
-
-    sendARS(values)
-      .then(() => {
-        setLoading(true);
-      })
-      .then(() => {
-        navigate("/");
-        enqueueSnackbar("Transferencia realizada", { variant: "success" });
-      })
-      .catch((err) => {
-        setError(String(err));
-      });
+  const transferARS = async (values) => {
+    setErrorsState({});
+    const response = await sendARS(values);
   };
 
   return (
@@ -119,12 +82,12 @@ const Transaction = () => {
       <Grid container justifyContent="center">
         <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
           <Typography variant="h5">
-            <b>Transferir dinero</b>
+            <b>Depositar dinero</b>
           </Typography>
         </Grid>
         <Grid item xs={12} sm={5} md={4}>
           <form onSubmit={handleSubmit}>
-            <Paper id="transaction-paper">
+            <Paper id="deposit-paper">
               <div>
                 <Typography variant="caption" display="block">
                   Seleccioná la moneda:
@@ -166,12 +129,34 @@ const Transaction = () => {
                   )}
                 </FormControl>
               </div>
-              <div style={{ display: "block" }}>
+              <div style={{ display: "flex" }}>
+                <FormControl fullWidth>
+                  <InputLabel htmlFor="input-amount">CBU</InputLabel>
+                  <OutlinedInput
+                    id="input-amount"
+                    error={!!errors.cbu && !!errorsState.cbu}
+                    name="cbu"
+                    value={values.cbu}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    startAdornment={
+                      <InputAdornment position="start">cbu</InputAdornment>
+                    }
+                    label="cbu"
+                  />
+                  {errors.cbu && errorsState.cbu && (
+                    <FormHelperText sx={{ color: "#f44336" }}>
+                      {errors.cbu}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+              </div>
+              <div style={{ display: "flex" }}>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="input-amount">Total</InputLabel>
                   <OutlinedInput
                     id="input-amount"
-                    error={!!errors.amount && touched.amount}
+                    error={!!errors.amount && !!errorsState.amount}
                     name="amount"
                     value={values.amount}
                     onChange={handleChange}
@@ -181,31 +166,9 @@ const Transaction = () => {
                     }
                     label="Total"
                   />
-                  {errors.amount && touched.amount && (
+                  {errors.amount && errorsState.amount && (
                     <FormHelperText sx={{ color: "#f44336" }}>
                       {errors.amount}
-                    </FormHelperText>
-                  )}
-                </FormControl>
-                <br />
-                <br />
-                <FormControl fullWidth>
-                  <InputLabel htmlFor="input-cbu">CBU</InputLabel>
-                  <OutlinedInput
-                    id="input-cbu"
-                    error={!!errors.cbu && touched.cbu}
-                    name="cbu"
-                    value={values.cbu}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    startAdornment={
-                      <InputAdornment position="start"></InputAdornment>
-                    }
-                    label="Total"
-                  />
-                  {errors.cbu && touched.cbu && (
-                    <FormHelperText sx={{ color: "#f44336" }}>
-                      {errors.cbu}
                     </FormHelperText>
                   )}
                 </FormControl>
@@ -216,6 +179,7 @@ const Transaction = () => {
                 {loading ? "Cargando ..." : "Aceptar"}
               </Button>
             </div>
+
             {error && (
               <Alert severity="error" sx={{ marginTop: "1em" }}>
                 {typeof error === "string"
@@ -228,29 +192,23 @@ const Transaction = () => {
         <Grid item>
           <CustomDialog
             open={openDialog}
-            title={"¿Confirmar la transferencia?"}
+            title={"¿Confirmar el depósito?"}
+            message={`Pediste realizar un depósito de $${values.amount} a tu cuenta en ${values.currency}.`}
             onClose={() => {
               setOpenDialog(false);
             }}
             onConfirm={() => {
-              transactionConnection(values);
+              values.currency == "ARS"
+                ? transferARS(values)
+                : transferUSD(values);
               setOpenDialog(false);
             }}
             icon={<AttachMoneyIcon fontSize="large" />}
-          >
-            <Typography variant="overline">
-              Información de su transferencia
-            </Typography>
-            <List>
-              <ListItem>Monto: ${values.amount}</ListItem>
-              <ListItem>Moneda: {values.currency}</ListItem>
-              <ListItem>Fecha: {dayjs().format("YYYY-MM-DD")}</ListItem>
-            </List>
-          </CustomDialog>
+          >{`Pediste realizar un depósito de $${values.amount} a tu cuenta en ${values.currency}.`}</CustomDialog>
         </Grid>
       </Grid>
     </main>
   );
 };
 
-export default Transaction;
+export default Transfer;
