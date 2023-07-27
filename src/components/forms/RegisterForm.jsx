@@ -84,9 +84,7 @@ const RegisterForm = () => {
                 name="firstName"
                 onBlur={handleBlur}
                 error={errors.firstName && touched.firstName}
-                helperText={
-                  errors.firstName && touched.firstName && errors.firstName
-                }
+                helperText={touched.firstName && errors.firstName}
                 fullWidth
               />
               <TextField
@@ -101,9 +99,7 @@ const RegisterForm = () => {
                 name="lastName"
                 onBlur={handleBlur}
                 error={errors.lastName && touched.lastName}
-                helperText={
-                  errors.lastName && touched.lastName && errors.lastName
-                }
+                helperText={touched.lastName && errors.lastName}
                 fullWidth
               />
               <TextField
@@ -118,7 +114,7 @@ const RegisterForm = () => {
                 name="age"
                 onBlur={handleBlur}
                 error={errors.age && touched.age}
-                helperText={errors.age && touched.age && errors.age}
+                helperText={touched.age && errors.age}
                 fullWidth
               />
               <TextField
@@ -132,8 +128,10 @@ const RegisterForm = () => {
                 onChange={handleChange}
                 name="email"
                 onBlur={handleBlur}
-                error={!!errors.email || !!errorsState.email}
-                helperText={errors.email || errorsState.email}
+                error={(touched.email && !!errors.email) || !!errorsState.email}
+                helperText={
+                  (touched.email && errors.email) || errorsState.email
+                }
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -151,9 +149,7 @@ const RegisterForm = () => {
                 name="password"
                 onBlur={handleBlur}
                 error={errors.password && touched.password}
-                helperText={
-                  errors.password && touched.password && errors.password
-                }
+                helperText={touched.password && errors.password}
                 InputLabelProps={{
                   shrink: true,
                 }}
