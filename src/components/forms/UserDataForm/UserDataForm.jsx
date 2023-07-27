@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Button, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { Formik, Form, Field } from "formik";
 import { useDispatch } from "react-redux";
 import CustomDialog from "../../CustomDialog/CustomDialog";
 import InfoIcon from "@mui/icons-material/Info";
+import { AccountCircle } from "@mui/icons-material";
 import { updateUser } from "../../../redux/reducers/userSlice";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
@@ -92,7 +93,11 @@ const UserDataForm = () => {
       completedFields.length === 1
         ? `¿Confirmás el campo ${completedFields.join(", ")}?`
         : `¿Confirmás los campos ${completedFields.join(", ")}?`;
-        const content = <><Typography variant="body1">{message}</Typography></>;
+    const content = (
+      <>
+        <Typography variant="body1">{message}</Typography>
+      </>
+    );
     return content;
   };
 
@@ -116,6 +121,14 @@ const UserDataForm = () => {
               padding: "1rem",
             }}
           >
+            <Box display="flex" justifyContent="center">
+              <AccountCircle fontSize="large" />
+            </Box>
+            {hasError && (
+              <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+                Debés completar al menos un campo.
+              </Typography>
+            )}
             <Field
               name="firstName"
               as={TextField}
@@ -147,20 +160,6 @@ const UserDataForm = () => {
               helperText={errors.password}
             />
 
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
-              sx={{ mt: 2 }}
-            >
-              Enviar
-            </Button>
-            {hasError && (
-              <Typography variant="body2" color="error" sx={{ mt: 1 }}>
-                Debés completar al menos un campo.
-              </Typography>
-            )}
             {isDialogOpen && (
               <CustomDialog
                 open={isDialogOpen}
@@ -173,6 +172,17 @@ const UserDataForm = () => {
               </CustomDialog>
             )}
           </Paper>
+          <Box display="flex" justifyContent="center">
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              size="large"
+              sx={{ mt: 2 }}
+            >
+              Enviar
+            </Button>
+          </Box>
         </Form>
       )}
     </Formik>

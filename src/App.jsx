@@ -11,6 +11,7 @@ import Layout from "./components/Layout/Layout";
 import PrivateRoutes from "./routes/PrivateRoutes.jsx";
 import Home from "./pages/Home/Home.jsx";
 import Payment from "./pages/Payment/Payment.jsx";
+import Login from "./pages/Login/Login.jsx";
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
               <Route path="/transferir" />
               <Route path="/plazo-fijo" element={<FixedTerm />} />
             </Route>
-            <Route path="/login" element={<LoginForm />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/register" element={<RegisterForm />} />
           </Routes>
         </Layout>

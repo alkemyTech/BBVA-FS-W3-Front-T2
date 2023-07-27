@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import { TextField, Button, Typography, Card } from "@mui/material";
+import { TextField, Button, Typography, Card, Box, Stack } from "@mui/material";
 import * as Yup from "yup";
 import "./form.css";
 import { useSelector } from "react-redux";
@@ -48,11 +48,20 @@ const LoginForm = () => {
           handleBlur,
         }) => (
           <form onSubmit={handleSubmit} className="form-container">
-            <Typography sx={{ mb: 4 }} component="h1" variant="h5">
+            <img
+              src="/public/assets/iAzul.png"
+              style={{ width: "100px", display: "block" }}
+            />
+            <Typography sx={{ mb: 2, mt: 1 }} component="h1" variant="h5">
               <b>Iniciar sesión</b>
             </Typography>
+            {error && (
+              <Typography variant="body2" color="error" sx={{ mb: 2 }}>
+                {error}
+              </Typography>
+            )}
             <TextField
-              sx={{ mb: 3 }}
+              sx={{ mb: 2 }}
               required
               id="outlined-required"
               label="Email"
@@ -66,7 +75,7 @@ const LoginForm = () => {
               helperText={errors.email && touched.email && errors.email}
             />
             <TextField
-              sx={{ mb: 3 }}
+              sx={{ mb: 2 }}
               required
               id="password"
               label="Password"
@@ -81,19 +90,21 @@ const LoginForm = () => {
                 errors.password && touched.password && errors.password
               }
             />
-            <NavLink to="/register">
-              <Typography sx={{ mb: 4 }} variant="body2">
-                Crear una cuenta
+            <Stack direction="column">
+              <Typography variant="body2" marginRight={1}>
+                ¿No tenés cuenta?{" "}
               </Typography>
-            </NavLink>
-            <Button type="submit" variant="contained">
-              {loading ? "Cargando..." : "Iniciar Sesión"}
-            </Button>
-            {error && (
-              <Typography variant="body2" color="error" sx={{ mt: 1 }}>
-                {error}
-              </Typography>
-            )}
+              <NavLink to="/register">
+                <Typography sx={{ mb: 2 }} variant="body2">
+                  Registrate
+                </Typography>
+              </NavLink>
+            </Stack>
+            <Box display="flex" justifyContent="end">
+              <Button type="submit" variant="contained">
+                {loading ? "Cargando..." : "Iniciar Sesión"}
+              </Button>
+            </Box>
           </form>
         )}
       </Formik>
