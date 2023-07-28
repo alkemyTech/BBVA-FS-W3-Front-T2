@@ -10,6 +10,8 @@ import {
   InputAdornment,
   OutlinedInput,
   Alert,
+  List,
+  ListItem,
 } from "@mui/material";
 import { useFormik } from "formik";
 import "../Deposit/Deposit.css";
@@ -19,6 +21,8 @@ import { useState } from "react";
 import { sendARS, sendUSD } from "../../services/transferService";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+import { enqueueSnackbar } from "notistack";
 
 const Transfer = () => {
   const [errorsState, setErrorsState] = useState({});
@@ -37,10 +41,10 @@ const Transfer = () => {
       .test("maxDecimals", "El número debe tener 2 decimales.", (value) => {
         const decimalRegex = /^[0-9]+([.,][0-9]{2})?$/;
         const invalidDecimalRegex = /^[0-9]+[.,]$/;
-
         return decimalRegex.test(value) && !invalidDecimalRegex.test(value);
       })
       .required("Campo requerido."),
+    cbu: yup.string().required("Campo requerido."),
   });
 
   const {
@@ -67,22 +71,39 @@ const Transfer = () => {
     },
   });
 
-  const transferUSD = async (values) => {
-    setErrorsState({});
-    const response = await sendUSD(values);
+  const sendUsdConnection = () => {
+    sendUSD(values)
+      .then(() => {
+        setLoading(true);
+      })
+      .then(() => {
+        navigate("/");
+        enqueueSnackbar("Depósito realizado", { variant: "success" });
+      })
+      .catch((err) => {
+        setError(String(err));
+      });
   };
 
-  const transferARS = async (values) => {
-    setErrorsState({});
-    const response = await sendARS(values);
+  const sendArsConnection = () => {
+    sendARS(values)
+      .then(() => {
+        setLoading(true);
+      })
+      .then(() => {
+        navigate("/");
+        enqueueSnackbar("Depósito realizado", { variant: "success" });
+      })
+      .catch((err) => {
+        setError(String(err));
+      });
   };
-
   return (
     <main>
       <Grid container justifyContent="center">
         <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
           <Typography variant="h5">
-            <b>Depositar dinero</b>
+            <b>Transferir dinero</b>
           </Typography>
         </Grid>
         <Grid item xs={12} sm={5} md={4}>
@@ -151,6 +172,7 @@ const Transfer = () => {
                   )}
                 </FormControl>
               </div>
+              <br />
               <div style={{ display: "flex" }}>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="input-amount">Total</InputLabel>
@@ -192,19 +214,27 @@ const Transfer = () => {
         <Grid item>
           <CustomDialog
             open={openDialog}
-            title={"¿Confirmar el depósito?"}
-            message={`Pediste realizar un depósito de $${values.amount} a tu cuenta en ${values.currency}.`}
+            title={"¿Confirmar la transferencia?"}
             onClose={() => {
               setOpenDialog(false);
             }}
             onConfirm={() => {
-              values.currency == "ARS"
-                ? transferARS(values)
-                : transferUSD(values);
+              values.currency === "ARS"
+                ? sendArsConnection(values)
+                : sendUsdConnection(values);
               setOpenDialog(false);
             }}
             icon={<AttachMoneyIcon fontSize="large" />}
-          >{`Pediste realizar un depósito de $${values.amount} a tu cuenta en ${values.currency}.`}</CustomDialog>
+          >
+            <Typography variant="overline">
+              Información de su transferencia
+            </Typography>
+            <List>
+              <ListItem>Monto: ${values.amount}</ListItem>
+              <ListItem>Moneda: {values.currency}</ListItem>
+              <ListItem>Fecha: {dayjs().format("YYYY-MM-DD")}</ListItem>
+            </List>
+          </CustomDialog>
         </Grid>
       </Grid>
     </main>
