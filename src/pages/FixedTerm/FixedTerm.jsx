@@ -264,13 +264,20 @@ const FixedTerm = () => {
           icon={<TrendingUp fontSize="large" sx={{ marginRight: "8px" }} />}
         >
           {/* Acomodar dialog con resumen */}
-          {`Invertiste $${values.amount} por ${values.totalDays} días.  
-          El monto ganado al finalizar el plazo es de $${Math.floor(
-            values.amount * (1 + 0.02) - values.amount
-          )} 
-          y monto del dinero restante en su cuenta es de $${Math.floor(
-            balance - values.amount
-          )}`}
+          <Typography variant="overline">Información de su depósito</Typography>
+          <Typography variant="body1">
+            Monto invertido: $ {values.amount} (ARS)
+          </Typography>
+          <Typography variant="body1">
+            Monto restante en cuenta: $ {Math.floor(balance - values.amount)}
+          </Typography>
+          <Typography variant="body1">
+            Dias de inversión: {values.totalDays}
+          </Typography>
+          <Typography variant="body1">
+            Monto ganado: ${" "}
+            {Math.floor(values.amount * (1 + 0.02) - values.amount)}
+          </Typography>
         </ActionDialog>
       </Grid>
     </main>
