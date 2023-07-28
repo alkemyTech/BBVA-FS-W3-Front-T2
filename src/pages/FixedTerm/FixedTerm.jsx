@@ -30,7 +30,6 @@ import { enqueueSnackbar } from "notistack";
 
 const FixedTerm = () => {
   const navigate = useNavigate();
-  const theme = useTheme();
   const [balance, setBalance] = useState(0);
   const [openTermsModal, setOpenTermsModal] = useState(false);
   const [error, setError] = useState("");
@@ -196,25 +195,31 @@ const FixedTerm = () => {
                   )}
                 </FormControl>
               </Box>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="termsChecked"
-                    onChange={() =>
-                      setFieldValue("termsChecked", !values.termsChecked)
-                    }
-                    checked={values.termsChecked}
-                  />
-                }
-                label={
-                  <a onClick={() => setOpenTermsModal(!openTermsModal)}>
-                    Términos y condiciones
-                  </a>
-                }
-              />
-              <FormHelperText sx={{ color: "#f44336" }}>
-                {touched.termsChecked && errors.termsChecked}
-              </FormHelperText>
+              <Box>
+                <FormControl>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <Checkbox
+                      name="termsChecked"
+                      onChange={() =>
+                        setFieldValue("termsChecked", !values.termsChecked)
+                      }
+                      checked={values.termsChecked}
+                    />
+                    <Typography variant="body2">
+                      Acepto los{" "}
+                      <span
+                        onClick={() => setOpenTermsModal(!openTermsModal)}
+                        className="plazo-fijo-link"
+                      >
+                        terminos y condiciones
+                      </span>
+                    </Typography>
+                  </div>
+                  <FormHelperText sx={{ color: "#f44336" }}>
+                    {touched.termsChecked && errors.termsChecked}
+                  </FormHelperText>
+                </FormControl>
+              </Box>
             </Paper>
             <Box sx={{ textAlign: "center" }}>
               <Button variant="contained" type="submit">
@@ -229,12 +234,11 @@ const FixedTerm = () => {
           onClose={() => {
             setOpenTermsModal(false);
           }}
+          onConfirm={() => {}}
         >
-          <Paper>
-            <Typography variant="body1" id="terms-modal-description">
-              <TermsAndConditions />
-            </Typography>
-          </Paper>
+          <Typography variant="body1" id="terms-modal-description">
+            <TermsAndConditions />
+          </Typography>
         </CustomDialogToTerm>
 
         <ActionDialog
@@ -249,6 +253,7 @@ const FixedTerm = () => {
           }}
           icon={<TrendingUp fontSize="large" sx={{ marginRight: "8px" }} />}
         >
+          {/* Acomodar dialog con resumen */}
           {`Invertiste $${values.amount} por ${values.totalDays} días.  
           El monto ganado al finalizar el plazo es de $${Math.floor(
             values.amount * (1 + 0.02) - values.amount
