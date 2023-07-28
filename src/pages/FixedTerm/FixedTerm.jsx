@@ -19,10 +19,15 @@ import * as yup from "yup";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import ActionDialog from "../../components/CustomDialog/CustomDialog";
+import CustomDialogToTerm from "../../components/CustomDialog/CustomDialogToTerm.jsx";
 import { TrendingUp } from "@mui/icons-material";
 import { useNavigate} from "react-router-dom";
 import {fixedterm} from "../../services/fixedtermService.js";
 import {getBalance} from "../../services/accountService.js";
+import TermsAndConditions from "./TermsAndConditions.jsx";
+
+
+
 
 const FixedTerm = () => {
   const navigate = useNavigate();
@@ -121,7 +126,6 @@ const FixedTerm = () => {
       setError(response.message)
     }
   }
-  console.log(error)
 
   return (
       <main>
@@ -205,16 +209,19 @@ const FixedTerm = () => {
               </Box>
             </form>
           </Grid>
-          <ActionDialog
+          <CustomDialogToTerm
               open={openTermsModal}
               title={"Términos y condiciones"}
               onClose={() => {
                 setOpenTermsModal(false);
               }}
-              hasComfirm={false}
           >
-            Lorem ipsum
-          </ActionDialog>
+            <Paper>
+              <Typography variant="body1" id="terms-modal-description">
+                <TermsAndConditions/>
+              </Typography>
+            </Paper>
+          </CustomDialogToTerm>
 
           <ActionDialog
               open={openDialog}
