@@ -21,9 +21,9 @@ export default function CustomDialog(props) {
       </DialogTitle>
       <DialogContent>{children}</DialogContent>
       <DialogActions>
-        <Button onClick={otherProps.onConfirm} color="primary" variant="contained">
-          Confirmar
-        </Button>
+          <Button onClick={otherProps.onConfirm} color="primary" variant="contained">
+              Confirmar
+          </Button>
         <Button onClick={otherProps.onClose} color="error" variant="outlined">
           Cancelar
         </Button>
