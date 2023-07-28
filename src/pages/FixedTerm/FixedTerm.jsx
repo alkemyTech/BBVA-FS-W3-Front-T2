@@ -246,9 +246,9 @@ const FixedTerm = () => {
             setOpenTermsModal(false);
           }}
         >
-          <Typography variant="body1" id="terms-modal-description">
+          {/* <Typography variant="caption" id="terms-modal-description"> */}
             <TermsAndConditions />
-          </Typography>
+          {/* </Typography> */}
         </CustomDialogToTerm>
 
         <ActionDialog
@@ -263,7 +263,6 @@ const FixedTerm = () => {
           }}
           icon={<TrendingUp fontSize="large" sx={{ marginRight: "8px" }} />}
         >
-          {/* Acomodar dialog con resumen */}
           <Typography variant="overline">Información de su depósito</Typography>
           <Typography variant="body1">
             Monto invertido: $ {values.amount} (ARS)
