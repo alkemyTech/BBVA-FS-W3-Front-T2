@@ -78,7 +78,7 @@ const Transfer = () => {
       })
       .then(() => {
         navigate("/");
-        enqueueSnackbar("Depósito realizado", { variant: "success" });
+        enqueueSnackbar("Transferencia realizado", { variant: "success" });
       })
       .catch((err) => {
         setError(String(err));
@@ -92,7 +92,7 @@ const Transfer = () => {
       })
       .then(() => {
         navigate("/");
-        enqueueSnackbar("Depósito realizado", { variant: "success" });
+        enqueueSnackbar("Transferencia realizado", { variant: "success" });
       })
       .catch((err) => {
         setError(String(err));
