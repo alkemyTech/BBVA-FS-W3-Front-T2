@@ -11,7 +11,7 @@ export const sendARS = async (values) => {
   console.log(config);
   try {
     delete values.currency;
-    const response = await axios.post(host + "/send_ars", values, config);
+    const response = await axios.post(host + "/sendArs", values, config);
     console.log(response);
     return response.data;
   } catch (error) {
@@ -34,7 +34,7 @@ export const sendUSD = async (values) => {
   console.log(config);
   try {
     delete values.currency;
-    const response = await axios.post(host + "/send_usd", values, config);
+    const response = await axios.post(host + "/sendUsd", values, config);
     console.log(response);
     return response.data;
   } catch (error) {
