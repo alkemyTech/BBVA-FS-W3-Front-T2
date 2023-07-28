@@ -195,28 +195,35 @@ const FixedTerm = () => {
                   )}
                 </FormControl>
               </Box>
+              {/* Términos y condiciones apreto aceptar y se acepta. No por hacerle un onclick a términos y condiciones. */}
               <Box>
                 <FormControl>
-                  <div style={{ display: "flex", alignItems: "center" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      textAlign: "left",
+                    }}
+                  >
                     <Checkbox
                       name="termsChecked"
-                      onChange={() =>
-                        setFieldValue("termsChecked", !values.termsChecked)
-                      }
+                      onChange={handleChange}
                       checked={values.termsChecked}
                     />
                     <Typography variant="body2">
                       Acepto los{" "}
                       <span
-                        onClick={() => setOpenTermsModal(!openTermsModal)}
+                        onClick={() => setOpenTermsModal(true)}
                         className="plazo-fijo-link"
                       >
-                        terminos y condiciones
+                        terminos y condiciones.
                       </span>
                     </Typography>
                   </div>
                   <FormHelperText sx={{ color: "#f44336" }}>
-                    {touched.termsChecked && errors.termsChecked}
+                    {touched.termsChecked &&
+                      values.termsChecked !== true &&
+                      errors.termsChecked}
                   </FormHelperText>
                 </FormControl>
               </Box>
@@ -234,7 +241,10 @@ const FixedTerm = () => {
           onClose={() => {
             setOpenTermsModal(false);
           }}
-          onConfirm={() => {}}
+          onConfirm={() => {
+            values.termsChecked = true;
+            setOpenTermsModal(false);
+          }}
         >
           <Typography variant="body1" id="terms-modal-description">
             <TermsAndConditions />

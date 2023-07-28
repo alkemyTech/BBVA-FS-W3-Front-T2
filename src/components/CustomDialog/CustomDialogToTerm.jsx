@@ -21,7 +21,7 @@ export default function CustomDialogToTerm(props) {
             </DialogTitle>
             <DialogContent>{children}</DialogContent>
             <DialogActions>
-                <Button onClick={otherProps.onClose} color="primary" variant="contained">
+                <Button onClick={otherProps.onConfirm} color="primary" variant="contained">
                     Acepto
                 </Button>
                 <Button onClick={otherProps.onClose} color="error" variant="outlined">
