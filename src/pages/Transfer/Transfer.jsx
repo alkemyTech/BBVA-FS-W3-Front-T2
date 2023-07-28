@@ -14,7 +14,7 @@ import {
   ListItem,
 } from "@mui/material";
 import { useFormik } from "formik";
-import "../Deposit/Deposit.css";
+import "./Transfer.css";
 import * as yup from "yup";
 import CustomDialog from "../../components/CustomDialog/CustomDialog";
 import { useState } from "react";
@@ -108,7 +108,7 @@ const Transfer = () => {
         </Grid>
         <Grid item xs={12} sm={5} md={4}>
           <form onSubmit={handleSubmit}>
-            <Paper id="deposit-paper">
+            <Paper id="transaction-paper">
               <div>
                 <Typography variant="caption" display="block">
                   Seleccioná la moneda:
@@ -152,22 +152,22 @@ const Transfer = () => {
               </div>
               <div style={{ display: "flex" }}>
                 <FormControl fullWidth>
-                  <InputLabel htmlFor="input-amount">CBU</InputLabel>
+                  <InputLabel htmlFor="input-cbu">CBU</InputLabel>
                   <OutlinedInput
-                    id="input-amount"
-                    error={!!errors.cbu && !!errorsState.cbu}
+                    id="input-cbu"
+                    error={!!errors.cbu && touched.cbu}
                     name="cbu"
                     value={values.cbu}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     startAdornment={
-                      <InputAdornment position="start">cbu</InputAdornment>
+                      <InputAdornment position="start"></InputAdornment>
                     }
-                    label="cbu"
+                    label="CBU"
                   />
-                  {errors.cbu && errorsState.cbu && (
+                  {errors.amount && touched.amount && (
                     <FormHelperText sx={{ color: "#f44336" }}>
-                      {errors.cbu}
+                      {errors.amount}
                     </FormHelperText>
                   )}
                 </FormControl>
@@ -178,7 +178,7 @@ const Transfer = () => {
                   <InputLabel htmlFor="input-amount">Total</InputLabel>
                   <OutlinedInput
                     id="input-amount"
-                    error={!!errors.amount && !!errorsState.amount}
+                    error={!!errors.amount && touched.amount}
                     name="amount"
                     value={values.amount}
                     onChange={handleChange}
@@ -188,7 +188,7 @@ const Transfer = () => {
                     }
                     label="Total"
                   />
-                  {errors.amount && errorsState.amount && (
+                  {errors.amount && touched.amount && (
                     <FormHelperText sx={{ color: "#f44336" }}>
                       {errors.amount}
                     </FormHelperText>
