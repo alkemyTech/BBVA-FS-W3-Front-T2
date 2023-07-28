@@ -84,10 +84,6 @@ export default function Home() {
           </Box>
         )}
       </SimpleSlider>
-      {fixedTerms.length > 0 && (
-        <CustomDataGrid transactions={fixedTerms} />
-
-      ) }
       {!hasARSTransactions && !hasUSDTransactions && (
         <Alert severity="info">No tenés cuentas activas</Alert>
       )}

@@ -26,7 +26,6 @@ export default function AccountDetail({ account, text }) {
         <b>{account.cbu}</b>
       </Typography>
       </Box>
-      <Divider />
     </Paper>
   );
 }
