@@ -18,18 +18,33 @@ import { useFormik } from "formik";
 import "./Deposit.css";
 import * as yup from "yup";
 import CustomDialog from "../../components/CustomDialog/CustomDialog";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { deposit } from "../../services/depositService";
 import { useNavigate } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import dayjs from "dayjs";
+import { getBalance } from "../../services/accountService";
 
 const Deposit = () => {
   const navigate = useNavigate();
+  const [accountsExist, setAccountsExist] = useState(false);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
+
+  useEffect(() => {
+    getBalance((response) => response)
+      .then((response) => {
+        if (response.data.accountArs || response.data.accountUsd)
+          setAccountsExist(true);
+      })
+      .then(() => setLoading(false))
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
+  }, []);
 
   const parseFloatFromString = (string) => {
     if (typeof string === "string") {
@@ -105,8 +120,10 @@ const Deposit = () => {
       });
   };
 
-  return (
-    <main>
+  if (loading) {
+    return "cargando";
+  } else if (accountsExist) {
+    return (
       <Grid container justifyContent="center">
         <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
           <Typography variant="h5">
@@ -246,15 +263,18 @@ const Deposit = () => {
               <ListItem>Monto: ${values.amount}</ListItem>
               <ListItem>Moneda: {values.currency}</ListItem>
               <ListItem>
-                Descripción: {values.description || "No ingresaste una descripción"}
+                Descripción:{" "}
+                {values.description || "No ingresaste una descripción"}
               </ListItem>
               <ListItem>Fecha: {dayjs().format("YYYY-MM-DD")}</ListItem>
             </List>
           </CustomDialog>
         </Grid>
       </Grid>
-    </main>
-  );
+    );
+  } else {
+    return <Alert severity="info">No tenés cuentas activas</Alert>;
+  }
 };
 
 export default Deposit;
