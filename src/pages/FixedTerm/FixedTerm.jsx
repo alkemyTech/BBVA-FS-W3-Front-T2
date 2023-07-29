@@ -106,7 +106,6 @@ const FixedTerm = () => {
       values.amount = parseFloat(values.amount);
       //simulo plazo fijo
       onSubmitFixedTermSimulation(values);
-      //abro el dialog de confirmación
       setOpenDialog(true);
     },
   });
@@ -122,10 +121,7 @@ const FixedTerm = () => {
   };
 
   const onSubmitFixedTerm = async (values) => {
-    setError("");
-    delete values.termsChecked;
     const response = await fixedterm(values);
-
     if (response.errors && response.errors.length > 0) {
       setError(response.message);
     } else {
@@ -135,9 +131,7 @@ const FixedTerm = () => {
   };
 
   const onSubmitFixedTermSimulation = async (values) => {
-    delete values.termsChecked;
     const response = await fixedtermSimulate(values);
-
     if (response.errors && response.errors.length > 0) {
       setError(response.message);
     } else {
@@ -163,7 +157,11 @@ const FixedTerm = () => {
             <Paper id="deposit-paper">
               <Box>
                 <Typography variant="button" sx={{ fontWeight: "bold" }}>
-                  Balance actual: ${balance.toFixed(2)}
+                  Balance actual:{"   "}
+                  {balance.toLocaleString("es-AR", {
+                    style: "currency",
+                    currency: "ARS",
+                  })}
                 </Typography>
                 <Typography variant="overline" display={"block"}>
                   Dinero invertido
@@ -280,14 +278,26 @@ const FixedTerm = () => {
         >
           <Typography variant="overline">Información de su depósito</Typography>
           <Typography variant="body1">
-            Monto invertido: $ {fixedTermSimulation.amount} (ARS)
+            Monto invertido:{" "}
+            {fixedTermSimulation?.amount?.toLocaleString("es-AR", {
+              style: "currency",
+              currency: "ARS",
+            })}{" "}
+            (ARS)
           </Typography>
           <Typography variant="body1">
-            Monto ganado: $ {fixedTermSimulation.interest}
+            Monto ganado:{" "}
+            {fixedTermSimulation?.interest?.toLocaleString("es-AR", {
+              style: "currency",
+              currency: "ARS",
+            })}
           </Typography>
           <Typography variant="body1">
-            Monto restante en cuenta: ${" "}
-            {Math.floor(balance - fixedTermSimulation.amount)}
+            Monto restante en cuenta: {"  "}
+            {(balance - fixedTermSimulation?.amount)?.toLocaleString("es-AR", {
+              style: "currency",
+              currency: "ARS",
+            })}
           </Typography>
           <Typography variant="body1">
             Fecha de retiro:{" "}
