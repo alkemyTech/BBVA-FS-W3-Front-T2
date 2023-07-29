@@ -18,7 +18,7 @@ const RegisterForm = () => {
         navigate("/login");
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         setErrorsState(String(err));
       });
   };
@@ -43,7 +43,7 @@ const RegisterForm = () => {
   });
 
   return (
-    <Card>
+    <Card sx={{ position: "relative", zIndex: "2", width: ["90%", "60%"] }}>
       <Formik
         initialValues={{
           firstName: "",
