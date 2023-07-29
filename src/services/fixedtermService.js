@@ -1,6 +1,10 @@
 import axios from "axios";
 
 export const fixedterm = async (values) => {
+  const neededValues = {
+    amount: values.amount,
+    totalDays: values.totalDays,
+  };
   const jwt = localStorage.getItem("jwt");
   const config = {
     headers: {
@@ -11,7 +15,7 @@ export const fixedterm = async (values) => {
   try {
     const response = await axios.post(
       "http://localhost:8080/fixedTerm",
-      values,
+      neededValues,
       config
     );
     return response.data;
@@ -25,6 +29,10 @@ export const fixedterm = async (values) => {
 };
 
 export const fixedtermSimulate = async (values) => {
+  const neededValues = {
+    amount: values.amount,
+    totalDays: values.totalDays,
+  };
   const jwt = localStorage.getItem("jwt");
   const config = {
     headers: {
@@ -35,11 +43,10 @@ export const fixedtermSimulate = async (values) => {
   try {
     const response = await axios.post(
       "http://localhost:8080/fixedTerm/simulate",
-      values,
+      neededValues,
       config
     );
     return response.data;
-    
   } catch (error) {
     if (error.response.data.message) {
       throw new Error(error.response.data.message);
