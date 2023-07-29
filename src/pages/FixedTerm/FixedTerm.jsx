@@ -9,7 +9,6 @@ import {
   FormHelperText,
   InputAdornment,
   OutlinedInput,
-  FormControlLabel,
   Checkbox,
   Alert,
 } from "@mui/material";
@@ -18,12 +17,15 @@ import { useTheme } from "@emotion/react";
 import "./FixedTerm.css";
 import * as yup from "yup";
 import { DatePicker } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import ActionDialog from "../../components/CustomDialog/CustomDialog";
 import CustomDialogToTerm from "../../components/CustomDialog/CustomDialogToTerm.jsx";
 import { TrendingUp } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { fixedterm } from "../../services/fixedtermService.js";
+import {
+  fixedterm,
+  fixedtermSimulate,
+} from "../../services/fixedtermService.js";
 import { getBalance } from "../../services/accountService.js";
 import TermsAndConditions from "./TermsAndConditions.jsx";
 import { enqueueSnackbar } from "notistack";
@@ -37,6 +39,8 @@ const FixedTerm = () => {
   const today = dayjs(); // fecha y hora actual
   const [finalDate, setFinalDate] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+
+  const [fixedTermSimulation, setFixedTermSimulation] = useState({});
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -100,6 +104,8 @@ const FixedTerm = () => {
     onSubmit: (values) => {
       //transformo String a number
       values.amount = parseFloat(values.amount);
+      //simulo plazo fijo
+      onSubmitFixedTermSimulation(values);
       //abro el dialog de confirmación
       setOpenDialog(true);
     },
@@ -125,6 +131,17 @@ const FixedTerm = () => {
     } else {
       navigate("/");
       enqueueSnackbar("Plazo fijo realizado", { variant: "success" });
+    }
+  };
+
+  const onSubmitFixedTermSimulation = async (values) => {
+    delete values.termsChecked;
+    const response = await fixedtermSimulate(values);
+
+    if (response.errors && response.errors.length > 0) {
+      setError(response.message);
+    } else {
+      setFixedTermSimulation(response.fixedTermDeposit);
     }
   };
 
@@ -195,7 +212,6 @@ const FixedTerm = () => {
                   )}
                 </FormControl>
               </Box>
-              {/* Términos y condiciones apreto aceptar y se acepta. No por hacerle un onclick a términos y condiciones. */}
               <Box>
                 <FormControl>
                   <div
@@ -235,6 +251,7 @@ const FixedTerm = () => {
             </Box>
           </form>
         </Grid>
+
         <CustomDialogToTerm
           open={openTermsModal}
           title={"Términos y condiciones"}
@@ -246,9 +263,7 @@ const FixedTerm = () => {
             setOpenTermsModal(false);
           }}
         >
-          {/* <Typography variant="caption" id="terms-modal-description"> */}
-            <TermsAndConditions />
-          {/* </Typography> */}
+          <TermsAndConditions />
         </CustomDialogToTerm>
 
         <ActionDialog
@@ -265,17 +280,18 @@ const FixedTerm = () => {
         >
           <Typography variant="overline">Información de su depósito</Typography>
           <Typography variant="body1">
-            Monto invertido: $ {values.amount} (ARS)
+            Monto invertido: $ {fixedTermSimulation.amount} (ARS)
           </Typography>
           <Typography variant="body1">
-            Monto restante en cuenta: $ {Math.floor(balance - values.amount)}
+            Monto ganado: $ {fixedTermSimulation.interest}
           </Typography>
           <Typography variant="body1">
-            Dias de inversión: {values.totalDays}
+            Monto restante en cuenta: ${" "}
+            {Math.floor(balance - fixedTermSimulation.amount)}
           </Typography>
           <Typography variant="body1">
-            Monto ganado: ${" "}
-            {Math.floor(values.amount * (1 + 0.02) - values.amount)}
+            Fecha de retiro:{" "}
+            {dayjs(fixedTermSimulation.closingDate).format("DD-MM-YYYY")}
           </Typography>
         </ActionDialog>
       </Grid>
