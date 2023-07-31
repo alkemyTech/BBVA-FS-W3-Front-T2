@@ -33,7 +33,7 @@ const LoginForm = () => {
   });
 
   return (
-    <Card>
+    <Card sx={{ position: "relative", zIndex: "2", width: ["90%", "60%"] }}>
       <Formik
         initialValues={{ email: "", password: "" }}
         onSubmit={onSubmit}
@@ -72,7 +72,7 @@ const LoginForm = () => {
               name="email"
               onBlur={handleBlur}
               error={errors.email && touched.email}
-              helperText={errors.email && touched.email && errors.email}
+              helperText={touched.email && errors.email}
             />
             <TextField
               sx={{ mb: 2 }}
@@ -86,9 +86,7 @@ const LoginForm = () => {
               name="password"
               onBlur={handleBlur}
               error={errors.password && touched.password}
-              helperText={
-                errors.password && touched.password && errors.password
-              }
+              helperText={touched.password && errors.password}
             />
             <Stack direction="column">
               <Typography variant="body2" marginRight={1}>

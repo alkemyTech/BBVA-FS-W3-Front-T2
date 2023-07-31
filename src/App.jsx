@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
-import LoginForm from "./components/forms/LoginForm.jsx";
 import "./App.css";
-import RegisterForm from "./components/forms/RegisterForm.jsx";
+import Register from "./pages/Register/Register.jsx";
 import Deposit from "./pages/Deposit/Deposit";
 import Transfer from "./pages/Transfer/Transfer.jsx";
 import FixedTerm from "./pages/FixedTerm/FixedTerm";
@@ -29,7 +28,7 @@ function App() {
               <Route path="/plazo-fijo" element={<FixedTerm />} />
             </Route>
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<RegisterForm />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </Layout>
       </LocalizationProvider>
