@@ -272,6 +272,10 @@ const Deposit = () => {
         </Grid>
       </Grid>
     );
+  } else if (error) {
+    return (
+      <Alert severity="error">No estás logueado, ¡Volvé a ingresar!</Alert>
+    );
   } else {
     return <Alert severity="info">No tenés cuentas activas</Alert>;
   }
