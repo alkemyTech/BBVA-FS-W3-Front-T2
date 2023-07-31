@@ -32,9 +32,10 @@ import { enqueueSnackbar } from "notistack";
 
 const FixedTerm = () => {
   const navigate = useNavigate();
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState(null);
   const [openTermsModal, setOpenTermsModal] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const today = dayjs(); // fecha y hora actual
   const [finalDate, setFinalDate] = useState(null);
@@ -43,15 +44,17 @@ const FixedTerm = () => {
   const [fixedTermSimulation, setFixedTermSimulation] = useState({});
 
   useEffect(() => {
-    const fetchBalance = async () => {
-      try {
-        const response = await getBalance();
-        setBalance(response.data.accountArs.balance);
-      } catch (error) {
+    getBalance()
+      .then((res) => {
+        setBalance(res.data.accountArs.balance);
+      })
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((error) => {
         setError(error);
-      }
-    };
-    fetchBalance();
+        setLoading(false);
+      });
   }, []);
 
   const inputValidation = yup.object().shape({
@@ -139,174 +142,193 @@ const FixedTerm = () => {
     }
   };
 
-  return (
-    <main>
-      <Grid container justifyContent="center">
-        <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
-          <Typography variant="h5" fontWeight={"bold"}>
-            Plazo fijo
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={5}>
-          {error.length > 0 && (
-            <Alert severity="error" sx={{ marginTop: "1em", width: "300px" }}>
-              {error}
-            </Alert>
-          )}
-          <form onSubmit={handleSubmit}>
-            <Paper id="deposit-paper">
-              <Box>
-                <Typography variant="button" sx={{ fontWeight: "bold" }}>
-                  Balance actual:{"   "}
-                  {balance.toLocaleString("es-AR", {
-                    style: "currency",
-                    currency: "ARS",
-                  })}
-                </Typography>
-                <Typography variant="overline" display={"block"}>
-                  Dinero invertido
-                </Typography>
-                <FormControl fullWidth>
-                  <OutlinedInput
-                    id="input-amount"
-                    error={!!errors.amount && touched.amount}
-                    name="amount"
-                    value={values.amount}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    startAdornment={
-                      <InputAdornment position="start">$</InputAdornment>
-                    }
-                  />
-                  {errors.amount && touched.amount && (
-                    <FormHelperText sx={{ color: "#f44336" }}>
-                      {errors.amount}
-                    </FormHelperText>
-                  )}
-                </FormControl>
-              </Box>
-              <Box>
-                <Typography variant="overline" display={"block"}>
-                  Día final
-                </Typography>
-                <FormControl fullWidth>
-                  <DatePicker
-                    value={finalDate}
-                    onChange={handleDateChange}
-                    disablePast
-                    format="DD/MM/YYYY"
-                    sx={() =>
-                      errors.totalDays &&
-                      touched.totalDays && {
-                        border: "1px solid red",
-                        borderRadius: "5px",
-                      }
-                    }
-                  />
-                  {errors.totalDays && touched.totalDays && (
-                    <FormHelperText sx={{ color: "#f44336" }}>
-                      {errors.totalDays}
-                    </FormHelperText>
-                  )}
-                </FormControl>
-              </Box>
-              <Box>
-                <FormControl>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      textAlign: "left",
-                    }}
-                  >
-                    <Checkbox
-                      name="termsChecked"
+  if (loading) {
+    return "cargando";
+  } else if (balance) {
+    return (
+      <main>
+        <Grid container justifyContent="center">
+          <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
+            <Typography variant="h5" fontWeight={"bold"}>
+              Plazo fijo
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={5}>
+            {error.length > 0 && (
+              <Alert severity="error" sx={{ marginTop: "1em", width: "300px" }}>
+                {error}
+              </Alert>
+            )}
+            <form onSubmit={handleSubmit}>
+              <Paper id="deposit-paper">
+                <Box>
+                  <Typography variant="button" sx={{ fontWeight: "bold" }}>
+                    Balance actual:{"   "}
+                    {balance.toLocaleString("es-AR", {
+                      style: "currency",
+                      currency: "ARS",
+                    })}
+                  </Typography>
+                  <Typography variant="overline" display={"block"}>
+                    Dinero invertido
+                  </Typography>
+                  <FormControl fullWidth>
+                    <OutlinedInput
+                      id="input-amount"
+                      error={!!errors.amount && touched.amount}
+                      name="amount"
+                      value={values.amount}
                       onChange={handleChange}
-                      checked={values.termsChecked}
+                      onBlur={handleBlur}
+                      startAdornment={
+                        <InputAdornment position="start">$</InputAdornment>
+                      }
                     />
-                    <Typography variant="body2">
-                      Acepto los{" "}
-                      <span
-                        onClick={() => setOpenTermsModal(true)}
-                        className="plazo-fijo-link"
-                      >
-                        terminos y condiciones.
-                      </span>
-                    </Typography>
-                  </div>
-                  <FormHelperText sx={{ color: "#f44336" }}>
-                    {touched.termsChecked &&
-                      values.termsChecked !== true &&
-                      errors.termsChecked}
-                  </FormHelperText>
-                </FormControl>
+                    {errors.amount && touched.amount && (
+                      <FormHelperText sx={{ color: "#f44336" }}>
+                        {errors.amount}
+                      </FormHelperText>
+                    )}
+                  </FormControl>
+                </Box>
+                <Box>
+                  <Typography variant="overline" display={"block"}>
+                    Día final
+                  </Typography>
+                  <FormControl fullWidth>
+                    <DatePicker
+                      value={finalDate}
+                      onChange={handleDateChange}
+                      disablePast
+                      format="DD/MM/YYYY"
+                      sx={() =>
+                        errors.totalDays &&
+                        touched.totalDays && {
+                          border: "1px solid red",
+                          borderRadius: "5px",
+                        }
+                      }
+                    />
+                    {errors.totalDays && touched.totalDays && (
+                      <FormHelperText sx={{ color: "#f44336" }}>
+                        {errors.totalDays}
+                      </FormHelperText>
+                    )}
+                  </FormControl>
+                </Box>
+                <Box>
+                  <FormControl>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        textAlign: "left",
+                      }}
+                    >
+                      <Checkbox
+                        name="termsChecked"
+                        onChange={handleChange}
+                        checked={values.termsChecked}
+                      />
+                      <Typography variant="body2">
+                        Acepto los{" "}
+                        <span
+                          onClick={() => setOpenTermsModal(true)}
+                          className="plazo-fijo-link"
+                        >
+                          terminos y condiciones.
+                        </span>
+                      </Typography>
+                    </div>
+                    <FormHelperText sx={{ color: "#f44336" }}>
+                      {touched.termsChecked &&
+                        values.termsChecked !== true &&
+                        errors.termsChecked}
+                    </FormHelperText>
+                  </FormControl>
+                </Box>
+              </Paper>
+              <Box sx={{ textAlign: "center" }}>
+                <Button variant="contained" type="submit">
+                  Simular
+                </Button>
               </Box>
-            </Paper>
-            <Box sx={{ textAlign: "center" }}>
-              <Button variant="contained" type="submit">
-                Simular
-              </Button>
-            </Box>
-          </form>
+            </form>
+          </Grid>
+
+          <CustomDialogToTerm
+            open={openTermsModal}
+            title={"Términos y condiciones"}
+            onClose={() => {
+              setOpenTermsModal(false);
+            }}
+            onConfirm={() => {
+              values.termsChecked = true;
+              setOpenTermsModal(false);
+            }}
+          >
+            <TermsAndConditions />
+          </CustomDialogToTerm>
+
+          <ActionDialog
+            open={openDialog}
+            title={"¿Solicitar el plazo fijo?"}
+            onClose={() => {
+              setOpenDialog(false);
+            }}
+            onConfirm={() => {
+              onSubmitFixedTerm(values);
+              setOpenDialog(false);
+            }}
+            icon={<TrendingUp fontSize="large" sx={{ marginRight: "8px" }} />}
+          >
+            <Typography variant="overline">
+              Información de su depósito
+            </Typography>
+            <Typography variant="body1">
+              Monto invertido:{" "}
+              {fixedTermSimulation?.amount?.toLocaleString("es-AR", {
+                style: "currency",
+                currency: "ARS",
+              })}{" "}
+              (ARS)
+            </Typography>
+            <Typography variant="body1">
+              Monto ganado:{" "}
+              {fixedTermSimulation?.interest?.toLocaleString("es-AR", {
+                style: "currency",
+                currency: "ARS",
+              })}
+            </Typography>
+            <Typography variant="body1">
+              Monto restante en cuenta: {"  "}
+              {(balance - fixedTermSimulation?.amount)?.toLocaleString(
+                "es-AR",
+                {
+                  style: "currency",
+                  currency: "ARS",
+                }
+              )}
+            </Typography>
+            <Typography variant="body1">
+              Fecha de retiro:{" "}
+              {dayjs(fixedTermSimulation.closingDate).format("DD-MM-YYYY")}
+            </Typography>
+          </ActionDialog>
         </Grid>
-
-        <CustomDialogToTerm
-          open={openTermsModal}
-          title={"Términos y condiciones"}
-          onClose={() => {
-            setOpenTermsModal(false);
-          }}
-          onConfirm={() => {
-            values.termsChecked = true;
-            setOpenTermsModal(false);
-          }}
-        >
-          <TermsAndConditions />
-        </CustomDialogToTerm>
-
-        <ActionDialog
-          open={openDialog}
-          title={"¿Solicitar el plazo fijo?"}
-          onClose={() => {
-            setOpenDialog(false);
-          }}
-          onConfirm={() => {
-            onSubmitFixedTerm(values);
-            setOpenDialog(false);
-          }}
-          icon={<TrendingUp fontSize="large" sx={{ marginRight: "8px" }} />}
-        >
-          <Typography variant="overline">Información de su depósito</Typography>
-          <Typography variant="body1">
-            Monto invertido:{" "}
-            {fixedTermSimulation?.amount?.toLocaleString("es-AR", {
-              style: "currency",
-              currency: "ARS",
-            })}{" "}
-            (ARS)
-          </Typography>
-          <Typography variant="body1">
-            Monto ganado:{" "}
-            {fixedTermSimulation?.interest?.toLocaleString("es-AR", {
-              style: "currency",
-              currency: "ARS",
-            })}
-          </Typography>
-          <Typography variant="body1">
-            Monto restante en cuenta: {"  "}
-            {(balance - fixedTermSimulation?.amount)?.toLocaleString("es-AR", {
-              style: "currency",
-              currency: "ARS",
-            })}
-          </Typography>
-          <Typography variant="body1">
-            Fecha de retiro:{" "}
-            {dayjs(fixedTermSimulation.closingDate).format("DD-MM-YYYY")}
-          </Typography>
-        </ActionDialog>
-      </Grid>
-    </main>
-  );
+      </main>
+    );
+  } else if (!balance) {
+    return (
+      <Alert severity="info">
+        No tenés una cuenta en ARS ¡No podés pedir un plazo fijo!
+      </Alert>
+    );
+  } else {
+    return (
+      <Alert severity="error">No estás logueado, ¡Volvé a ingresar!</Alert>
+    );
+  }
 };
 
 export default FixedTerm;
