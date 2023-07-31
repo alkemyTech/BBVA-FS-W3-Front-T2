@@ -4,8 +4,6 @@ import Register from "./pages/Register/Register.jsx";
 import Deposit from "./pages/Deposit/Deposit";
 import Transfer from "./pages/Transfer/Transfer.jsx";
 import FixedTerm from "./pages/FixedTerm/FixedTerm";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Profile from "./pages/Profile/Profile";
 import Layout from "./components/Layout/Layout";
 import PrivateRoutes from "./routes/PrivateRoutes.jsx";
@@ -16,22 +14,20 @@ import Login from "./pages/Login/Login.jsx";
 function App() {
   return (
     <div className="app-container">
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Layout>
-          <Routes>
-            <Route element={<PrivateRoutes />}>
-              <Route path="/" element={<Home />} exact />
-              <Route path="/mi-perfil" element={<Profile />} exact />
-              <Route path="/pagar" element={<Payment />} exact />
-              <Route path="/depositar" element={<Deposit />} exact />
-              <Route path="/transferir" element={<Transfer />} exact />
-              <Route path="/plazo-fijo" element={<FixedTerm />} />
-            </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-        </Layout>
-      </LocalizationProvider>
+      <Layout>
+        <Routes>
+          <Route element={<PrivateRoutes />}>
+            <Route path="/" element={<Home />} exact />
+            <Route path="/mi-perfil" element={<Profile />} exact />
+            <Route path="/pagar" element={<Payment />} exact />
+            <Route path="/depositar" element={<Deposit />} exact />
+            <Route path="/transferir" element={<Transfer />} exact />
+            <Route path="/plazo-fijo" element={<FixedTerm />} />
+          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </Layout>
     </div>
   );
 }
