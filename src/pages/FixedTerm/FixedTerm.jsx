@@ -16,7 +16,7 @@ import { useFormik } from "formik";
 import { useTheme } from "@emotion/react";
 import "./FixedTerm.css";
 import * as yup from "yup";
-import { DatePicker } from "@mui/x-date-pickers";
+import { MobileDatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import ActionDialog from "../../components/CustomDialog/CustomDialog";
 import CustomDialogToTerm from "../../components/CustomDialog/CustomDialogToTerm.jsx";
@@ -190,7 +190,7 @@ const FixedTerm = () => {
                   Día final
                 </Typography>
                 <FormControl fullWidth>
-                  <DatePicker
+                  <MobileDatePicker
                     value={finalDate}
                     onChange={handleDateChange}
                     disablePast
