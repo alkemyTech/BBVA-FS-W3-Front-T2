@@ -22,6 +22,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { enqueueSnackbar } from "notistack";
+import Loader from "../../components/Loader/Loader";
 
 const Transfer = () => {
   const navigate = useNavigate();
@@ -118,7 +119,7 @@ const Transfer = () => {
   }, []);
 
   if (loading) {
-    return "cargando";
+    return <Loader />;
   } else if (accountsExist) {
     return (
       <Grid container justifyContent="center">

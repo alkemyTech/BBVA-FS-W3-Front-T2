@@ -6,6 +6,7 @@ import AccountDetail from "../../components/AccountDetail/AccountDetail";
 import CustomDataGrid from "../../components/CustomDataGrid/CustomDataGrid";
 import FixedTermDataGrid from "../../components/FixedTermDataGrid/FixedTermDataGrid";
 import CustomPieChart from "../../components/CustomPieChart/CustomPieChart";
+import Loader from "../../components/Loader/Loader";
 
 export default function Home() {
   const [balance, setBalance] = useState(null);
@@ -94,7 +95,7 @@ export default function Home() {
   }
 
   if (!balance) {
-    return <Skeleton variant="rectangular" height={200} />;
+    return <Loader />;
   }
 
   const { accountArs, accountUsd } = balance;

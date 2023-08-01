@@ -23,6 +23,7 @@ import dayjs from "dayjs";
 import { enqueueSnackbar } from "notistack";
 import { payment } from "../../services/paymentService";
 import { getBalance } from "../../services/accountService";
+import Loader from "../../components/Loader/Loader";
 
 const Payment = () => {
   const navigate = useNavigate();
@@ -94,7 +95,7 @@ const Payment = () => {
       });
   };
   if (loading) {
-    return "cargando";
+    return <Loader />;
   } else if (accountsExist) {
     return (
       <Formik
