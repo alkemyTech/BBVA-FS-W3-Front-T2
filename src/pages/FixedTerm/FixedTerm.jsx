@@ -29,6 +29,7 @@ import { getBalance } from "../../services/accountService.js";
 import TermsAndConditions from "./TermsAndConditions.jsx";
 import { enqueueSnackbar } from "notistack";
 import Loader from "../../components/Loader/Loader";
+import { formatCurrencyToArs } from "../../utils/dialogUtils";
 
 const FixedTerm = () => {
   const navigate = useNavigate();
@@ -165,10 +166,7 @@ const FixedTerm = () => {
               <Box>
                 <Typography variant="button" sx={{ fontWeight: "bold" }}>
                   Balance actual:{"   "}
-                  {balance.toLocaleString("es-AR", {
-                    style: "currency",
-                    currency: "ARS",
-                  })}
+                  {formatCurrencyToArs(balance)}
                 </Typography>
                 <Typography variant="overline" display={"block"}>
                   Dinero invertido
@@ -283,31 +281,33 @@ const FixedTerm = () => {
           }}
           icon={<TrendingUp fontSize="large" sx={{ marginRight: "8px" }} />}
         >
-          <Typography variant="overline">Información de su depósito</Typography>
-          <Typography variant="body1">
-            Monto invertido:{" "}
+          <Typography variant="button">
+            <strong>Información de su depósito</strong>
+          </Typography>
+          <Typography variant="body2">
+            <strong>Monto invertido: </strong>
             {fixedTermSimulation?.amount?.toLocaleString("es-AR", {
               style: "currency",
               currency: "ARS",
             })}{" "}
             (ARS)
           </Typography>
-          <Typography variant="body1">
-            Monto ganado:{" "}
+          <Typography variant="body2">
+            <strong>Monto ganado: </strong>
             {fixedTermSimulation?.interest?.toLocaleString("es-AR", {
               style: "currency",
               currency: "ARS",
             })}
           </Typography>
-          <Typography variant="body1">
-            Monto restante en cuenta: {"  "}
+          <Typography variant="body2">
+            <strong>Monto restante en cuenta: </strong>
             {(balance - fixedTermSimulation?.amount)?.toLocaleString("es-AR", {
               style: "currency",
               currency: "ARS",
             })}
           </Typography>
-          <Typography variant="body1">
-            Fecha de retiro:{" "}
+          <Typography variant="body2">
+            <strong>Fecha de retiro: </strong>
             {dayjs(fixedTermSimulation.closingDate).format("DD-MM-YYYY")}
           </Typography>
         </ActionDialog>

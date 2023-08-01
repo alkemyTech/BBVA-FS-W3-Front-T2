@@ -24,6 +24,7 @@ import { enqueueSnackbar } from "notistack";
 import { payment } from "../../services/paymentService";
 import { getBalance } from "../../services/accountService";
 import Loader from "../../components/Loader/Loader";
+import { getTodaysDate, formatCurrencyToArs } from "../../utils/dialogUtils";
 
 const Payment = () => {
   const navigate = useNavigate();
@@ -257,19 +258,23 @@ const Payment = () => {
                 }}
                 icon={<AttachMoneyIcon fontSize="large" />}
               >
-                <Typography variant="overline">
-                  Información de su pago
+                <Typography variant="button">
+                  <strong>Información de su pago</strong>
                 </Typography>
-                <Typography variant="body1">Monto: ${values.amount}</Typography>
-                <Typography variant="body1">
-                  Moneda: {values.currency}
+                <Typography variant="body2">
+                  <strong>Monto: </strong>
+                  {formatCurrencyToArs(values.amount)}
                 </Typography>
-                <Typography variant="body1">
-                  Descripción:{" "}
+                <Typography variant="body2">
+                  <strong>Moneda: </strong>
+                  {values.currency}
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Descripción: </strong>
                   {values.description || "No ingresaste una descripción"}
                 </Typography>
-                <Typography variant="body1">
-                  Fecha: {dayjs().format("YYYY-MM-DD")}
+                <Typography variant="body2">
+                  <strong>Fecha:</strong> {getTodaysDate()}
                 </Typography>
               </CustomDialog>
             </Grid>
