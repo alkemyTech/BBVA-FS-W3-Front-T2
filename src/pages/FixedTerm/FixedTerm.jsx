@@ -45,7 +45,9 @@ const FixedTerm = () => {
   useEffect(() => {
     getBalance()
       .then((res) => {
-        setBalance(res.data.accountArs.balance);
+        if (res.data.accountArs && res.data.accountArs.balance !== null) {
+          setBalance(res.data.accountArs.balance);
+        }
       })
       .then(() => {
         setLoading(false);
@@ -234,7 +236,7 @@ const FixedTerm = () => {
                         onClick={() => setOpenTermsModal(true)}
                         className="plazo-fijo-link"
                       >
-                        terminos y condiciones.
+                        términos y condiciones.
                       </span>
                     </Typography>
                   </div>
@@ -310,7 +312,7 @@ const FixedTerm = () => {
         </ActionDialog>
       </Grid>
     );
-  } else if (!balance) {
+  } else if (!balance && !error) {
     return (
       <Alert severity="info">
         No tenés una cuenta en ARS ¡No podés pedir un plazo fijo!
