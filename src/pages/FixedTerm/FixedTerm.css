@@ -13,3 +13,12 @@
     border-radius: 0;
   }
 }
+
+.plazo-fijo-link {
+  cursor: pointer;
+  font-weight: bold;
+}
+.plazo-fijo-link:hover {
+  color: #082145;
+  text-decoration: underline;
+}

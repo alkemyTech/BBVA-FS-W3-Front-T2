@@ -10,24 +10,24 @@ import {
   InputAdornment,
   OutlinedInput,
   Alert,
-  List,
-  ListItem,
 } from "@mui/material";
 import { useFormik } from "formik";
-import "./Transaction.css";
+import "./Transfer.css";
 import * as yup from "yup";
 import CustomDialog from "../../components/CustomDialog/CustomDialog";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { sendARS, sendUSD } from "../../services/transferService";
+import { getBalance } from "../../services/accountService";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import { transaction } from "../../services/transactionService";
 import { useNavigate } from "react-router-dom";
-import { enqueueSnackbar } from "notistack";
 import dayjs from "dayjs";
+import { enqueueSnackbar } from "notistack";
 
-const Transaction = () => {
+const Transfer = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [accountsExist, setAccountsExist] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
 
   const inputValidation = yup.object().shape({
@@ -45,20 +45,10 @@ const Transaction = () => {
       .required("Campo requerido."),
     cbu: yup
       .string()
-      .test(
-        "isPositiveNumber",
-        "Debes ingresar un número positivo.",
-        (value) => {
-          return /^[0-9]+$/.test(value) && parseInt(value, 10) > 0;
-        }
-      )
-      .test(
-        "isExactly22Characters",
-        "El número debe tener exactamente 22 caracteres.",
-        (value) => {
-          return value.length === 22;
-        }
-      )
+      .test("number", "Debes ingresar un número positivo.", (value) => {
+        return /^[0-9]+$/.test(value);
+      })
+      .length(22, "El CBU debe tener 22 dígitos.")
       .required("Campo requerido."),
   });
 
@@ -72,38 +62,65 @@ const Transaction = () => {
     touched,
   } = useFormik({
     initialValues: {
-      currency: "",
+      cbu: "",
       amount: "",
+      currency: "",
     },
     validationSchema: inputValidation,
     onSubmit: (values) => {
-      //amount a formato correcto. Antes era String.
       if (values.amount && typeof values.amount === "string") {
         values.amount = values.amount.replace(/,/, ".");
         values.amount = parseFloat(values.amount);
       }
-
-      //el diálogo conecta con el back
       setOpenDialog(true);
     },
   });
 
-  const transactionConnection = () => {
-    transaction(values)
+  const sendUsdConnection = () => {
+    sendUSD(values)
       .then(() => {
         setLoading(true);
       })
       .then(() => {
         navigate("/");
-        enqueueSnackbar("Transferencia realizada", { variant: "success" });
+        enqueueSnackbar("Transferencia realizado", { variant: "success" });
       })
       .catch((err) => {
         setError(String(err));
       });
   };
 
-  return (
-    <main>
+  const sendArsConnection = () => {
+    sendARS(values)
+      .then(() => {
+        setLoading(true);
+      })
+      .then(() => {
+        navigate("/");
+        enqueueSnackbar("Transferencia realizado", { variant: "success" });
+      })
+      .catch((err) => {
+        setError(String(err));
+      });
+  };
+
+  useEffect(() => {
+    getBalance((response) => response)
+      .then((response) => {
+        if (response.data.accountArs || response.data.accountUsd)
+          setAccountsExist(true);
+      })
+      .then(() => setLoading(false))
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return "cargando";
+  } else if (accountsExist) {
+    return (
       <Grid container justifyContent="center">
         <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
           <Typography variant="h5">
@@ -154,7 +171,30 @@ const Transaction = () => {
                   )}
                 </FormControl>
               </div>
-              <div style={{ display: "block" }}>
+              <div style={{ display: "flex" }}>
+                <FormControl fullWidth>
+                  <InputLabel htmlFor="input-cbu">CBU</InputLabel>
+                  <OutlinedInput
+                    id="input-cbu"
+                    error={!!errors.cbu && touched.cbu}
+                    name="cbu"
+                    value={values.cbu}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    startAdornment={
+                      <InputAdornment position="start"></InputAdornment>
+                    }
+                    label="CBU"
+                  />
+                  {errors.cbu && touched.cbu && (
+                    <FormHelperText sx={{ color: "#f44336" }}>
+                      {errors.cbu}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+              </div>
+              <br />
+              <div style={{ display: "flex" }}>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="input-amount">Total</InputLabel>
                   <OutlinedInput
@@ -175,28 +215,6 @@ const Transaction = () => {
                     </FormHelperText>
                   )}
                 </FormControl>
-                <br />
-                <br />
-                <FormControl fullWidth>
-                  <InputLabel htmlFor="input-cbu">CBU</InputLabel>
-                  <OutlinedInput
-                    id="input-cbu"
-                    error={!!errors.cbu && touched.cbu}
-                    name="cbu"
-                    value={values.cbu}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    startAdornment={
-                      <InputAdornment position="start"></InputAdornment>
-                    }
-                    label="Total"
-                  />
-                  {errors.cbu && touched.cbu && (
-                    <FormHelperText sx={{ color: "#f44336" }}>
-                      {errors.cbu}
-                    </FormHelperText>
-                  )}
-                </FormControl>
               </div>
             </Paper>
             <div style={{ textAlign: "center" }}>
@@ -204,6 +222,7 @@ const Transaction = () => {
                 {loading ? "Cargando ..." : "Aceptar"}
               </Button>
             </div>
+
             {error && (
               <Alert severity="error" sx={{ marginTop: "1em" }}>
                 {typeof error === "string"
@@ -221,7 +240,9 @@ const Transaction = () => {
               setOpenDialog(false);
             }}
             onConfirm={() => {
-              transactionConnection(values);
+              values.currency === "ARS"
+                ? sendArsConnection(values)
+                : sendUsdConnection(values);
               setOpenDialog(false);
             }}
             icon={<AttachMoneyIcon fontSize="large" />}
@@ -229,16 +250,24 @@ const Transaction = () => {
             <Typography variant="overline">
               Información de su transferencia
             </Typography>
-            <List>
-              <ListItem>Monto: ${values.amount}</ListItem>
-              <ListItem>Moneda: {values.currency}</ListItem>
-              <ListItem>Fecha: {dayjs().format("YYYY-MM-DD")}</ListItem>
-            </List>
+            <Typography variant="body1">
+              Monto enviado: ${values.amount}
+            </Typography>
+            <Typography variant="body1">Moneda: {values.currency}</Typography>
+            <Typography variant="body1">
+              Fecha: {dayjs().format("DD-MM-YYYY")}
+            </Typography>
           </CustomDialog>
         </Grid>
       </Grid>
-    </main>
-  );
+    );
+  } else if (error) {
+    return (
+      <Alert severity="error">No estás logueado, ¡Volvé a ingresar!</Alert>
+    );
+  } else {
+    return <Alert severity="info">No tenés cuentas activas</Alert>;
+  }
 };
 
-export default Transaction;
+export default Transfer;

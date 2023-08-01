@@ -11,31 +11,45 @@ import {
   OutlinedInput,
   Alert,
   TextField,
-  List,
-  ListItem,
 } from "@mui/material";
 import { useFormik } from "formik";
 import "./Deposit.css";
 import * as yup from "yup";
 import CustomDialog from "../../components/CustomDialog/CustomDialog";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { deposit } from "../../services/depositService";
 import { useNavigate } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import dayjs from "dayjs";
+import { getBalance } from "../../services/accountService";
 
 const Deposit = () => {
   const navigate = useNavigate();
+  const [accountsExist, setAccountsExist] = useState(false);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
+
+  useEffect(() => {
+    getBalance((response) => response)
+      .then((response) => {
+        if (response.data.accountArs || response.data.accountUsd)
+          setAccountsExist(true);
+      })
+      .then(() => setLoading(false))
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
+  }, []);
 
   const parseFloatFromString = (string) => {
     if (typeof string === "string") {
       let number = string.replace(/,/, ".");
       return parseFloat(number);
     }
+    return string;
   };
 
   const inputValidation = yup.object().shape({
@@ -62,7 +76,7 @@ const Deposit = () => {
       .required("Campo requerido."),
     description: yup
       .string()
-      .max(100, "La descripción no debe tener más que 100 carácteres")
+      .max(50, "La descripción no debe tener más que 50 carácteres")
       .nullable(),
   });
 
@@ -104,7 +118,10 @@ const Deposit = () => {
       });
   };
 
-  return (
+  if (loading) {
+    return "cargando";
+  } else if (accountsExist) {
+    return (
       <Grid container justifyContent="center">
         <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
           <Typography variant="h5">
@@ -185,7 +202,7 @@ const Deposit = () => {
                   <TextField
                     id="textarea-description"
                     multiline
-                    rows={4}
+                    rows={2}
                     variant="outlined"
                     InputProps={{
                       inputProps: {
@@ -240,18 +257,26 @@ const Deposit = () => {
             <Typography variant="overline">
               Información de su depósito
             </Typography>
-            <List>
-              <ListItem>Monto: ${values.amount}</ListItem>
-              <ListItem>Moneda: {values.currency}</ListItem>
-              <ListItem>
-                Descripción: {values.description || "No ingresaste una descripción"}
-              </ListItem>
-              <ListItem>Fecha: {dayjs().format("YYYY-MM-DD")}</ListItem>
-            </List>
+            <Typography variant="body1">Monto: ${values.amount}</Typography>
+            <Typography variant="body1">Moneda: {values.currency}</Typography>
+            <Typography variant="body1">
+              Descripción:{" "}
+              {values.description || "No ingresaste una descripción"}
+            </Typography>
+            <Typography variant="body1">
+              Fecha: {dayjs().format("YYYY-MM-DD")}
+            </Typography>
           </CustomDialog>
         </Grid>
       </Grid>
-  );
+    );
+  } else if (error) {
+    return (
+      <Alert severity="error">No estás logueado, ¡Volvé a ingresar!</Alert>
+    );
+  } else {
+    return <Alert severity="info">No tenés cuentas activas</Alert>;
+  }
 };
 
 export default Deposit;

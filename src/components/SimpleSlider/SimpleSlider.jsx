@@ -15,9 +15,5 @@ export default function SimpleSlider({ children }) {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
-  return (
-    <>
-      <Slider {...settings}>{children}</Slider>
-    </>
-  );
+  return <Slider {...settings}>{children}</Slider>;
 }

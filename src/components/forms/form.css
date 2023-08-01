@@ -1,17 +1,13 @@
 .form-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    margin-top: 16px;
-    padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem;
 }
 
 .inputs-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
