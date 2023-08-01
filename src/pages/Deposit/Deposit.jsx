@@ -202,7 +202,7 @@ const Deposit = () => {
                   <TextField
                     id="textarea-description"
                     multiline
-                    rows={4}
+                    rows={2}
                     variant="outlined"
                     InputProps={{
                       inputProps: {

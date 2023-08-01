@@ -202,7 +202,7 @@ const Payment = () => {
                       <TextField
                         id="textarea-description"
                         multiline
-                        rows={4}
+                        rows={2}
                         variant="outlined"
                         InputProps={{
                           inputProps: {
@@ -277,7 +277,9 @@ const Payment = () => {
       </Formik>
     );
   } else if (error) {
-    return <Alert severity="error">No estás logueado, ¡Volvé a ingresar!</Alert>;
+    return (
+      <Alert severity="error">No estás logueado, ¡Volvé a ingresar!</Alert>
+    );
   } else {
     return <Alert severity="info">No tenés cuentas activas</Alert>;
   }
