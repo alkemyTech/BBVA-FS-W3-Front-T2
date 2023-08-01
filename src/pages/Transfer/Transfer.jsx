@@ -91,7 +91,6 @@ const Transfer = () => {
 
   const authenticateCbuConnected = async () => {
     try {
-      console.log("entro")
       setCbuLoading(true)
       const response = await  authenticateCbu(values)
       const userName = response.user.firstName

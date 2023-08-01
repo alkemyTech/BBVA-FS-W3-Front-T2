@@ -53,7 +53,6 @@ export const authenticateCbu = async (values) => {
   try {
     delete values.amount;
     const response = await axios.post(host, values, config);
-    console.log(response);
     return response.data;
   } catch (error) {
     if (error.response && error.response.data && error.response.data.message) {
