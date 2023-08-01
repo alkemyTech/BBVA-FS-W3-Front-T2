@@ -236,7 +236,7 @@ const FixedTerm = () => {
                         onClick={() => setOpenTermsModal(true)}
                         className="plazo-fijo-link"
                       >
-                        terminos y condiciones.
+                        términos y condiciones.
                       </span>
                     </Typography>
                   </div>
