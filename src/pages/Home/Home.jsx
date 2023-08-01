@@ -4,6 +4,7 @@ import { getBalance } from "../../services/accountService";
 import SimpleSlider from "../../components/SimpleSlider/SimpleSlider";
 import AccountDetail from "../../components/AccountDetail/AccountDetail";
 import CustomDataGrid from "../../components/CustomDataGrid/CustomDataGrid";
+import Loader from "../../components/Loader/Loader";
 
 export default function Home() {
   const [balance, setBalance] = useState(null);
@@ -63,7 +64,7 @@ export default function Home() {
       content = <Alert severity="info">No tenés cuentas activas</Alert>;
     }
   } else {
-    content = <Skeleton variant="rectangular" height={200} />;
+    content = <Loader />;
   }
 
   return <>{content}</>;

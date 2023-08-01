@@ -1,18 +1,13 @@
 import "./Loader.css";
+import titulo from "../../../public/assets/iAzul.png";
 
 const Loader = () => {
   return (
-    <div className="loadingContainer">
-      <img
-        src="../../../public/iconoAlkywallChico.svg"
-        alt="icono de la empresa"
-        id="loadingIcon"
-      />
-      {/* <img
-        src="../../../public/assets/iAzul.svg"
-        alt="titulo de la empresa"
-        id="loadingTitle"
-      /> */}
+    <div className="loaderContainer">
+      <div className="loader-exterior">
+        <div className="loader-interior"></div>
+      </div>
+      <img src={titulo} alt="icono alkywall" id="loader-titulo" />
     </div>
   );
 };
