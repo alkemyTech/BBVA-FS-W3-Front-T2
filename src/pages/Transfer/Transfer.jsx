@@ -10,8 +10,6 @@ import {
   InputAdornment,
   OutlinedInput,
   Alert,
-  List,
-  ListItem,
 } from "@mui/material";
 import { useFormik } from "formik";
 import "./Transfer.css";
@@ -252,11 +250,13 @@ const Transfer = () => {
             <Typography variant="overline">
               Información de su transferencia
             </Typography>
-            <List>
-              <ListItem>Monto: ${values.amount}</ListItem>
-              <ListItem>Moneda: {values.currency}</ListItem>
-              <ListItem>Fecha: {dayjs().format("DD-MM-YYYY")}</ListItem>
-            </List>
+            <Typography variant="body1">
+              Monto enviado: ${values.amount}
+            </Typography>
+            <Typography variant="body1">Moneda: {values.currency}</Typography>
+            <Typography variant="body1">
+              Fecha: {dayjs().format("DD-MM-YYYY")}
+            </Typography>
           </CustomDialog>
         </Grid>
       </Grid>

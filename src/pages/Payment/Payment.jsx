@@ -11,8 +11,6 @@ import {
   OutlinedInput,
   Alert,
   TextField,
-  List,
-  ListItem,
 } from "@mui/material";
 import { Formik } from "formik";
 import "./Payment.css";
@@ -261,15 +259,17 @@ const Payment = () => {
                 <Typography variant="overline">
                   Información de su pago
                 </Typography>
-                <List>
-                  <ListItem>Monto: ${values.amount}</ListItem>
-                  <ListItem>Moneda: {values.currency}</ListItem>
-                  <ListItem>
-                    Descripción:{" "}
-                    {values.description || "No ingresaste una descripción"}
-                  </ListItem>
-                  <ListItem>Fecha: {dayjs().format("YYYY-MM-DD")}</ListItem>
-                </List>
+                <Typography variant="body1">Monto: ${values.amount}</Typography>
+                <Typography variant="body1">
+                  Moneda: {values.currency}
+                </Typography>
+                <Typography variant="body1">
+                  Descripción:{" "}
+                  {values.description || "No ingresaste una descripción"}
+                </Typography>
+                <Typography variant="body1">
+                  Fecha: {dayjs().format("YYYY-MM-DD")}
+                </Typography>
               </CustomDialog>
             </Grid>
           </Grid>

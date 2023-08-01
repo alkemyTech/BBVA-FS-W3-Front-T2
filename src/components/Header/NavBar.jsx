@@ -105,7 +105,7 @@ export default function NavBar({ navLinks }) {
                 >
                   Perfil
                 </MenuItem>
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
               </Menu>
             </Box>
           )}

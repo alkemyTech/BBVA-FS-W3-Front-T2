@@ -29,7 +29,7 @@ const LoginForm = () => {
     password: Yup.string()
       .trim()
       .min(6, "Minimo 6 caracteres")
-      .required("Password requerido"),
+      .required("Contraseña requerida"),
   });
 
   return (
@@ -78,9 +78,9 @@ const LoginForm = () => {
               sx={{ mb: 2 }}
               required
               id="password"
-              label="Password"
+              label="Contraseña"
               type="password"
-              placeholder="Password"
+              placeholder="Contraseña"
               value={values.password}
               onChange={handleChange}
               name="password"
