@@ -63,17 +63,11 @@ export default function Profile() {
           <Box width="100%">
             <UserData>
               <ListItem>
-                <ListItemText
-                  primary="Nombre"
-                  secondary={user.firstName}
-                />
+                <ListItemText primary="Nombre" secondary={user.firstName} />
               </ListItem>
               <Divider />
               <ListItem>
-                <ListItemText
-                  primary="Apellido"
-                  secondary={user.lastName}
-                />
+                <ListItemText primary="Apellido" secondary={user.lastName} />
               </ListItem>
               <Divider />
               <ListItem>
@@ -81,7 +75,7 @@ export default function Profile() {
               </ListItem>
               <Divider />
               <ListItem>
-                <ListItemText primary="Edad" secondary="25" />
+                <ListItemText primary="Edad" secondary={user.age} />
               </ListItem>
             </UserData>
           </Box>
