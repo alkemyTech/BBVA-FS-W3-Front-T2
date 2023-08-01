@@ -39,7 +39,7 @@ const RegisterForm = () => {
     password: Yup.string()
       .trim()
       .min(6, "Minimo 6 caracteres")
-      .required("Password requerido"),
+      .required("Contraseña requerida"),
   });
 
   return (
@@ -48,7 +48,7 @@ const RegisterForm = () => {
         initialValues={{
           firstName: "",
           lastName: "",
-          age: 0,
+          age: null,
           email: "",
           password: "",
         }}
@@ -130,27 +130,21 @@ const RegisterForm = () => {
                 onBlur={handleBlur}
                 error={(touched.email && !!errors.email) || !!errorsState}
                 helperText={(touched.email && errors.email) || errorsState}
-                InputLabelProps={{
-                  shrink: true,
-                }}
                 fullWidth
               />
               <TextField
                 sx={{ mb: 2 }}
                 required
                 id="password"
-                label="Password"
+                label="Contraseña"
                 type="password"
-                placeholder="Password"
+                placeholder="Contraseña"
                 value={values.password}
                 onChange={handleChange}
                 name="password"
                 onBlur={handleBlur}
                 error={errors.password && touched.password}
                 helperText={touched.password && errors.password}
-                InputLabelProps={{
-                  shrink: true,
-                }}
                 fullWidth
               />
             </div>

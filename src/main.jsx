@@ -11,6 +11,8 @@ import { SnackbarProvider } from "notistack";
 import { esES } from "@mui/x-date-pickers/locales";
 import "./index.css";
 import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import "dayjs/locale/es";
 
 const theme = createTheme({
   palette: {
@@ -32,6 +34,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             localeText={
               esES.components.MuiLocalizationProvider.defaultProps.localeText
             }
+            dateAdapter={AdapterDayjs}
+            adapterLocale="es"
           >
             <BrowserRouter>
               <SnackbarProvider
