@@ -13,7 +13,6 @@ import {
   Alert,
 } from "@mui/material";
 import { useFormik } from "formik";
-import { useTheme } from "@emotion/react";
 import "./FixedTerm.css";
 import * as yup from "yup";
 import { MobileDatePicker } from "@mui/x-date-pickers";
@@ -32,9 +31,10 @@ import { enqueueSnackbar } from "notistack";
 
 const FixedTerm = () => {
   const navigate = useNavigate();
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState(null);
   const [openTermsModal, setOpenTermsModal] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const today = dayjs(); // fecha y hora actual
   const [finalDate, setFinalDate] = useState(null);
@@ -43,15 +43,17 @@ const FixedTerm = () => {
   const [fixedTermSimulation, setFixedTermSimulation] = useState({});
 
   useEffect(() => {
-    const fetchBalance = async () => {
-      try {
-        const response = await getBalance();
-        setBalance(response.data.accountArs.balance);
-      } catch (error) {
+    getBalance()
+      .then((res) => {
+        setBalance(res.data.accountArs.balance);
+      })
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((error) => {
         setError(error);
-      }
-    };
-    fetchBalance();
+        setLoading(false);
+      });
   }, []);
 
   const inputValidation = yup.object().shape({
@@ -139,8 +141,10 @@ const FixedTerm = () => {
     }
   };
 
-  return (
-    <main>
+  if (loading) {
+    return "cargando";
+  } else if (balance) {
+    return (
       <Grid container justifyContent="center">
         <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
           <Typography variant="h5" fontWeight={"bold"}>
@@ -305,8 +309,18 @@ const FixedTerm = () => {
           </Typography>
         </ActionDialog>
       </Grid>
-    </main>
-  );
+    );
+  } else if (!balance) {
+    return (
+      <Alert severity="info">
+        No tenés una cuenta en ARS ¡No podés pedir un plazo fijo!
+      </Alert>
+    );
+  } else {
+    return (
+      <Alert severity="error">No estás logueado, ¡Volvé a ingresar!</Alert>
+    );
+  }
 };
 
 export default FixedTerm;
