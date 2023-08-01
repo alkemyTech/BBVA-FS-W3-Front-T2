@@ -76,7 +76,7 @@ const Payment = () => {
       .required("Campo requerido."),
     description: yup
       .string()
-      .max(100, "La descripción no debe tener más que 100 carácteres")
+      .max(50, "La descripción no debe tener más que 50 carácteres")
       .nullable(),
   });
 
