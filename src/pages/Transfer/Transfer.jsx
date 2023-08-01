@@ -10,13 +10,15 @@ import {
   InputAdornment,
   OutlinedInput,
   Alert,
+  List,
+  ListItem, CircularProgress,
 } from "@mui/material";
 import { useFormik } from "formik";
 import "./Transfer.css";
 import * as yup from "yup";
 import CustomDialog from "../../components/CustomDialog/CustomDialog";
-import { useState, useEffect } from "react";
-import { sendARS, sendUSD } from "../../services/transferService";
+import {useEffect, useState} from "react";
+import {authenticateCbu, sendARS, sendUSD} from "../../services/transferService";
 import { getBalance } from "../../services/accountService";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { useNavigate } from "react-router-dom";
@@ -30,6 +32,8 @@ const Transfer = () => {
   const [loading, setLoading] = useState(true);
   const [accountsExist, setAccountsExist] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [cbuResponse, setCbuResponse] = useState(null);
+  const [cbuLoading, setCbuLoading ] = useState(false);
 
   const inputValidation = yup.object().shape({
     currency: yup.string().required("Campo requerido."),
@@ -76,6 +80,31 @@ const Transfer = () => {
       setOpenDialog(true);
     },
   });
+
+
+  useEffect(() => {
+    setCbuResponse(null)
+    if(values.currency && values.cbu.length === 22) {
+      authenticateCbuConnected()
+    }
+      },[values.currency, values.cbu])
+
+  const authenticateCbuConnected = async () => {
+    try {
+      setCbuLoading(true)
+      const response = await  authenticateCbu(values)
+      const userName = response.user.firstName
+      const userLastName = response.user.lastName
+      setCbuResponse({
+        userName, userLastName
+      })
+    } catch (error) {
+      setError(String(error))
+    } finally {
+      setCbuLoading(false);
+    }
+
+  }
 
   const sendUsdConnection = () => {
     sendUSD(values)
@@ -179,12 +208,13 @@ const Transfer = () => {
                     id="input-cbu"
                     error={!!errors.cbu && touched.cbu}
                     name="cbu"
-                    value={values.cbu}
+                    value={values.cbu || ''}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     startAdornment={
                       <InputAdornment position="start"></InputAdornment>
                     }
+                    endAdornment={cbuLoading && <CircularProgress />}
                     label="CBU"
                   />
                   {errors.cbu && touched.cbu && (
@@ -202,7 +232,7 @@ const Transfer = () => {
                     id="input-amount"
                     error={!!errors.amount && touched.amount}
                     name="amount"
-                    value={values.amount}
+                    value={values.amount || ''}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     startAdornment={
@@ -250,6 +280,12 @@ const Transfer = () => {
           >
             <Typography variant="overline">
               Información de su transferencia
+            </Typography>
+            <Typography variant="body1">
+              Destinatario:
+              { cbuResponse &&
+                  cbuResponse.userName + " " + cbuResponse.userLastName
+              }
             </Typography>
             <Typography variant="body1">
               Monto enviado: ${values.amount}

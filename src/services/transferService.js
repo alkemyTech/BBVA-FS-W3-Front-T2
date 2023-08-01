@@ -41,3 +41,26 @@ export const sendUSD = async (values) => {
     }
   }
 };
+
+export const authenticateCbu = async (values) => {
+  const jwt = localStorage.getItem("jwt");
+  const config = {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  };
+  const host = "http://localhost:8080/accounts/authenticate/cbu";
+  try {
+    delete values.amount;
+    const response = await axios.post(host, values, config);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data && error.response.data.message) {
+      throw new Error(error.response.data.message);
+    } else {
+      throw new Error("Error al autenticar el cbu");
+    }
+  }
+};
+
+
