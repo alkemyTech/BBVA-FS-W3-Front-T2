@@ -28,6 +28,7 @@ import {
 import { getBalance } from "../../services/accountService.js";
 import TermsAndConditions from "./TermsAndConditions.jsx";
 import { enqueueSnackbar } from "notistack";
+import Loader from "../../components/Loader/Loader";
 
 const FixedTerm = () => {
   const navigate = useNavigate();
@@ -144,7 +145,7 @@ const FixedTerm = () => {
   };
 
   if (loading) {
-    return "cargando";
+    return <Loader />;
   } else if (balance) {
     return (
       <Grid container justifyContent="center">

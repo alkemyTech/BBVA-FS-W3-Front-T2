@@ -23,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import dayjs from "dayjs";
 import { getBalance } from "../../services/accountService";
+import Loader from "../../components/Loader/Loader";
 
 const Deposit = () => {
   const navigate = useNavigate();
@@ -119,7 +120,7 @@ const Deposit = () => {
   };
 
   if (loading) {
-    return "cargando";
+    return <Loader />;
   } else if (accountsExist) {
     return (
       <Grid container justifyContent="center">
