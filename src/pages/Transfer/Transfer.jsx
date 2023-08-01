@@ -11,14 +11,14 @@ import {
   OutlinedInput,
   Alert,
   List,
-  ListItem,
+  ListItem, CircularProgress,
 } from "@mui/material";
 import { useFormik } from "formik";
 import "./Transfer.css";
 import * as yup from "yup";
 import CustomDialog from "../../components/CustomDialog/CustomDialog";
-import { useState } from "react";
-import { sendARS, sendUSD } from "../../services/transferService";
+import {useEffect, useState} from "react";
+import {authenticateCbu, sendARS, sendUSD} from "../../services/transferService";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
@@ -29,6 +29,8 @@ const Transfer = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [cbuResponse, setCbuResponse] = useState(null);
+  const [cbuLoading, setCbuLoading ] = useState(false);
 
   const inputValidation = yup.object().shape({
     currency: yup.string().required("Campo requerido."),
@@ -75,6 +77,32 @@ const Transfer = () => {
       setOpenDialog(true);
     },
   });
+
+
+  useEffect(() => {
+    setCbuResponse(null)
+    if(values.currency && values.cbu.length === 22) {
+      authenticateCbuConnected()
+    }
+      },[values.currency, values.cbu])
+
+  const authenticateCbuConnected = async () => {
+    try {
+      console.log("entro")
+      setCbuLoading(true)
+      const response = await  authenticateCbu(values)
+      const userName = response.user.firstName
+      const userLastName = response.user.lastName
+      setCbuResponse({
+        userName, userLastName
+      })
+    } catch (error) {
+      setError(String(error))
+    } finally {
+      setCbuLoading(false);
+    }
+
+  }
 
   const sendUsdConnection = () => {
     sendUSD(values)
@@ -168,6 +196,7 @@ const Transfer = () => {
                     <InputAdornment position="start"></InputAdornment>
                   }
                   label="CBU"
+                  endAdornment={cbuLoading && <CircularProgress />}
                 />
                 {errors.cbu && touched.cbu && (
                   <FormHelperText sx={{ color: "#f44336" }}>
@@ -232,6 +261,12 @@ const Transfer = () => {
         >
           <Typography variant="overline">
             Información de su transferencia
+          </Typography>
+          <Typography variant="body1">
+            Destinatario:
+            { cbuResponse &&
+                  cbuResponse.userName + " " + cbuResponse.userLastName
+            }
           </Typography>
           <List>
             <ListItem>Monto: ${values.amount}</ListItem>
