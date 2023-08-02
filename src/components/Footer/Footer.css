@@ -17,6 +17,11 @@
 
 @media screen and (min-width: 600px) {
   #alineacion-derecha-footer {
-    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+  }
+  #logo-footer {
+    margin-top: 0.5em;
   }
 }

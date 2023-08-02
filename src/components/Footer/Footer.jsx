@@ -16,11 +16,6 @@ const Footer = () => {
       <Grid container justifyContent="space-around" spacing={2}>
         <Grid item xs={12} sm={5}>
           <Box>
-            <img
-              src="../../../public/assets/iAzul.png"
-              alt="Logo alkywall."
-              style={{ height: "1em", display: "block" }}
-            />
             <Typography variant="overline" fontWeight="bold">
               © 2023 Alkemy
             </Typography>
@@ -51,6 +46,12 @@ const Footer = () => {
         </Grid>
         <Grid item xs={12} sm={7}>
           <div id={"alineacion-derecha-footer"}>
+              <img
+                src="../../../public/assets/iAzul.png"
+                alt="Logo alkywall."
+                id="logo-footer"
+                style={{ height: "1em", display: "block" }}
+              />
             <Typography variant="overline" fontStyle="italic">
               Creada por <strong>los interestelares</strong>
             </Typography>
