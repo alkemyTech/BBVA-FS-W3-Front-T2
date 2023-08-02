@@ -34,7 +34,8 @@ const RegisterForm = () => {
       .required("Apellido requerido"),
     age: Yup.number()
       .positive("La edad tiene que ser positiva")
-      .min(18, "Debes tener minimo 18 para ingresar"),
+      .min(18, "Debes tener minimo 18 para ingresar")
+      .required("Edad requerida"),
     email: Yup.string().email("Email no valido").required("Email requerido"),
     password: Yup.string()
       .trim()

@@ -42,7 +42,6 @@ const UserDataForm = (props) => {
       password: values.password,
     };
     dispatch(updateUser(updatedValues)).then((result) => {
-      console.log(result.payload);
       if (result.payload) {
         setDialogOpen(false);
         resetFormValues(values);
@@ -166,7 +165,7 @@ const UserDataForm = (props) => {
               <CustomDialog
                 open={isDialogOpen}
                 onClose={() => setDialogOpen(false)}
-                icon={<InfoIcon color="primary" fontSize="large" />}
+                icon={<InfoIcon color="#FFF" fontSize="large" />}
                 onConfirm={() => handleConfirm(values)}
                 title="Actualizar datos"
               >
