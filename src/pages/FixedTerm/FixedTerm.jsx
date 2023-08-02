@@ -43,6 +43,8 @@ const FixedTerm = () => {
   const [openDialog, setOpenDialog] = useState(false);
 
   const [fixedTermSimulation, setFixedTermSimulation] = useState({});
+  let fixedTermSimulationHasContent =
+    Object.keys(fixedTermSimulation).length > 0;
 
   useEffect(() => {
     getBalance()
@@ -147,7 +149,7 @@ const FixedTerm = () => {
 
   if (loading) {
     return <Loader />;
-  } else if (balance) {
+  } else if (balance !== null) {
     return (
       <Grid container justifyContent="center">
         <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
@@ -166,7 +168,7 @@ const FixedTerm = () => {
               <Box>
                 <Typography variant="button" sx={{ fontWeight: "bold" }}>
                   Balance actual:{"   "}
-                  {formatCurrencyToArs(balance)}
+                  {balance !== null && formatCurrencyToArs(balance)}
                 </Typography>
                 <Typography variant="overline" display={"block"}>
                   Dinero invertido
@@ -286,29 +288,24 @@ const FixedTerm = () => {
           </Typography>
           <Typography variant="body2">
             <strong>Monto invertido: </strong>
-            {fixedTermSimulation?.amount?.toLocaleString("es-AR", {
-              style: "currency",
-              currency: "ARS",
-            })}{" "}
+            {fixedTermSimulationHasContent &&
+              formatCurrencyToArs(fixedTermSimulation.amount)}
             (ARS)
           </Typography>
           <Typography variant="body2">
             <strong>Monto ganado: </strong>
-            {fixedTermSimulation?.interest?.toLocaleString("es-AR", {
-              style: "currency",
-              currency: "ARS",
-            })}
+            {fixedTermSimulationHasContent &&
+              formatCurrencyToArs(fixedTermSimulation.interest)}
           </Typography>
           <Typography variant="body2">
             <strong>Monto restante en cuenta: </strong>
-            {(balance - fixedTermSimulation?.amount)?.toLocaleString("es-AR", {
-              style: "currency",
-              currency: "ARS",
-            })}
+            {fixedTermSimulationHasContent &&
+              formatCurrencyToArs(balance - fixedTermSimulation.amount)}
           </Typography>
           <Typography variant="body2">
             <strong>Fecha de retiro: </strong>
-            {dayjs(fixedTermSimulation.closingDate).format("DD-MM-YYYY")}
+            {fixedTermSimulationHasContent &&
+              dayjs(fixedTermSimulation.closingDate).format("DD-MM-YYYY")}
           </Typography>
         </ActionDialog>
       </Grid>

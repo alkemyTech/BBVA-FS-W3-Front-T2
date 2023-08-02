@@ -18,7 +18,7 @@ export default function CustomDialog(props) {
       <DialogTitle
         className="dialog-title"
         style={{ color: "white", background: theme.palette.primary.light }}
->
+      >
         {otherProps.icon}
         <Typography variant="button" component="div">
           <strong>{otherProps.title}</strong>
