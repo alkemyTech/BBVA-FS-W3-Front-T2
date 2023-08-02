@@ -261,7 +261,7 @@ const Payment = () => {
                 <Typography variant="button">
                   <strong>Información de su pago</strong>
                 </Typography>
-                <Typography variant="body2">
+                <Typography variant="body2" sx={{ marginTop: "0.5em" }}>
                   <strong>Monto: </strong>
                   {formatCurrencyToArs(values.amount)}
                 </Typography>

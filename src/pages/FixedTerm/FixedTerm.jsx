@@ -286,7 +286,7 @@ const FixedTerm = () => {
           <Typography variant="button">
             <strong>Información de su depósito</strong>
           </Typography>
-          <Typography variant="body2">
+          <Typography variant="body2" sx={{ marginTop: "0.5em" }}>
             <strong>Monto invertido: </strong>
             {fixedTermSimulationHasContent &&
               formatCurrencyToArs(fixedTermSimulation.amount)}

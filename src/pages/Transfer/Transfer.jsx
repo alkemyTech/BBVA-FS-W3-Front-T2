@@ -284,7 +284,7 @@ const Transfer = () => {
             <Typography variant="button">
               <strong>Información de su transferencia</strong>
             </Typography>
-            <Typography variant="body2">
+            <Typography variant="body2" sx={{ marginTop: "0.5em" }}>
               <strong>Destinatario: </strong>
               {cbuResponse &&
                 cbuResponse.userName + " " + cbuResponse.userLastName}
