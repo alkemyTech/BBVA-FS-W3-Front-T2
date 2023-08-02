@@ -11,46 +11,60 @@ import {
   OutlinedInput,
   Alert,
   CircularProgress,
+  TextField
 } from "@mui/material";
 import { useFormik } from "formik";
 import "./Transfer.css";
 import * as yup from "yup";
 import CustomDialog from "../../components/CustomDialog/CustomDialog";
-import { useEffect, useState } from "react";
-import {
-  authenticateCbu,
-  sendARS,
-  sendUSD,
-} from "../../services/transferService";
+import {useEffect, useState} from "react";
+import {authenticateCbu, sendARS, sendUSD} from "../../services/transferService";
 import { getBalance } from "../../services/accountService";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { useNavigate } from "react-router-dom";
-import dayjs from "dayjs";
 import { enqueueSnackbar } from "notistack";
 import Loader from "../../components/Loader/Loader";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { getTodaysDate, formatCurrencyToArs } from "../../utils/dialogUtils";
 
 const Transfer = () => {
   const navigate = useNavigate();
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [accountsExist, setAccountsExist] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [cbuResponse, setCbuResponse] = useState(null);
   const [cbuLoading, setCbuLoading ] = useState(false);
 
+  const parseFloatFromString = (string) => {
+    if (typeof string === "string") {
+      let number = string.replace(/,/, ".");
+      return parseFloat(number);
+    }
+    return string;
+  };
+
   const inputValidation = yup.object().shape({
     currency: yup.string().required("Campo requerido."),
     amount: yup
       .string()
-      .test("number", "Debes ingresar un número positivo.", (value) => {
-        return /^[0-9]+([.,]{1}[0-9]*)?$/.test(value);
-      })
-      .test("maxDecimals", "El número debe tener 2 decimales.", (value) => {
-        const decimalRegex = /^[0-9]+([.,][0-9]{2})?$/;
-        const invalidDecimalRegex = /^[0-9]+[.,]$/;
-        return decimalRegex.test(value) && !invalidDecimalRegex.test(value);
-      })
+        .test("number", "Debes ingresar un número.", (value) => {
+          return /^[0-9]+([.,]{1}[0-9]*)?$/.test(value);
+        })
+        .test(
+            "positiveNumber",
+            "Debes ingresar un número mayor a 0.",
+            (value) => {
+              const numericValue = parseFloatFromString(value);
+              return numericValue > 0;
+            }
+        )
+        .test("maxDecimals", "El número debe tener 2 decimales.", (value) => {
+          const decimalRegex = /^[0-9]+([.,][0-9]{2})?$/;
+          const invalidDecimalRegex = /^[0-9]+[.,]$/;
+
+          return decimalRegex.test(value) && !invalidDecimalRegex.test(value);
+        })
       .required("Campo requerido."),
     cbu: yup
       .string()
@@ -77,10 +91,7 @@ const Transfer = () => {
     },
     validationSchema: inputValidation,
     onSubmit: (values) => {
-      if (values.amount && typeof values.amount === "string") {
-        values.amount = values.amount.replace(/,/, ".");
-        values.amount = parseFloat(values.amount);
-      }
+      values.amount = parseFloatFromString(values.amount);
       setOpenDialog(true);
     },
   });
@@ -88,6 +99,7 @@ const Transfer = () => {
   useEffect(() => {
     setCbuResponse(null)
     if(values.currency && values.cbu.length === 22) {
+      setError(null)
       authenticateCbuConnected()
     }
       },[values.currency, values.cbu])
@@ -228,6 +240,24 @@ const Transfer = () => {
                 </FormControl>
               </div>
               <br />
+              <div>
+                <TextField
+                    fullWidth
+                    disabled
+                    id="outlined-disabled"
+                    label="Destinatario"
+                    value={ cbuResponse ? cbuResponse.userName + " " + cbuResponse.userLastName : "Destinatario" }
+                    InputProps={cbuResponse ? {
+
+                      startAdornment: (
+                          <InputAdornment position="start">
+                            <AccountCircleIcon />
+                          </InputAdornment>
+                      ),
+                    }: null}
+                />
+              </div>
+              <br />
               <div style={{ display: "flex" }}>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="input-amount">Total</InputLabel>
@@ -252,11 +282,10 @@ const Transfer = () => {
               </div>
             </Paper>
             <div style={{ textAlign: "center" }}>
-              <Button variant="contained" type="submit">
-                {loading ? "Cargando ..." : "Aceptar"}
-              </Button>
+                    <Button variant="contained" type="submit">
+                      {loading ? "Cargando ..." : "Aceptar"}
+                    </Button>
             </div>
-
             {error && (
               <Alert severity="error" sx={{ marginTop: "1em" }}>
                 {typeof error === "string"
