@@ -10,21 +10,25 @@ import {
   InputAdornment,
   OutlinedInput,
   Alert,
-  List,
-  ListItem, CircularProgress,
+  CircularProgress,
 } from "@mui/material";
 import { useFormik } from "formik";
 import "./Transfer.css";
 import * as yup from "yup";
 import CustomDialog from "../../components/CustomDialog/CustomDialog";
-import {useEffect, useState} from "react";
-import {authenticateCbu, sendARS, sendUSD} from "../../services/transferService";
+import { useEffect, useState } from "react";
+import {
+  authenticateCbu,
+  sendARS,
+  sendUSD,
+} from "../../services/transferService";
 import { getBalance } from "../../services/accountService";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { enqueueSnackbar } from "notistack";
 import Loader from "../../components/Loader/Loader";
+import { getTodaysDate, formatCurrencyToArs } from "../../utils/dialogUtils";
 
 const Transfer = () => {
   const navigate = useNavigate();
@@ -80,7 +84,6 @@ const Transfer = () => {
       setOpenDialog(true);
     },
   });
-
 
   useEffect(() => {
     setCbuResponse(null)
@@ -278,21 +281,25 @@ const Transfer = () => {
             }}
             icon={<AttachMoneyIcon fontSize="large" />}
           >
-            <Typography variant="overline">
-              Información de su transferencia
+            <Typography variant="button">
+              <strong>Información de su transferencia</strong>
             </Typography>
-            <Typography variant="body1">
-              Destinatario:
-              { cbuResponse &&
-                  cbuResponse.userName + " " + cbuResponse.userLastName
-              }
+            <Typography variant="body2" sx={{ marginTop: "0.5em" }}>
+              <strong>Destinatario: </strong>
+              {cbuResponse &&
+                cbuResponse.userName + " " + cbuResponse.userLastName}
             </Typography>
-            <Typography variant="body1">
-              Monto enviado: ${values.amount}
+            <Typography variant="body2">
+              <strong>Monto enviado: </strong>
+              {values.amount && formatCurrencyToArs(values.amount)}
             </Typography>
-            <Typography variant="body1">Moneda: {values.currency}</Typography>
-            <Typography variant="body1">
-              Fecha: {dayjs().format("DD-MM-YYYY")}
+            <Typography variant="body2">
+              <strong>Moneda: </strong>
+              {values.currency}
+            </Typography>
+            <Typography variant="body2">
+              <strong>Fecha: </strong>
+              {getTodaysDate()}
             </Typography>
           </CustomDialog>
         </Grid>

@@ -29,6 +29,7 @@ import { getBalance } from "../../services/accountService.js";
 import TermsAndConditions from "./TermsAndConditions.jsx";
 import { enqueueSnackbar } from "notistack";
 import Loader from "../../components/Loader/Loader";
+import { formatCurrencyToArs } from "../../utils/dialogUtils";
 
 const FixedTerm = () => {
   const navigate = useNavigate();
@@ -42,6 +43,8 @@ const FixedTerm = () => {
   const [openDialog, setOpenDialog] = useState(false);
 
   const [fixedTermSimulation, setFixedTermSimulation] = useState({});
+  let fixedTermSimulationHasContent =
+    Object.keys(fixedTermSimulation).length > 0;
 
   useEffect(() => {
     getBalance()
@@ -146,7 +149,7 @@ const FixedTerm = () => {
 
   if (loading) {
     return <Loader />;
-  } else if (balance) {
+  } else if (balance !== null) {
     return (
       <Grid container justifyContent="center">
         <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
@@ -165,10 +168,7 @@ const FixedTerm = () => {
               <Box>
                 <Typography variant="button" sx={{ fontWeight: "bold" }}>
                   Balance actual:{"   "}
-                  {balance.toLocaleString("es-AR", {
-                    style: "currency",
-                    currency: "ARS",
-                  })}
+                  {balance !== null && formatCurrencyToArs(balance)}
                 </Typography>
                 <Typography variant="overline" display={"block"}>
                   Dinero invertido
@@ -283,32 +283,29 @@ const FixedTerm = () => {
           }}
           icon={<TrendingUp fontSize="large" sx={{ marginRight: "8px" }} />}
         >
-          <Typography variant="overline">Información de su depósito</Typography>
-          <Typography variant="body1">
-            Monto invertido:{" "}
-            {fixedTermSimulation?.amount?.toLocaleString("es-AR", {
-              style: "currency",
-              currency: "ARS",
-            })}{" "}
+          <Typography variant="button">
+            <strong>Información de su depósito</strong>
+          </Typography>
+          <Typography variant="body2" sx={{ marginTop: "0.5em" }}>
+            <strong>Monto invertido: </strong>
+            {fixedTermSimulationHasContent &&
+              formatCurrencyToArs(fixedTermSimulation.amount)}
             (ARS)
           </Typography>
-          <Typography variant="body1">
-            Monto ganado:{" "}
-            {fixedTermSimulation?.interest?.toLocaleString("es-AR", {
-              style: "currency",
-              currency: "ARS",
-            })}
+          <Typography variant="body2">
+            <strong>Monto ganado: </strong>
+            {fixedTermSimulationHasContent &&
+              formatCurrencyToArs(fixedTermSimulation.interest)}
           </Typography>
-          <Typography variant="body1">
-            Monto restante en cuenta: {"  "}
-            {(balance - fixedTermSimulation?.amount)?.toLocaleString("es-AR", {
-              style: "currency",
-              currency: "ARS",
-            })}
+          <Typography variant="body2">
+            <strong>Monto restante en cuenta: </strong>
+            {fixedTermSimulationHasContent &&
+              formatCurrencyToArs(balance - fixedTermSimulation.amount)}
           </Typography>
-          <Typography variant="body1">
-            Fecha de retiro:{" "}
-            {dayjs(fixedTermSimulation.closingDate).format("DD-MM-YYYY")}
+          <Typography variant="body2">
+            <strong>Fecha de retiro: </strong>
+            {fixedTermSimulationHasContent &&
+              dayjs(fixedTermSimulation.closingDate).format("DD-MM-YYYY")}
           </Typography>
         </ActionDialog>
       </Grid>

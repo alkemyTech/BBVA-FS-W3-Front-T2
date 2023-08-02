@@ -21,9 +21,9 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { deposit } from "../../services/depositService";
 import { useNavigate } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
-import dayjs from "dayjs";
 import { getBalance } from "../../services/accountService";
 import Loader from "../../components/Loader/Loader";
+import { getTodaysDate, formatCurrencyToArs } from "../../utils/dialogUtils";
 
 const Deposit = () => {
   const navigate = useNavigate();
@@ -255,17 +255,21 @@ const Deposit = () => {
             }}
             icon={<AttachMoneyIcon fontSize="large" />}
           >
-            <Typography variant="overline">
-              Información de su depósito
+            <Typography variant="button">
+              <strong>Información de su depósito</strong>
             </Typography>
-            <Typography variant="body1">Monto: ${values.amount}</Typography>
-            <Typography variant="body1">Moneda: {values.currency}</Typography>
-            <Typography variant="body1">
-              Descripción:{" "}
+            <Typography variant="body2" sx={{ marginTop: "0.5em" }}>
+              <strong>Monto: </strong> {formatCurrencyToArs(values.amount)}
+            </Typography>
+            <Typography variant="body2">
+              <strong>Moneda: </strong> {values.currency}
+            </Typography>
+            <Typography variant="body2">
+              <strong>Descripción:</strong>{" "}
               {values.description || "No ingresaste una descripción"}
             </Typography>
-            <Typography variant="body1">
-              Fecha: {dayjs().format("YYYY-MM-DD")}
+            <Typography variant="body2">
+              <strong>Fecha:</strong> {getTodaysDate()}
             </Typography>
           </CustomDialog>
         </Grid>
