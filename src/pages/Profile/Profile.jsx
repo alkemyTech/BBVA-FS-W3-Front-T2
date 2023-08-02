@@ -39,26 +39,32 @@ export default function Profile() {
         mx="auto"
         p={2}
       >
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          width="100%"
-        >
-          <Typography variant="h6">
-            {isEditing ? <b>Editar datos</b> : <b>Mis datos personales</b>}
-          </Typography>
-          {isEditing ? (
-            <IconButton color="primary" onClick={handleCancel}>
-              <ArrowBack />
-            </IconButton>
-          ) : (
-            <IconButton color="primary" onClick={handleEdit}>
-              <EditIcon />
-            </IconButton>
-          )}
-        </Box>
-
+        {isEditing ?
+            <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            width="100%"
+            >
+              <Typography variant="h6">
+                <b>Editar datos</b>
+              </Typography>
+            </Box>
+            :
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            width="100%"
+          >
+            <Typography variant="h6">
+               <b>Mis datos personales</b>
+            </Typography>
+              <IconButton color="primary" onClick={handleEdit}>
+                <EditIcon />
+              </IconButton>
+          </Box>
+        }
         {!isEditing ? (
           <Box width="100%">
             <UserData>
@@ -82,7 +88,7 @@ export default function Profile() {
         ) : (
           <Grid container justifyContent="center" alignItems="center">
             <Grid item xs={12} sm={8} md={6} lg={4}>
-              <UserDataForm />
+              <UserDataForm  handleCancel={handleCancel}/>
             </Grid>
           </Grid>
         )}

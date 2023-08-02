@@ -51,8 +51,7 @@ export const authenticateCbu = async (values) => {
   };
   const host = "http://localhost:8080/accounts/authenticate/cbu";
   try {
-    delete values.amount;
-    const response = await axios.post(host, values, config);
+    const response = await axios.post(host, {cbu: values.cbu, currency: values.currency} , config);
     return response.data;
   } catch (error) {
     if (error.response && error.response.data && error.response.data.message) {

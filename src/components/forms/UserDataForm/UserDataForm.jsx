@@ -10,7 +10,8 @@ import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const UserDataForm = () => {
+const UserDataForm = (props) => {
+  const { children, ...otherProps } = props;
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [isAnyFieldCompleted, setAnyFieldCompleted] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -121,9 +122,10 @@ const UserDataForm = () => {
               padding: "1rem",
             }}
           >
-            <Box display="flex" justifyContent="center">
+            <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
               <AccountCircle fontSize="large" />
             </Box>
+
             {hasError && (
               <Typography variant="body2" color="error" sx={{ mt: 1 }}>
                 Debés completar al menos un campo.
@@ -172,15 +174,25 @@ const UserDataForm = () => {
               </CustomDialog>
             )}
           </Paper>
-          <Box display="flex" justifyContent="center">
+          <Box display="flex" justifyContent="space-between">
             <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
-              sx={{ mt: 2 }}
+                type="submit"
+                variant="contained"
+                color="primary"
+                size="large"
+                sx={{ mt: 2 }}
             >
               Enviar
+            </Button>
+            <Button
+              type="submit"
+              variant="outlined"
+              color="error"
+              size="medium"
+              sx={{ mt: 2}}
+              onClick={otherProps.handleCancel}
+            >
+              Cancelar
             </Button>
           </Box>
         </Form>
