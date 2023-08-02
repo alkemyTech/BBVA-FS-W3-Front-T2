@@ -46,12 +46,12 @@ const Footer = () => {
         </Grid>
         <Grid item xs={12} sm={7}>
           <div id={"alineacion-derecha-footer"}>
-              <img
-                src="../../../public/assets/iAzul.png"
-                alt="Logo alkywall."
-                id="logo-footer"
-                style={{ height: "1em", display: "block" }}
-              />
+            <img
+              src="../../../public/assets/iAzul.png"
+              alt="Logo alkywall."
+              id="logo-footer"
+              style={{ height: "1em", display: "block" }}
+            />
             <Typography variant="overline" fontStyle="italic">
               Creada por <strong>los interestelares</strong>
             </Typography>

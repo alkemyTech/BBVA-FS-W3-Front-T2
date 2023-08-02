@@ -21,7 +21,8 @@
     flex-direction: column;
     align-items: end;
   }
+
   #logo-footer {
     margin-top: 0.5em;
-  }
+   }
 }
