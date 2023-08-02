@@ -38,6 +38,8 @@ const CustomDataGrid = ({ transactions }) => {
     };
   });
 
+  const hasData = formattedTransactions.length > 0;
+
   const columns = [
     {
       field: "date",
@@ -80,17 +82,22 @@ const CustomDataGrid = ({ transactions }) => {
   return (
     <div style={{ height: 400, width: "100%" }}>
       <DataGrid
-        sx={{ backgroundColor: "#fff" }}
+        sx={{ backgroundColor: "#fff", "& .MuiDataGrid-row:hover": {
+          backgroundColor: "inherit" 
+        } }}
         rows={formattedTransactions}
         columns={columns}
         localeText={{
           ...esES.components.MuiDataGrid.defaultProps.localeText,
           noRowsLabel: "No hay transacciones disponibles.",
         }}
-        pageSizeOptions={[5, 10, 100]}
+        pageSizeOptions={hasData ? [5, 10, 100] : []} // Mostrar solo si hay datos
+        pagination={hasData} // Ocultar la paginación si no hay datos
+        showScrollbar={hasData ? 'auto' : 'none'} // Ocultar el texto "0-0 of 0" si no hay datos
         disableColumnMenu
         disableColumnFilter
         disableColumnSelector
+        disableRowSelectionOnClick
       />
     </div>
   );

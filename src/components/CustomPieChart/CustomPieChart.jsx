@@ -12,7 +12,7 @@ const CustomPieChart = (props) => {
   const { categoryTotals } = props;
   const existsValues = categoryTotals.some((category) => category.value > 0);
   const dataWithValues = categoryTotals.filter((entry) => entry.value > 0);
-  const colors = ["#153b69", "#48638c", "#bcc6d6"];
+  const colors = ["#6088F6", "#A977F3", "#BF50EA"];
   const noDataColor = "#4b4d8b";
 
   return (

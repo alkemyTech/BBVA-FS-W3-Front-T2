@@ -1,12 +1,29 @@
-import { Alert, Box, Grid, Paper, Skeleton, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Divider,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  Skeleton,
+  Typography,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import SavingsIcon from "@mui/icons-material/Savings";
+
 import { useState, useEffect } from "react";
 import { getBalance } from "../../services/accountService";
 import SimpleSlider from "../../components/SimpleSlider/SimpleSlider";
 import AccountDetail from "../../components/AccountDetail/AccountDetail";
 import CustomDataGrid from "../../components/CustomDataGrid/CustomDataGrid";
-import FixedTermDataGrid from "../../components/FixedTermDataGrid/FixedTermDataGrid";
 import CustomPieChart from "../../components/CustomPieChart/CustomPieChart";
 import Loader from "../../components/Loader/Loader";
+import FixedTermCard from "../../components/FixedTermCard/FixedTermCard";
+import { useNavigate } from "react-router-dom";
+import { Savings } from "@mui/icons-material";
 
 export default function Home() {
   const [balance, setBalance] = useState(null);
@@ -14,6 +31,7 @@ export default function Home() {
   const [usdTransactions, setUsdTransactions] = useState([]);
   const [fixedTerms, setFixedTerms] = useState([]);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
   const movementsTitle = (
     <Typography variant="h6" component="h3" marginTop="1rem">
       <b>Tus movimientos</b>
@@ -90,6 +108,10 @@ export default function Home() {
     return categoryTotalsArray;
   };
 
+  const handleClick = () => {
+    navigate("/plazo-fijo");
+  };
+
   if (error) {
     return <Alert severity="error">Error al cargar el balance</Alert>;
   }
@@ -126,21 +148,19 @@ export default function Home() {
               {movementsTitle}
               <CustomDataGrid transactions={arsTransactions} />
             </>
-            {fixedTermsTitle}
-            <FixedTermDataGrid fixedTerms={fixedTerms} />
           </>
         )}
         {accountUsd && (
           <>
             <Paper>
               <Grid container display="flex" alignItems="center">
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} md={6}>
                   <AccountDetail
                     account={accountUsd}
                     text="Tu dinero en dólares"
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} md={6}>
                   <CustomPieChart categoryTotals={usdCategoryTotals} />
                 </Grid>
               </Grid>
@@ -152,6 +172,48 @@ export default function Home() {
           </>
         )}
       </SimpleSlider>
+      {fixedTermsTitle}
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container spacing={2}>
+          {fixedTerms.length > 0 ? (
+            fixedTerms.map((fixedTerm, index) => (
+              <FixedTermCard fixedTerm={fixedTerm} key={index} />
+            ))
+          ) : (
+            <Grid item xs={12}>
+              <Paper
+                sx={{
+                  padding: "1rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Savings
+                  color="primary"
+                  fontSize="large"
+                  style={{ marginBottom: "1rem" }}
+                />{" "}
+                <Typography
+                  variant="subtitle1"
+                  textAlign="center"
+                  color="primary.light"
+                >
+                  <b>No disponés de plazos fijos</b>
+                </Typography>
+                <Button
+                  onClick={handleClick}
+                  variant="outlined"
+                  color="primary"
+                  style={{ marginTop: "1rem", fontWeight: "bold" }}
+                >
+                  Simular plazo fijo
+                </Button>
+              </Paper>
+            </Grid>
+          )}
+        </Grid>
+      </Box>
       {!hasAccountArs && !hasAccountUsd && (
         <Alert severity="info">No tenés cuentas activas</Alert>
       )}
