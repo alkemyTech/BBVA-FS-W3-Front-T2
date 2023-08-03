@@ -139,12 +139,14 @@ const FixedTerm = () => {
   };
 
   const onSubmitFixedTermSimulation = async (values) => {
+    setLoading(true);
     const response = await fixedtermSimulate(values);
     if (response.errors && response.errors.length > 0) {
       setError(response.message);
     } else {
       setFixedTermSimulation(response.fixedTermDeposit);
     }
+    setLoading(false);
   };
 
   if (loading) {

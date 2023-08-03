@@ -2,17 +2,10 @@ import {
   Alert,
   Box,
   Button,
-  Divider,
   Grid,
-  List,
-  ListItem,
-  ListItemText,
   Paper,
-  Skeleton,
   Typography,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import SavingsIcon from "@mui/icons-material/Savings";
 
 import { useState, useEffect } from "react";
 import { getBalance } from "../../services/accountService";
@@ -172,48 +165,53 @@ export default function Home() {
           </>
         )}
       </SimpleSlider>
-      {fixedTermsTitle}
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2}>
-          {fixedTerms.length > 0 ? (
-            fixedTerms.map((fixedTerm, index) => (
-              <FixedTermCard fixedTerm={fixedTerm} key={index} />
-            ))
-          ) : (
-            <Grid item xs={12}>
-              <Paper
-                sx={{
-                  padding: "1rem",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <Savings
-                  color="primary"
-                  fontSize="large"
-                  style={{ marginBottom: "1rem" }}
-                />{" "}
-                <Typography
-                  variant="subtitle1"
-                  textAlign="center"
-                  color="primary.light"
-                >
-                  <b>No disponés de plazos fijos</b>
-                </Typography>
-                <Button
-                  onClick={handleClick}
-                  variant="outlined"
-                  color="primary"
-                  style={{ marginTop: "1rem", fontWeight: "bold" }}
-                >
-                  Simular plazo fijo
-                </Button>
-              </Paper>
+      {accountArs && (
+        <>
+          {fixedTermsTitle}
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2}>
+              {fixedTerms.length > 0 ? (
+                fixedTerms.map((fixedTerm, index) => (
+                  <FixedTermCard fixedTerm={fixedTerm} key={index} />
+                ))
+              ) : (
+                <Grid item xs={12}>
+                  <Paper
+                    sx={{
+                      padding: "1rem",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Savings
+                      color="primary"
+                      fontSize="large"
+                      style={{ marginBottom: "1rem" }}
+                    />{" "}
+                    <Typography
+                      variant="subtitle1"
+                      textAlign="center"
+                      color="primary.light"
+                    >
+                      <b>No disponés de plazos fijos</b>
+                    </Typography>
+                    <Button
+                      onClick={handleClick}
+                      variant="outlined"
+                      color="primary"
+                      style={{ marginTop: "1rem", fontWeight: "bold" }}
+                    >
+                      Simular plazo fijo
+                    </Button>
+                  </Paper>
+                </Grid>
+              )}
             </Grid>
-          )}
-        </Grid>
-      </Box>
+          </Box>
+        </>
+      )}
+
       {!hasAccountArs && !hasAccountUsd && (
         <Alert severity="info">No tenés cuentas activas</Alert>
       )}
